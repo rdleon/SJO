@@ -36,10 +36,10 @@ sub common_spread {
 
     if ( exists $$hier_ref{ $$chunk_ref{'PPID'} } ) {
         my $a_ref = $$hier_ref{ $$chunk_ref{'PPID'} };
-        push( @$a_ref, $$chunk_ref{'PID'} );
+        push( @$a_ref, [ $$chunk_ref{'PID'} , $$chunk_ref{'CMD'} ] );
     }
     else {
-        $$hier_ref{ $$chunk_ref{'PPID'} } = [ $$chunk_ref{'PID'} ];
+        $$hier_ref{ $$chunk_ref{'PPID'} } = [ [ $$chunk_ref{'PID'} , $$chunk_ref{'CMD'} ] ];
     }
 
     # It is just to abide with not returning undef
@@ -53,12 +53,11 @@ sub common_display {
 
     my ( $hier_ref ) = @_;
 
-    foreach my $pkey ( keys %$hier_ref )
-    {
+    foreach my $pkey ( keys %$hier_ref ) {
         print("PPID: $pkey\n");
         my $a_ref = $$hier_ref{ $pkey };
         foreach ( @$a_ref ) {
-            print("  " . $_ . "\n");
+            print("  " . $$_[0] . "\n");
         }
     }
 }
