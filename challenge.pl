@@ -1,3 +1,10 @@
+sub trim {
+    my $s = shift;
+    $s =~ s/^\s+|\s+$//g;
+
+    return $s
+}
+
 sub common_fetch {
 
     return undef unless ( @_ == 1 );
@@ -15,8 +22,8 @@ sub common_fetch {
     );
 
     return {
-        PID  => $pid,
-        PPID => $ppid,
+        PID  => trim($pid),
+        PPID => trim($ppid),
         CMD  => $cmd
     };
 }
@@ -46,9 +53,9 @@ sub common_display {
 
     my ( $hier_ref ) = @_;
 
-    foreach my $pkey ( keys %{ $hier_ref } )
+    foreach my $pkey ( keys %$hier_ref )
     {
-        print("PPID: $pkey \n");
+        print("PPID: $pkey\n");
         my $a_ref = $$hier_ref{ $pkey };
         foreach ( @$a_ref ) {
             print("  " . $_ . "\n");
@@ -65,7 +72,7 @@ my %steps = (
 
 
 sub start {
-    my %hierarchy = {};
+    my %hierarchy;
 
     # Expecting input as a pipe
     while ( <STDIN> ) {
