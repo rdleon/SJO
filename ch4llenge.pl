@@ -122,8 +122,6 @@ sub display {
 
     my @gpids = &fetch_gods( $tprocs_ref, \@spids );
 
-    # This loop is just to walk down through god processes detected,
-    # the rest of processes at this level should be ignore.
     foreach ( @gpids ) {
         &walk_down( $tprocs_ref, \@spids, $_, 0 );
     }
