@@ -1,5 +1,4 @@
 
-
 sub trim {
 
     my $s = shift;
@@ -133,7 +132,7 @@ sub display {
 }
 
 
-%tprocs;
+my %tprocs;
 
 # Expecting input as a pipe
 while ( <STDIN> ) {
