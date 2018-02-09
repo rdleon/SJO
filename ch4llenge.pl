@@ -1,3 +1,5 @@
+use strict;
+
 
 sub trim {
 
@@ -20,7 +22,7 @@ sub decode_line {
         $line =~ m/(\d+) +(\d+) +(\d+) +(\d+).*\d{1,4}:\d{2} (.*)/
     );
 
-    # This denotes the line was not decoded
+    # This denote line that was not decoded
     # because of it does not abide with regex pattern
     return 0 unless ( defined( $pid ) && defined( $ppid ) && defined( $cmd ) );
 
@@ -33,7 +35,7 @@ sub decode_line {
         $ppid = $pid;
     }
 
-    $$tprocs_ref{ $pid } = { PPID => $ppid, CMD  => $cmd };
+    $$tprocs_ref{ $pid } = { PPID => $ppid, CMD  => trim( $cmd ) };
 
     return 1;
 }
@@ -43,7 +45,7 @@ sub print_process {
 
     my ( $pid, $cmd, $indent ) = @_;
 
-    my $t = "%-5s" . ( $indent ? ("  " x $indent) . '\_' : '  ' ) . "%0s\n";
+    my $t = "%-5s" . ( $indent ? ("  " x $indent) . '\_ ' : '  ' ) . "%0s\n";
 
     printf( $t, $pid, $cmd );
 }
@@ -118,7 +120,7 @@ sub display {
 
     # this sorted info will be passed recursively to overhead
     # of sorting and sorting over and over again
-    my @spids = sort { $$a{ 'PID' } <=> $$b{ 'PID' } } keys %$tprocs_ref;
+    my @spids = sort { $tprocs_ref->{ $a }->{ 'PID' } <=> $tprocs_ref->{ $b }->{ 'PID' } } keys %$tprocs_ref;
 
     my @gpids = &fetch_gods( $tprocs_ref, \@spids );
 
@@ -135,4 +137,4 @@ while ( <STDIN> ) {
     &decode_line( \%tprocs, $_ );
 }
 
-&display(\%tprocs);
+&display( \%tprocs );
