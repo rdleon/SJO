@@ -31,9 +31,9 @@ sub decode_line {
 
         # He is his own inceptor as god :)
         $ppid = $pid;
-	}
+    }
 
-    $$tprocs_ref{ $pid } = { PPID => $ppid, CMD  => $cmd, WALKED => 0 };
+    $$tprocs_ref{ $pid } = { PPID => $ppid, CMD  => $cmd };
 
     return 1;
 }
@@ -43,7 +43,7 @@ sub print_process {
 
     my ( $pid, $cmd, $indent ) = @_;
 
-    my $t = "%-5s" . ( $indent ? ("  " x $indent) . '\_' : '' ) . "%0s\n";
+    my $t = "%-5s" . ( $indent ? ("  " x $indent) . '\_' : '  ' ) . "%0s\n";
 
     printf( $t, $pid, $cmd );
 }
@@ -98,8 +98,6 @@ sub walk_down {
 
     &print_process( $pid, ${ $$tprocs_ref{ $pid } }{ 'CMD' }, $indent );
 
-    ${ $$tprocs_ref{ $_ } }{ 'WALKED' } = 1;
-
     my @cpids = &fetch_immediate_children( $tprocs_ref, $spids_ref, $pid );
 
     $indent++;
@@ -134,7 +132,7 @@ sub display {
 
 my %tprocs;
 
-# Expecting input as a pipe
+# Expecting input as a pipe from 'ps -e l'
 while ( <STDIN> ) {
     &decode_line( \%tprocs, $_ );
 }
