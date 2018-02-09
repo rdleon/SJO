@@ -1,14 +1,5 @@
 
 
-#my $tprocs_ref = [
-#       { PID => 6745, PPID => 3, CMD => 'Root', WALKED => 0 },
-#       { PID => 3, PPID => 1, CMD => 'GrandChild1', WALKED => 0 },
-#       { PID => 1, PPID => 0, CMD => 'Child1', WALKED => 0 },
-#       { PID => 2, PPID => 3, CMD => 'Child2', WALKED => 0 },
-#       { PID => 4, PPID => 1, CMD => 'GrandChild2', WALKED => 0 }
-#];
-
-
 sub trim {
 
     my $s = shift;
@@ -53,7 +44,7 @@ sub print_process {
 
     my ( $pid, $cmd, $indent ) = @_;
 
-    my $t = "%-5s" . ( $indent ? ("    " x $indent) . '\_' : '' ) . "%0s\n";
+    my $t = "%-5s" . ( $indent ? ("  " x $indent) . '\_' : '' ) . "%0s\n";
 
     printf( $t, $pid, $cmd );
 }
@@ -61,7 +52,7 @@ sub print_process {
 
 sub fetch_gods {
 
-	my ( $tprocs_ref, $spids_ref ) = @_;
+    my ( $tprocs_ref, $spids_ref ) = @_;
 
     my @gods;
 
@@ -74,7 +65,7 @@ sub fetch_gods {
         push( @gods, $_ );
     }
 
-    return @gods;
+    return sort @gods;
 }
 
 
@@ -98,7 +89,7 @@ sub fetch_immediate_children {
         push( @children, $_ );
     }
 
-    return @children;
+    return sort @children;
 }
 
 
