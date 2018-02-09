@@ -17,7 +17,7 @@ sub decode_line {
     my ( $tprocs_ref, $line ) = @_;
 
     my ( $f, $uid, $pid, $ppid, $cmd ) = (
-        $line =~ m/(\d+) +(\d+) +(\d+) +(\d+).* (.*)/
+        $line =~ m/(\d+) +(\d+) +(\d+) +(\d+).*\d{1,4}:\d{2} (.*)/
     );
 
     # This denotes the line was not decoded
@@ -29,8 +29,8 @@ sub decode_line {
 
     if ( $ppid == 0 ) {
 
-		# He is his own inceptor as god :)
-		$ppid = $pid;
+        # He is his own inceptor as god :)
+        $ppid = $pid;
 	}
 
     $$tprocs_ref{ $pid } = { PPID => $ppid, CMD  => $cmd, WALKED => 0 };
