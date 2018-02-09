@@ -22,7 +22,7 @@ sub decode_line {
         $line =~ m/(\d+) +(\d+) +(\d+) +(\d+).*\d{1,4}:\d{2} (.*)/
     );
 
-    # This denote line that was not decoded
+    # This denote a line that was not decoded
     # because of it does not abide with regex pattern
     return 0 unless ( defined( $pid ) && defined( $ppid ) && defined( $cmd ) );
 
@@ -118,7 +118,7 @@ sub display {
 
     my ( $tprocs_ref ) = @_;
 
-    # this sorted info will be passed recursively to overhead
+    # this sorted info will be passed recursively to avoid overhead
     # of sorting and sorting over and over again
     my @spids = sort { $tprocs_ref->{ $a }->{ 'PID' } <=> $tprocs_ref->{ $b }->{ 'PID' } } keys %$tprocs_ref;
 
