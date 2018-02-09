@@ -36,13 +36,13 @@ sub decode_line {
 
     $pid = trim( $pid );
     $ppid = trim( $ppid );
-    
+
     if ( $ppid == 0 ) {
 
 		# He is his own inceptor as god :)
 		$ppid = $pid;
-	}    
-    
+	}
+
     $$tprocs_ref{ $pid } = { PPID => $ppid, CMD  => $cmd, WALKED => 0 };
 
     return 1;
@@ -63,7 +63,7 @@ sub fetch_gods {
 
 	my ( $tprocs_ref, $spids_ref ) = @_;
 
-    @gods;
+    my @gods;
 
     foreach ( @$spids_ref ) {
 
@@ -71,33 +71,33 @@ sub fetch_gods {
             next;
         }
 
-        push( @gods, $_ );		
+        push( @gods, $_ );
     }
-    
+
     return @gods;
 }
 
 
 sub fetch_immediate_children {
 
-	my ( $tprocs_ref, $spids_ref, $pid ) = @_;
+    my ( $tprocs_ref, $spids_ref, $pid ) = @_;
 
-    @children;
+    my @children;
 
     foreach ( @$spids_ref ) {
 
         # to avoid self inclusion
         if ( $_ == $pid ) {
             next;
-        }       
+        }
 
         unless ( ${ $$tprocs_ref{ $_ } }{ 'PPID' } == $pid ) {
             next;
         }
 
-        push( @children, $_ );		
+        push( @children, $_ );
     }
-    
+
     return @children;
 }
 
@@ -108,14 +108,14 @@ sub walk_down {
 
     &print_process( $pid, ${ $$tprocs_ref{ $pid } }{ 'CMD' }, $indent );
 
-    ${ $$tprocs_ref{ $_ } }{ 'WALKED' } = 1;  
+    ${ $$tprocs_ref{ $_ } }{ 'WALKED' } = 1;
 
-    @cpids = &fetch_immediate_children( $tprocs_ref, $spids_ref, $pid );
+    my @cpids = &fetch_immediate_children( $tprocs_ref, $spids_ref, $pid );
 
     $indent++;
 
     foreach ( @cpids ) {
-		&walk_down( $tprocs_ref, $spids_ref, $_, $indent );
+        &walk_down( $tprocs_ref, $spids_ref, $_, $indent );
     }
 }
 
@@ -132,7 +132,7 @@ sub display {
     # of sorting and sorting over and over again
     my @spids = sort { $$a{ 'PID' } <=> $$b{ 'PID' } } keys %$tprocs_ref;
 
-    @gpids = &fetch_gods( $tprocs_ref, \@spids );
+    my @gpids = &fetch_gods( $tprocs_ref, \@spids );
 
     # This loop is just to walk down through god processes detected,
     # the rest of processes at this level should be ignore.
@@ -145,14 +145,8 @@ sub display {
 %tprocs;
 
 # Expecting input as a pipe
-#while ( <STDIN> ) {
-#    &decode_line( \%tprocs, $_ );
-#}
-
-$tprocs{'6745'} = { PID => 6745, PPID => 3, CMD => 'Root', WALKED => 0 };
-$tprocs{'3'} = { PPID => 1, CMD => 'GrandChild1', WALKED => 0 };
-$tprocs{'1'} = { PPID => 1, CMD => 'Child1', WALKED => 0 },
-$tprocs{'2'} = { PPID => 3, CMD => 'Child2', WALKED => 0 },
-$tprocs{'4'} = { PPID => 1, CMD => 'GrandChild2', WALKED => 0 };
+while ( <STDIN> ) {
+    &decode_line( \%tprocs, $_ );
+}
 
 &display(\%tprocs);
