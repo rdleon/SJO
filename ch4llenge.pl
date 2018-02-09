@@ -45,7 +45,7 @@ sub print_process {
 
     my ( $pid, $cmd, $indent ) = @_;
 
-    my $t = "%-5s" . ( $indent ? ("  " x $indent) . '\_ ' : '  ' ) . "%0s\n";
+    my $t = "%5s" . ( $indent ? ("  " x $indent) . '\_ ' : '  ' ) . "%0s\n";
 
     printf( $t, $pid, $cmd );
 }
@@ -123,6 +123,8 @@ sub display {
     my @spids = sort { $tprocs_ref->{ $a }->{ 'PID' } <=> $tprocs_ref->{ $b }->{ 'PID' } } keys %$tprocs_ref;
 
     my @gpids = &fetch_gods( $tprocs_ref, \@spids );
+
+    print("  PID  COMMAND\n");
 
     foreach ( @gpids ) {
         &walk_down( $tprocs_ref, \@spids, $_, 0 );
