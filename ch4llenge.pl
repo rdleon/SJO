@@ -127,6 +127,7 @@ sub display {
     print("  PID  COMMAND\n");
 
     foreach ( @gpids ) {
+        # Here starts the brute force recursion with unknow (o) notation so far :|
         &walk_down( $tprocs_ref, \@spids, $_, 0 );
     }
 }
