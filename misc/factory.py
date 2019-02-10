@@ -8,10 +8,8 @@ class Factory(object):
     # Database for the several inceptors
     _inceptors = {}
 
-    def __init__(self):
-        pass
-
-    def is_supported(self, i):
+    @staticmethod
+    def is_supported(i):
         """
         Verifies if there is an inceptor available at index.
 
@@ -21,10 +19,11 @@ class Factory(object):
         Returns:
             bool: answer to the question asked
         """
-        ic = self._inceptors.get(i, None)
+        ic = Factory._inceptors.get(i, None)
         return False if not ic else True
 
-    def subscribe(self, i, ic):
+    @staticmethod
+    def subscribe(i, ic):
         """
         Place an inceptor class upon one slot index of
         the inceptors database
@@ -36,9 +35,10 @@ class Factory(object):
         Returns:
             Nothing (None)
         """
-        self._inceptors[i] = ic
+        Factory._inceptors[i] = ic
 
-    def incept(self, i):
+    @staticmethod
+    def incept(i):
         """
         Incepts an instance of the class living
         within the slot index
@@ -50,5 +50,5 @@ class Factory(object):
             An instance of the object contained within
             the slot index otherwise nothing (None)
         """
-        ic = self._inceptors.get(i, None)
+        ic = Factory._inceptors.get(i, None)
         return None if ic is None else ic()
