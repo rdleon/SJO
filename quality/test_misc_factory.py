@@ -23,7 +23,31 @@ class _Dummy2(object):
 
 class TestFactory(unittest.TestCase):
 
+    def test_correct_type(self):
+        """
+        Ensures that the right instance type
+        has been fetched from factory
+        """
+        fact = Factory()
+        fact.subscribe('Hugo', _Dummy0)
+        fact.subscribe('Paco', _Dummy1)
+        fact.subscribe('Luis', _Dummy2)
+
+        # Positive cases
+        self.assertTrue(type(fact.incept('Hugo')) == _Dummy0)
+        self.assertTrue(type(fact.incept('Paco')) == _Dummy1)
+        self.assertTrue(type(fact.incept('Luis')) == _Dummy2)
+
+        # Negative cases
+        self.assertFalse(type(fact.incept('Hugo')) == _Dummy1)
+        self.assertFalse(type(fact.incept('Paco')) == _Dummy2)
+        self.assertFalse(type(fact.incept('Luis')) == _Dummy0)
+
     def test_tuple_as_index(self):
+        """
+        Warranties that any hashable object features
+        a usage as an slot index
+        """
         fact = Factory()
         fact.subscribe((45,'Hugo'), _Dummy0)
         fact.subscribe((30,'Paco'), _Dummy1)
