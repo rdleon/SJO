@@ -1,0 +1,7 @@
+record:
+  name: dist_estado
+  file: nl.1549833345
+  author: wiseguy
+  attribs:
+    estado: nuevo león
+    comments: data obtenido de mexpost (nov 2008)
