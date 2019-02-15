@@ -1,4 +1,6 @@
 import os
+import yaml
+import custom
 from misc.factory import Factory
 
 
@@ -7,15 +9,23 @@ class AuthoritativeCache(object):
     """
     __slots__ =  ['name', 'author', 'latter_update']
 
-    # Database for the several authoritative caches (readonly)
+    # Database for the several authoritative caches
     _caches = {}
+
+    _METADATA_FILE = 'config.yml'
 
     @staticmethod
     def _get_meta(cname):
         """
         Gets metadata as per cache name
         """
-        pass
+        c_dir = os.path.join(custom.CACHE_DIR, cname) 
+        with open(os.path.join(c_dir, AuthoritativeCache._METADATA_FILE), 'r') as s:
+            try:
+                return yaml.load(s)
+            except yaml.YAMLError as e:
+                pass
+
 
     @staticmethod
     def load(cname):
@@ -23,8 +33,8 @@ class AuthoritativeCache(object):
         Loads cache instance into the database
         """
         mdata = AuthoritativeCache._get_meta(cname)
-        ci = Factory.incept(mdata.family)
-        AuthoritativeCache._caches[cname] = ci._load(mdata.args)
+        ci = Factory.incept(mdata['family'])
+        AuthoritativeCache._caches[cname] = ci._load(mdata['inception'])
 
     @staticmethod
     def flush(cname):
