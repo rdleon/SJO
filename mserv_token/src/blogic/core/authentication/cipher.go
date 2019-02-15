@@ -1,6 +1,7 @@
 package authentication
 
 import (
+	"blogic/settings"
 	"bufio"
 	"crypto/rsa"
 	"crypto/x509"

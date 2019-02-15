@@ -15,6 +15,10 @@ type Settings struct {
 
 var settings Settings = Settings{}
 
+func Init() {
+	// Pending implementation
+}
+
 func Get() Settings {
 	if &settings == nil {
 		Init()
