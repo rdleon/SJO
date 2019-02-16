@@ -1,7 +1,7 @@
 name: dist_estado
-family: geographical
 source: nl.1549833345
 author: wiseguy
 attrs:
   estado: nuevo león
   comentarios: data obtenido de mexpost (nov 2008)
+  formato: comma-separated values

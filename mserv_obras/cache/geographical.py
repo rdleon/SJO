@@ -1,7 +1,8 @@
-from . import AuthoritativeCache
+import misc
 
 
-class DistState(AuthoritativeCache):
+@misc.authoritative('geographical')
+class DistState(misc.ADBCache):
     """
     """
 
@@ -15,6 +16,6 @@ class DistState(AuthoritativeCache):
         """
         packer = lambda l: l.strip().split(self._SPLIT_CHAR),
         with open(source, 'r') as s:
-            return (dict(map(packer, s.readlines())),
+            return (dict(list(map(packer, s.readlines()))),
                     attrs.get('estado', 'unknown'),
                     attrs.get('comentarios', 'no comments'))

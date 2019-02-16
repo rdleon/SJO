@@ -2,14 +2,22 @@ import os
 import yaml
 import custom
 import collections
-from misc.factory import Factory
+from .factory import Factory
 
 
-CacheRecord = collections.namedtuple('CacheRecord', 'name family source attrs')
+def authoritative(si):
+    def wrapper(cls):
+        Factory.subscribe(si, cls)
+        return cls
+    return wrapper
 
 
-class AuthoritativeCache(object):
+ACacheMeta = collections.namedtuple('ACacheMeta', 'name source attrs')
+
+
+class ADBCache(object):
     """
+    Authoritative database cache's administrator
     """
     __slots__ =  ['name', 'latter_update']
 
@@ -24,11 +32,10 @@ class AuthoritativeCache(object):
         Gets metadata as per cache name
         """
         c_dir = os.path.join(custom.CACHE_DIR, cname)
-        with open(os.path.join(c_dir, AuthoritativeCache._METADATA_FILE), 'r') as s:
+        with open(os.path.join(c_dir, ADBCache._METADATA_FILE), 'r') as s:
             try:
                 d_cache = yaml.load(s)
-                return CacheRecord(d_cache['name'],
-                                   d_cache['family'],
+                return ACacheMeta(d_cache['name'],
                                    os.path.join(c_dir, d_cache['source']),
                                    d_cache['attrs'])
             except yaml.YAMLError as e:
@@ -41,39 +48,39 @@ class AuthoritativeCache(object):
         """
         Loads cache instance into the database
         """
-        mdata = AuthoritativeCache._get_meta(cname)
-        ci = Factory.incept(mdata.family)
-        AuthoritativeCache._caches[cname] = ci._load(mdata.source, **mdata.attrs)
+        mdata = ADBCache._get_meta(cname)
+        ci = Factory.incept(cname)
+        ADBCache._caches[cname] = ci._load(mdata.source, **mdata.attrs)
 
     @staticmethod
     def flush(cname):
         """
         Flushes cache instance from the database
         """
-        del AuthoritativeCache._caches[cname]
+        del ADBCache._caches[cname]
 
     @staticmethod
     def _reload(cname):
         """
         Reloads cache instance into the database
         """
-        AuthoritativeCache.flush(cname)
-        AuthoritativeCache.load(cname)
+        ADBCache.flush(cname)
+        ADBCache.load(cname)
 
     @staticmethod
     def count():
         """
         Number of cache instances available within the database
         """
-        return len(AuthoritativeCache._caches)
+        return len(ADBCache._caches)
 
     @staticmethod
     def find(cname):
         """
         Search a cache instance within the database
         """
-        if a_str in AuthoritativeCache._caches:
-            return AuthoritativeCache._caches[cname]
+        if a_str in ADBCache._caches:
+            return ADBCache._caches[cname]
         return None
 
     def __init__(self):
