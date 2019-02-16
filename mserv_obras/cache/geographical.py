@@ -11,11 +11,15 @@ class DistState(misc.ADBCache):
     def __init__(self):
         super().__init__()
 
-    def _load(self, source, **attrs):
+    def __packer(self, l):
+        k, v = l.strip().split(self._SPLIT_CHAR)
+        return (k, v)
+
+    def _load(self, mdata):
         """
         """
-        packer = lambda l: l.strip().split(self._SPLIT_CHAR),
-        with open(source, 'r') as s:
-            return (dict(list(map(packer, s.readlines()))),
-                    attrs.get('estado', 'unknown'),
-                    attrs.get('comentarios', 'no comments'))
+        with open(mdata.source, 'r') as s:
+            return (dict(map(self.__packer, s.readlines())),
+                    mdata.attrs.get('formato', 'unknown'),
+                    mdata.attrs.get('estado', 'unknown'),
+                    mdata.attrs.get('comentarios', 'no comments'))

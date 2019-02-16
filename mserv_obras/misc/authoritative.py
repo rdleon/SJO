@@ -50,7 +50,7 @@ class ADBCache(object):
         """
         mdata = ADBCache._get_meta(cname)
         ci = Factory.incept(cname)
-        ADBCache._caches[cname] = ci._load(mdata.source, **mdata.attrs)
+        ADBCache._caches[cname] = ci._load(mdata)
 
     @staticmethod
     def flush(cname):
@@ -105,7 +105,7 @@ class ADBCache(object):
         return { s: getattr(self, s, "<NOTHING>")
                  for s in self.__class__.__slots__ }
 
-    def _load(self, source, **attrs):
+    def _load(self, mdata):
         """
         """
         msg = '_load() must be implemented in derived class'
