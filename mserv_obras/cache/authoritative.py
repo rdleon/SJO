@@ -1,13 +1,17 @@
 import os
 import yaml
 import custom
+import collections
 from misc.factory import Factory
+
+
+CacheRecord = collections.namedtuple('CacheRecord', 'name family source attrs')
 
 
 class AuthoritativeCache(object):
     """
     """
-    __slots__ =  ['name', 'author', 'latter_update']
+    __slots__ =  ['name', 'latter_update']
 
     # Database for the several authoritative caches
     _caches = {}
@@ -22,10 +26,15 @@ class AuthoritativeCache(object):
         c_dir = os.path.join(custom.CACHE_DIR, cname)
         with open(os.path.join(c_dir, AuthoritativeCache._METADATA_FILE), 'r') as s:
             try:
-                return yaml.load(s)
+                d_cache = yaml.load(s)
+                return CacheRecord(d_cache['name'],
+                                   d_cache['family'],
+                                   os.path.join(c_dir, d_cache['source']),
+                                   d_cache['attrs'])
             except yaml.YAMLError as e:
                 pass
-
+            except KeyError as e:
+                pass
 
     @staticmethod
     def load(cname):
@@ -33,8 +42,8 @@ class AuthoritativeCache(object):
         Loads cache instance into the database
         """
         mdata = AuthoritativeCache._get_meta(cname)
-        ci = Factory.incept(mdata['family'])
-        AuthoritativeCache._caches[cname] = ci._load(mdata['inception'])
+        ci = Factory.incept(mdata.family)
+        AuthoritativeCache._caches[cname] = ci._load(mdata.source, **mdata.attrs)
 
     @staticmethod
     def flush(cname):
@@ -89,7 +98,7 @@ class AuthoritativeCache(object):
         return { s: getattr(self, s, "<NOTHING>")
                  for s in self.__class__.__slots__ }
 
-    def _load(self, cname, **kwargs):
+    def _load(self, source, **attrs):
         """
         """
         msg = '_load() must be implemented in derived class'
