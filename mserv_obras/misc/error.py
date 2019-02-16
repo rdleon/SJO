@@ -1,9 +1,11 @@
 import sys
-from misc.helperstr import UMT
+from .helperstr import UMT
 
 
 class FatalError(Exception):
-    """ Fatal error exception class. """
+    """
+    Fatal error exception class.
+    """
 
     def __init__(self, msg=None):
 
