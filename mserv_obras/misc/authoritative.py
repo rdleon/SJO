@@ -1,6 +1,8 @@
 import os
 import yaml
 import custom
+import calendar
+import time
 import collections
 from .factory import Factory
 
@@ -19,7 +21,7 @@ class ADBCache(object):
     """
     Authoritative database cache's administrator
     """
-    __slots__ =  ['name', 'latter_update']
+    __slots__ =  ['name', 'data', 'attrs', 'latter_update']
 
     # Database for the several authoritative caches
     _caches = {}
@@ -50,7 +52,9 @@ class ADBCache(object):
         """
         mdata = ADBCache._get_meta(cname)
         ci = Factory.incept(cname)
-        ADBCache._caches[cname] = ci._load(mdata)
+        ADBCache._caches[cname] = ci
+        ci._load(mdata)
+        ci.latter_update = calendar.timegm(time.gmtime())
 
     @staticmethod
     def flush(cname):

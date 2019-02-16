@@ -18,8 +18,7 @@ class DistState(misc.ADBCache):
     def _load(self, mdata):
         """
         """
+        self.name = mdata.name
+        self.attrs = mdata.attrs
         with open(mdata.source, 'r') as s:
-            return (dict(map(self.__packer, s.readlines())),
-                    mdata.attrs.get('formato', 'unknown'),
-                    mdata.attrs.get('estado', 'unknown'),
-                    mdata.attrs.get('comentarios', 'no comments'))
+            self.data = dict(map(self.__packer, s.readlines()))
