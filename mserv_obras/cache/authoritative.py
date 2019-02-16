@@ -19,7 +19,7 @@ class AuthoritativeCache(object):
         """
         Gets metadata as per cache name
         """
-        c_dir = os.path.join(custom.CACHE_DIR, cname) 
+        c_dir = os.path.join(custom.CACHE_DIR, cname)
         with open(os.path.join(c_dir, AuthoritativeCache._METADATA_FILE), 'r') as s:
             try:
                 return yaml.load(s)
