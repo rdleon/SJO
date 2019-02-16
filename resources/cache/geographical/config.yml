@@ -1,7 +1,7 @@
 name: dist_estado
 family: geographical
 author: wiseguy
-inception_data:
+inception:
   file: nl.1549833345
   estado: nuevo león
   comments: data obtenido de mexpost (nov 2008)
