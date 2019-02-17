@@ -3,13 +3,74 @@ import yaml
 import custom
 import calendar
 import time
-from .factory import Factory
 from .error import FatalError
 
 
+class _AFactory(object):
+    """
+    Factory pattern implementation for the sake of
+    authoritative cache implementations.
+    """
+
+    # Database for the several inceptors
+    _inceptors = {}
+
+    @staticmethod
+    def is_supported(i):
+        """
+        Verifies if there is an inceptor available at index.
+
+        Args:
+            i (obj): any hashable object instance as index.
+
+        Returns:
+            bool: answer to the question asked
+        """
+        ic = _AFactory._inceptors.get(i, None)
+        return False if not ic else True
+
+    @staticmethod
+    def subscribe(i, ic):
+        """
+        Place an inceptor class upon one slot index of
+        the inceptors database.
+
+        Args:
+            i  (obj)  : any hashable object instance as index.
+            ic (class): inceptor class to subscribe.
+
+        Returns:
+            Nothing (None)
+        """
+        _AFactory._inceptors[i] = ic
+
+    @staticmethod
+    def incept(i):
+        """
+        Incepts an instance of the class stored
+        within the slot index.
+
+        Args:
+            i (obj): any hashable object instance as index.
+
+        Returns:
+            An instance of the object contained within
+            the slot index otherwise nothing (None)
+        """
+        ic = _AFactory._inceptors.get(i, None)
+        return None if ic is None else ic()
+
+
 def authoritative(si):
+    """
+    Decorator that subscribes a class
+    as an implementation of authoritative cache.
+
+    Args:
+        si (obj): any hashable object as identifier of a implementation
+    """
     def wrapper(cls):
-        Factory.subscribe(si, cls)
+        _AFactory.subscribe(si, cls)
         return cls
     return wrapper
 
@@ -18,9 +79,10 @@ class ADBCache(object):
     """
     Authoritative database cache's administrator
     """
+
     __slots__ =  ['name', 'data', 'attrs', 'latter_update']
 
-    # Database for the several authoritative caches
+    # Database for the several authoritative cache records
     _caches = {}
 
     _METADATA_FILE = 'config.yml'
@@ -63,7 +125,7 @@ class ADBCache(object):
         Returns:
             Nothing (None)
         """
-        ci = Factory.incept(cname)
+        ci = _AFactory.incept(cname)
         ADBCache._caches[cname] = ci
         if meta_provider is None:
             meta_provider=ADBCache._get_meta

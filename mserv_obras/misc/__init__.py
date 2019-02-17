@@ -1,4 +1,4 @@
-from .authoritative import authoritative, ADBCache
+from .adbcache import authoritative, ADBCache
 
 # It stands for populate a factory with
 # authoritative cache implementations
