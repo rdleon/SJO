@@ -28,7 +28,14 @@ class ADBCache(object):
     @staticmethod
     def _get_meta(cname):
         """
-        Gets metadata as per cache name
+        Fetches metadata as per cache record identifier,
+        this is our meta provider handler by default.
+
+        Args:
+            cname (str): identifier of a cache record
+
+        Returns:
+            tuple: the metadata elements
         """
         c_dir = os.path.join(custom.CACHE_DIR, cname)
         with open(os.path.join(c_dir, ADBCache._METADATA_FILE), 'r') as s:
@@ -137,7 +144,7 @@ class ADBCache(object):
         Dumps all the member values of a cache record
 
         Returns:
-            dict: members values of a cache record
+            dict: member values of a cache record
         """
         return { s: getattr(self, s, "<NOTHING>")
                  for s in self.__class__.__slots__ }
