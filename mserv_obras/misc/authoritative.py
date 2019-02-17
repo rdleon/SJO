@@ -3,7 +3,6 @@ import yaml
 import custom
 import calendar
 import time
-import collections
 from .factory import Factory
 
 
@@ -12,9 +11,6 @@ def authoritative(si):
         Factory.subscribe(si, cls)
         return cls
     return wrapper
-
-
-ACacheMeta = collections.namedtuple('ACacheMeta', 'name sources attrs')
 
 
 class ADBCache(object):
@@ -37,8 +33,9 @@ class ADBCache(object):
         with open(os.path.join(c_dir, ADBCache._METADATA_FILE), 'r') as s:
             try:
                 d_cache = yaml.load(s)
-                srcs = [os.path.join(c_dir, s) for s in d_cache['sources']]
-                return ACacheMeta(d_cache['name'], srcs, d_cache['attrs'])
+                return (d_cache['name'],
+                        [os.path.join(c_dir, s) for s in d_cache['origins']],
+                        d_cache['attrs'])
             except yaml.YAMLError as e:
                 pass
             except KeyError as e:
@@ -49,12 +46,10 @@ class ADBCache(object):
         """
         Loads cache instance into the database
         """
-        mdata = ADBCache._get_meta(cname)
         ci = Factory.incept(cname)
         ADBCache._caches[cname] = ci
-        ci.name = mdata.name
-        ci.attrs = mdata.attrs
-        ci._load(mdata.sources)
+        ci.name, origins, ci.attrs = ADBCache._get_meta(cname)
+        ci._load(origins)
         ci.latter_update = calendar.timegm(time.gmtime())
 
     @staticmethod
@@ -110,7 +105,7 @@ class ADBCache(object):
         return { s: getattr(self, s, "<NOTHING>")
                  for s in self.__class__.__slots__ }
 
-    def _load(self, sources):
+    def _load(self, origins):
         """
         """
         msg = '_load() must be implemented in derived class'
