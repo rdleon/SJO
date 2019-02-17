@@ -22,6 +22,7 @@ DECLARE
 
     current_moment timestamp with time zone = now();
     latter_id integer := 0;
+    no_control character varying;
 
     -- dump of errors
     rmsg text;
@@ -31,8 +32,21 @@ BEGIN
     CASE
 
         WHEN _obra_id = 0 THEN:
+
+            -- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+            -- STARTS - Generation of control number
+            -- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+            -- pending implementation
+
+            -- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+            -- ENDS   - Generation of control number
+            -- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
             INSERT INTO obras (
                 usr_id,
+                control,
                 titulo,
                 status,
                 municipio,
@@ -43,6 +57,7 @@ BEGIN
                 momento_creacion
             ) VALUES (
                 _usr_id,
+                no_control,
                 _titulo,
                 _status,
                 _municipio,
