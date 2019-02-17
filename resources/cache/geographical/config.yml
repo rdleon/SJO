@@ -1,5 +1,6 @@
 name: dist_estado
-source: nl.1549833345
+sources:
+  - nl.1549833345
 author: wiseguy
 attrs:
   estado: nuevo león

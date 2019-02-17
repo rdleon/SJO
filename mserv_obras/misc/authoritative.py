@@ -14,7 +14,7 @@ def authoritative(si):
     return wrapper
 
 
-ACacheMeta = collections.namedtuple('ACacheMeta', 'name source attrs')
+ACacheMeta = collections.namedtuple('ACacheMeta', 'name sources attrs')
 
 
 class ADBCache(object):
@@ -37,9 +37,8 @@ class ADBCache(object):
         with open(os.path.join(c_dir, ADBCache._METADATA_FILE), 'r') as s:
             try:
                 d_cache = yaml.load(s)
-                return ACacheMeta(d_cache['name'],
-                                   os.path.join(c_dir, d_cache['source']),
-                                   d_cache['attrs'])
+                srcs = [os.path.join(c_dir, s) for s in d_cache['sources']]
+                return ACacheMeta(d_cache['name'], srcs, d_cache['attrs'])
             except yaml.YAMLError as e:
                 pass
             except KeyError as e:
@@ -53,7 +52,9 @@ class ADBCache(object):
         mdata = ADBCache._get_meta(cname)
         ci = Factory.incept(cname)
         ADBCache._caches[cname] = ci
-        ci._load(mdata)
+        ci.name = mdata.name
+        ci.attrs = mdata.attrs
+        ci._load(mdata.sources)
         ci.latter_update = calendar.timegm(time.gmtime())
 
     @staticmethod
@@ -109,7 +110,7 @@ class ADBCache(object):
         return { s: getattr(self, s, "<NOTHING>")
                  for s in self.__class__.__slots__ }
 
-    def _load(self, mdata):
+    def _load(self, sources):
         """
         """
         msg = '_load() must be implemented in derived class'

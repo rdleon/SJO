@@ -1,3 +1,4 @@
+import os
 import misc
 
 
@@ -8,6 +9,9 @@ class DistState(misc.ADBCache):
 
     _SPLIT_CHAR = ';'
 
+    _EXPECTED_SOURCES = 1
+    _IDX_SOURCE = 0
+
     def __init__(self):
         super().__init__()
 
@@ -15,10 +19,22 @@ class DistState(misc.ADBCache):
         k, v = l.strip().split(self._SPLIT_CHAR)
         return (k, v)
 
-    def _load(self, mdata):
+    def _load(self, sources):
         """
         """
-        self.name = mdata.name
-        self.attrs = mdata.attrs
-        with open(mdata.source, 'r') as s:
+        self.__expectations(sources)
+        with open(sources[self._IDX_SOURCE], 'r') as s:
             self.data = dict(map(self.__packer, s.readlines()))
+
+    def __expectations(self, sources):
+        """
+        """
+        if len(sources) == self._EXPECTED_SOURCES:
+            pass
+        else:
+            msg = "Expecting {0} files to load".format(self._EXPECTED_SOURCES)
+            raise FatalError(msg)
+
+        if not os.path.isfile(sources[self._IDX_SOURCE]):
+            msg = "Cache file {0} not found".format(source[self._IDX_SOURCE])
+            raise FatalError(msg)
