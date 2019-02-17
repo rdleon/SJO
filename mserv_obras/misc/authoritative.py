@@ -45,42 +45,73 @@ class ADBCache(object):
                 FatalError(msg)
 
     @staticmethod
-    def load(cname):
+    def load(cname, meta_provider=None):
         """
-        Loads cache instance into the database
+        Loads cache record into the database
+
+        Args:
+            cname (str): identifier to address cache record
+            meta_provider (handler): fetches metadata as per implementation
+
+        Returns:
+            Nothing (None)
         """
         ci = Factory.incept(cname)
         ADBCache._caches[cname] = ci
-        ci.name, origins, ci.attrs = ADBCache._get_meta(cname)
+        if meta_provider is None:
+            meta_provider=ADBCache._get_meta
+        ci.name, origins, ci.attrs = meta_provider(cname)
         ci._load(origins)
         ci.latter_update = calendar.timegm(time.gmtime())
 
     @staticmethod
     def flush(cname):
         """
-        Flushes cache instance from the database
+        Flushes cache record from the database
+
+        Args:
+            cname (str): identifier to address cache record
+
+        Returns:
+            Nothing (None)
         """
         del ADBCache._caches[cname]
 
     @staticmethod
-    def _reload(cname):
+    def _reload(cname, meta_provider=None):
         """
-        Reloads cache instance into the database
+        Reloads cache record into the database
+
+        Args:
+            cname (str): identifier to address cache record
+            meta_provider (handler): fetches metadata as per implementation
+
+        Returns:
+            Nothing (None)
         """
         ADBCache.flush(cname)
-        ADBCache.load(cname)
+        ADBCache.load(cname, meta_provider)
 
     @staticmethod
     def count():
         """
-        Number of cache instances available within the database
+        Number of cache records available within the database
+
+        Returns:
+            int: the available quantity of records
         """
         return len(ADBCache._caches)
 
     @staticmethod
     def find(cname):
         """
-        Search a cache instance within the database
+        Searches a cache record within the database
+
+        Args:
+            cname (str): identifier to address cache record
+
+        Returns:
+            A cache record reference otherwise nothing (None)
         """
         if a_str in ADBCache._caches:
             return ADBCache._caches[cname]
@@ -91,25 +122,35 @@ class ADBCache(object):
 
     def __str__(self):
         """
-        Representation of a cache instance as a string
+        Representation of a cache record as a string
         """
         return  'CACHE(%s)' % str(self.name)
 
     def __repr__(self):
         """
-        Representation of a cache instance as an official string
+        Representation of a cache record as an official string
         """
         return self.__str__()
 
     def details(self):
         """
-        Dumps all the member values of a cache instance
+        Dumps all the member values of a cache record
+
+        Returns:
+            dict: members values of a cache record
         """
         return { s: getattr(self, s, "<NOTHING>")
                  for s in self.__class__.__slots__ }
 
     def _load(self, origins):
         """
+        As per implementation renders a cache record from origin files
+
+        Args:
+            origins (list): files along with its absolute path
+
+        Returns:
+            Nothing (None)
         """
         msg = '_load() must be implemented in derived class'
         raise NotImplementedError(msg)
