@@ -4,6 +4,7 @@ import custom
 import calendar
 import time
 from .factory import Factory
+from .error import FatalError
 
 
 def authoritative(si):
@@ -37,9 +38,11 @@ class ADBCache(object):
                         [os.path.join(c_dir, s) for s in d_cache['origins']],
                         d_cache['attrs'])
             except yaml.YAMLError as e:
-                pass
+                msg = 'Issues parsing {0}: {1}'.format(_METADATA_FILE, e)
+                FatalError(msg)
             except KeyError as e:
-                pass
+                msg = 'An element not found in {}'.format(_METADATA_FILE, e)
+                FatalError(msg)
 
     @staticmethod
     def load(cname):

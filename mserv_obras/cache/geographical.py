@@ -1,5 +1,6 @@
 import os
 import misc
+from misc.error import FatalError
 
 
 @misc.authoritative('geographical')
