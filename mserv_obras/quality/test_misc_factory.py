@@ -1,5 +1,5 @@
 import unittest
-from misc.adbcache import _AFactory as Factory
+from dal.adbcache import _AFactory as Factory
 
 
 class _Dummy0(object):

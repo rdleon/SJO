@@ -3,7 +3,7 @@ import yaml
 import custom
 import calendar
 import time
-from .error import FatalError
+from misc.error import FatalError
 
 
 class _AFactory(object):

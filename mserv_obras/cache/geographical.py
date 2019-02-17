@@ -1,10 +1,10 @@
 import os
-import misc
+import dal
 from misc.error import FatalError
 
 
-@misc.authoritative('geographical')
-class DistState(misc.ADBCache):
+@dal.authoritative('geographical')
+class DistState(dal.ADBCache):
     """
     """
 
