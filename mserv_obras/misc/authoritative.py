@@ -130,12 +130,18 @@ class ADBCache(object):
     def __str__(self):
         """
         Representation of a cache record as a string
+
+        Returns:
+            str: representation of a cache record
         """
         return  'CACHE(%s)' % str(self.name)
 
     def __repr__(self):
         """
         Representation of a cache record as an official string
+
+        Returns:
+            str: representation of a cache record
         """
         return self.__str__()
 
@@ -151,7 +157,7 @@ class ADBCache(object):
 
     def _load(self, origins):
         """
-        As per implementation renders a cache record from origin files
+        As per implementation renders a cache record from origins
 
         Args:
             origins (list): files along with its absolute path
