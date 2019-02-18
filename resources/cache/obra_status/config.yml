@@ -1,0 +1,7 @@
+name: status de las obras
+origins:
+  - status.1549833346
+author: wiseguy
+attrs:
+  comentarios: ninguno
+  formato: comma-separated values
