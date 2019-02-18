@@ -16,18 +16,18 @@ class DistState(dal.ADBCache):
     def __init__(self):
         super().__init__()
 
-    def __packer(self, l):
+    def _packer(self, l):
         k, v = l.strip().split(self._SPLIT_CHAR)
         return (k, v)
 
     def _load(self, origins):
         """
         """
-        self.__expectations(origins)
+        self._expectations(origins)
         with open(origins[self._IDX_ORIGIN], 'r') as s:
-            self.data = dict(map(self.__packer, s.readlines()))
+            self.data = dict(map(self._packer, s.readlines()))
 
-    def __expectations(self, origins):
+    def _expectations(self, origins):
         """
         """
         if len(origins) == self._EXPECTED_ORIGINS:
