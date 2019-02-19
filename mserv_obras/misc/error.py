@@ -51,8 +51,8 @@ def debug(msg):
     normal    = ''
 
     if sys.stderr.isatty():
-        highlight = FMT.BLUE + FMT.BOLD
-        normal    = FMT.NORMAL
+        highlight = UMT.BLUE + UMT.BOLD
+        normal    = UMT.NORMAL
 
     end = '' if msg.endswith('\n') else '\n'
     sys.stderr.write('\n%sDEBUG%s: %s' % (highlight, normal, msg + end))
