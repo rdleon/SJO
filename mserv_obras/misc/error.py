@@ -13,8 +13,8 @@ class WarningError(Exception):
         normal    = ''
 
         if sys.stderr.isatty():
-            highlight = UMT.YELLOW + UMT.BOLD
-            normal    = UMT.NORMAL
+            highlight = UMT.YELLOW.value + UMT.BOLD.value
+            normal    = UMT.NORMAL.value
 
         self.message = '%sWARNING%s: %s\n' % (highlight, normal, msg)
 
@@ -33,8 +33,8 @@ class FatalError(Exception):
         normal    = ''
 
         if sys.stderr.isatty():
-            highlight = UMT.RED + UMT.BOLD
-            normal    = UMT.NORMAL
+            highlight = UMT.RED.value + UMT.BOLD.value
+            normal    = UMT.NORMAL.value
 
         self.message = '%sFATAL%s: %s\n' % (highlight, normal, msg)
 
@@ -51,8 +51,8 @@ def debug(msg):
     normal    = ''
 
     if sys.stderr.isatty():
-        highlight = UMT.BLUE + UMT.BOLD
-        normal    = UMT.NORMAL
+        highlight = UMT.BLUE.value + UMT.BOLD.value
+        normal    = UMT.NORMAL.value
 
     end = '' if msg.endswith('\n') else '\n'
     sys.stderr.write('\n%sDEBUG%s: %s' % (highlight, normal, msg + end))
