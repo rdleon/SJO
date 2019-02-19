@@ -40,3 +40,19 @@ class FatalError(Exception):
 
     def __str__(self):
         return self.message
+
+
+def debug(msg):
+    """
+    Issue debug message to stderr
+    """
+
+    highlight = ''
+    normal    = ''
+
+    if sys.stderr.isatty():
+        highlight = FMT.BLUE + FMT.BOLD
+        normal    = FMT.NORMAL
+
+    end = '' if msg.endswith('\n') else '\n'
+    sys.stderr.write('\n%sDEBUG%s: %s' % (highlight, normal, msg + end))
