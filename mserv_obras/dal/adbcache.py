@@ -88,7 +88,7 @@ class ADBCache(object):
     _METADATA_FILE = 'config.yml'
 
     @staticmethod
-    def _get_meta(cname):
+    def _get_meta(cname, cache_dir=custom.CACHE_DIR):
         """
         Fetches metadata as per cache record identifier,
         this is our meta provider handler by default.
@@ -99,8 +99,13 @@ class ADBCache(object):
         Returns:
             tuple: the metadata elements
         """
-        c_dir = os.path.join(custom.CACHE_DIR, cname)
-        with open(os.path.join(c_dir, ADBCache._METADATA_FILE), 'r') as s:
+        c_dir = os.path.join(cache_dir, cname)
+        fmeta = os.path.join(c_dir, ADBCache._METADATA_FILE)
+
+        if not os.path.isfile(fmeta):
+            raise FatalError("Meta data file not found")
+
+        with open(fmeta, 'r') as s:
             try:
                 d_cache = yaml.load(s)
                 return (d_cache['name'],
@@ -108,10 +113,10 @@ class ADBCache(object):
                         d_cache['attrs'])
             except yaml.YAMLError as e:
                 msg = 'Issues parsing {0}: {1}'.format(_METADATA_FILE, e)
-                FatalError(msg)
+                raise FatalError(msg)
             except KeyError as e:
                 msg = 'An element not found in {}'.format(_METADATA_FILE, e)
-                FatalError(msg)
+                raise FatalError(msg)
 
     @staticmethod
     def load(cname, meta_provider=None):
@@ -182,7 +187,7 @@ class ADBCache(object):
         Returns:
             A cache record reference otherwise nothing (None)
         """
-        if a_str in ADBCache._caches:
+        if cname in ADBCache._caches:
             return ADBCache._caches[cname]
         return None
 

@@ -1,0 +1,7 @@
+name: cars models and their features
+origins:
+  - cars.csv
+author: wiseguy
+attrs:
+  comentarios: ninguno
+  formato: comma-separated values
