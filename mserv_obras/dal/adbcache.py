@@ -68,6 +68,9 @@ def authoritative(si):
 
     Args:
         si (obj): any hashable object as identifier of a implementation
+
+    Returns:
+        A function handler that wraps the class decorated.
     """
     def wrapper(cls):
         _AFactory.subscribe(si, cls)
@@ -131,6 +134,8 @@ class ADBCache(object):
             Nothing (None)
         """
         ci = _AFactory.incept(cname)
+        if ci is None or (not issubclass(ci.__class__, ADBCache)):
+            raise FatalError("bad inception came from the hell")
         ADBCache._caches[cname] = ci
         if meta_provider is None:
             meta_provider=ADBCache._get_meta
@@ -149,10 +154,12 @@ class ADBCache(object):
         Returns:
             Nothing (None)
         """
+        if cname not in ADBCache._caches:
+            raise FatalError('{} does not exist as record'.format(cname))
         del ADBCache._caches[cname]
 
     @staticmethod
-    def _reload(cname, meta_provider=None):
+    def reload(cname, meta_provider=None):
         """
         Reloads cache record into the database
 

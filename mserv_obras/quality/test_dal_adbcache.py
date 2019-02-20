@@ -29,16 +29,45 @@ class _CarModels(dal.ADBCache):
 
 
 class TestADBCache(unittest.TestCase):
+    """
+    Plays with the features of ADBCache
+    """
 
     def _meta_provider(self, cname):
         return dal.ADBCache._get_meta(cname, _FAKE_CACHE_DIR)
 
-    def test_find_mechanism(self):
+    def test_find_flush_mechanism(self):
+
+        # Getting the number of cylinders of a wonderful volvo
         cname00 = 'cars'
+        self.assertTrue(dal.ADBCache.count() == 0)
+        record = dal.ADBCache.find('cars')
+        self.assertTrue(record is None)
         dal.ADBCache.load(cname00, self._meta_provider)
+        self.assertTrue(dal.ADBCache.count() == 1)
         record = dal.ADBCache.find(cname00)
         self.assertTrue(record.data['Volvo 142E']['cyl'] == '4')
+        dal.ADBCache.flush(cname00)
+        self.assertTrue(dal.ADBCache.count() == 0)
 
-        with self.assertRaises(FatalError):
+        # We are looking for a record that has been flushed
+        record = dal.ADBCache.find('cars')
+        self.assertTrue(record is None)
+
+    def test_bad_usage_of_load(self):
+
+        # We are loading a non supported authoritative cache
+        self.assertTrue(dal.ADBCache.count() == 0)
+        with self.assertRaises(FatalError) as cm:
             cname01 = 'girls'
             dal.ADBCache.load(cname01, self._meta_provider)
+        self.assertTrue(dal.ADBCache.count() == 0)
+
+    def test_bad_reload(self):
+
+        # We are reloading a non supported authoritative cache
+        self.assertTrue(dal.ADBCache.count() == 0)
+        with self.assertRaises(FatalError) as cm:
+            cname02 = 'pugs'
+            dal.ADBCache.reload(cname02, self._meta_provider)
+        self.assertTrue(dal.ADBCache.count() == 0)
