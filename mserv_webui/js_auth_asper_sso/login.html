@@ -1,0 +1,96 @@
+<html ng-app="crmApp">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<title>Agnux's CRM</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular.min.js"></script>
+<script>
+
+var crmApp = angular.module( 'crmApp' , [] );
+
+crmApp.factory(
+    'authInterceptor',
+    function ($rootScope, $q, $window) {
+        return {
+            request: function (config) {
+                config.headers = config.headers || {};
+                if ($window.sessionStorage.token) {
+                    config.headers.Authorization = 'Bearer ' + $window.sessionStorage.token;
+                }
+                return config;
+            },
+            response: function (response) {
+                if (response.status === 401) {
+                    // handle the case where the user is not authenticated
+                }
+                return response || $q.when(response);
+            }
+        };
+    }
+);
+
+//Use $httpProvider to change the default behavior of the $http service.
+//Array containing service factories for all synchronous or asynchronous
+//$http pre-processing of request or postprocessing of responses.
+crmApp.config(
+    function ($httpProvider) { $httpProvider.interceptors.push('authInterceptor'); }
+);
+
+crmApp.controller(
+    'UserCtrl',
+    function ($scope, $http, $window) {
+        $scope.user = {Username: 'user', Password: 'password'};
+        $scope.wmsg = '';
+        $scope.submit = function () {
+        
+        var request = $http({
+	    method: 'POST',
+	    url: '/token-auth',
+	    data: $scope.user,
+        });
+	
+        request.success(function (data, status, headers, config) {
+        
+            $window.sessionStorage.token = data.token;
+        
+        }).error(function (data, status, headers, config) {
+    
+            // Erase the token if the user fails to log in
+            delete $window.sessionStorage.token;
+
+            // Handle login errors here
+            $scope.wmsg = 'Invalid user or password';
+        });
+    };
+});
+</script>
+</head>
+<body>
+<div ng-controller="UserCtrl">
+  <div class="logo_login">
+  
+  </div>
+  <div class="form-bg">
+  <form ng-submit="submit()">
+    <h2>Login</h2>
+    <p><input ng-model="user.Username" type="text" name="user" placeholder="Username" /></p>
+    <p><input ng-model="user.Password" type="password" name="pass" placeholder="Password" /></p>
+    <label for="remember">
+	<input type="checkbox" id="remember" value="remember" />
+	<span>Remember me on this computer</span>
+    </label>
+    <!-- <input type="submit" value="Login" /> -->
+    <button type="submit"></button>
+
+    <div class="notice">
+	<p class="warn">{{wmsg}}</p>
+    </div>
+
+  </form>
+  </div>
+
+
+</div>
+</body>
+</html>
