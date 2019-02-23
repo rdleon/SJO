@@ -1,26 +1,11 @@
 package authentication
 
 import (
+	"api.jwt.auth/core/redis"
+	"api.jwt.auth/services/models"
+	"api.jwt.auth/settings"
 	jwt "github.com/dgrijalva/jwt-go"
 )
-
-type JWTAuthenticationBackend struct {
-	privateKey *rsa.PrivateKey
-	PublicKey  *rsa.PublicKey
-}
-
-var authBackendInstance *JWTAuthenticationBackend = nil
-
-func InitJWTAuthenticationBackend() *JWTAuthenticationBackend {
-	if authBackendInstance == nil {
-		authBackendInstance = &JWTAuthenticationBackend{
-			privateKey: getPrivateKey(),
-			PublicKey:  getPublicKey(),
-		}
-	}
-
-	return authBackendInstance
-}
 
 func (backend *JWTAuthenticationBackend) getTokenRemainingValidity(timestamp interface{}) int {
 	if validity, ok := timestamp.(float64); ok {
