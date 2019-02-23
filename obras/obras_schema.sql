@@ -37,6 +37,7 @@ $BODY$
 DECLARE
 
     current_moment timestamp with time zone = now();
+    coincidences integer := 0;
     latter_id integer := 0;
     clave_unica character varying;
 
@@ -83,10 +84,22 @@ BEGIN
             ) RETURNING id INTO latter_id;
 
         WHEN _obra_id > 0 THEN
+            --
+            SELECT count(id)
+            FROM obras INTO coincidences;
+            where id = _obra_id;
+
+            IF NOT coincidences = 1 THEN
+
+                RAISE EXCEPTION 'obra identifier % does not exist', _obra_id;
+
+            ENDIF;
+
             UPDATE obras
-            SET uuid = _uuid, titulo = _titulo, status = _status,
-                municipio = _municipio, categoria = _categoria, monto = _monto,
-                contrato = _contrato, licitacion = _licitacion,
+            SET titulo = _titulo, status = _status,
+                municipio = _municipio, categoria = _categoria,
+                monto = _monto, contrato = _contrato,
+                licitacion = _licitacion,
                 momento_ultima_actualizacion = current_moment
             WHERE id = _obra_id;
 
