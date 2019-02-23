@@ -1,8 +1,7 @@
 package authentication
 
 import (
-	"crypto/rsa"
-	"crypto/x509"
+	jwt "github.com/dgrijalva/jwt-go"
 )
 
 type JWTAuthenticationBackend struct {
@@ -50,4 +49,15 @@ func (backend *JWTAuthenticationBackend) GenerateToken(userUUID string) (string,
 func (backend *JWTAuthenticationBackend) Logout(tokenString string, token *jwt.Token) error {
 	redisConn := redis.Connect()
 	return redisConn.SetValue(tokenString, tokenString, backend.getTokenRemainingValidity(token.Claims["exp"]))
+}
+
+func (backend *JWTAuthenticationBackend) IsInBlacklist(token string) bool {
+	redisConn := redis.Connect()
+	redisToken, _ := redisConn.GetValue(token)
+
+	if redisToken == nil {
+		return false
+	}
+
+	return true
 }

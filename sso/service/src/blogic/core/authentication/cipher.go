@@ -8,6 +8,12 @@ import (
 	"os"
 )
 
+
+type JWTAuthenticationBackend struct {
+	privateKey *rsa.PrivateKey
+	PublicKey  *rsa.PublicKey
+}
+
 func getPrivateKey() *rsa.PrivateKey {
 	privateKeyFile, err := os.Open(settings.Get().PrivateKeyPath)
 	if err != nil {
