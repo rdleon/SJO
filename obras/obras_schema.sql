@@ -87,9 +87,9 @@ BEGIN
             --
             SELECT count(id)
             FROM obras INTO coincidences;
-            where id = _obra_id;
+            WHERE not borrado_logico AND id = _obra_id;
 
-            IF NOT coincidences = 1 THEN
+            IF not coincidences = 1 THEN
 
                 RAISE EXCEPTION 'obra identifier % does not exist', _obra_id;
 
