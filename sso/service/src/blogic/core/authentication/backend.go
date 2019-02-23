@@ -8,6 +8,10 @@ import (
 	jwt "github.com/dgrijalva/jwt-go"
 )
 
+const (
+	expireOffset  = 3600
+)
+
 func (backend *JWTAuthenticationBackend) getTokenRemainingValidity(timestamp interface{}) int {
 	if validity, ok := timestamp.(float64); ok {
 		tm := time.Unix(int64(validity), 0)
