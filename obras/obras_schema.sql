@@ -1,6 +1,22 @@
+CREATE TABLE obras (
+    id serial NOT NULL,
+    control character varying NOT NULL,
+    titulo character varying NOT NULL,
+    status integer NOT NULL,
+    municipio integer NOT NULL,
+    categoria integer NOT NULL,
+    monto double precision NOT NULL,
+    contrato character varying NOT NULL,
+    licitacion character varying NOT NULL,
+    borrado_logico boolean DEFAULT false,
+    momento_alta timestamp with time zone NOT NULL,
+    momento_ultima_actualizacion timestamp with time zone,
+    momento_baja timestamp with time zone
+);
+
+
 CREATE FUNCTION obra_edit(
     _obra_id integer,
-    _usr_id integer,
     _titulo character varying,
     _status integer,
     _municipio integer,
@@ -22,7 +38,7 @@ DECLARE
 
     current_moment timestamp with time zone = now();
     latter_id integer := 0;
-    no_control character varying;
+    clave_unica character varying;
 
     -- dump of errors
     rmsg text;
@@ -34,18 +50,17 @@ BEGIN
         WHEN _obra_id = 0 THEN:
 
             -- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-            -- STARTS - Generation of control number
+            -- STARTS - Generation of clave_unica
             -- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
             -- pending implementation
 
             -- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-            -- ENDS   - Generation of control number
+            -- ENDS   - Generation of clave_unica
             -- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
             INSERT INTO obras (
-                usr_id,
                 control,
                 titulo,
                 status,
@@ -54,10 +69,9 @@ BEGIN
                 monto,
                 contrato,
                 licitacion,
-                momento_creacion
+                momento_alta
             ) VALUES (
-                _usr_id,
-                no_control,
+                clave_unica,
                 _titulo,
                 _status,
                 _municipio,
@@ -70,10 +84,10 @@ BEGIN
 
         WHEN _obra_id > 0 THEN
             UPDATE obras
-            SET usr_id = _usr_id, titulo = _titulo, status = _status,
+            SET uuid = _uuid, titulo = _titulo, status = _status,
                 municipio = _municipio, categoria = _categoria, monto = _monto,
                 contrato = _contrato, licitacion = _licitacion,
-                momento_creacion = current_moment
+                momento_ultima_actualizacion = current_moment
             WHERE id = _obra_id;
 
         ELSE
