@@ -28,18 +28,11 @@ CREATE FUNCTION obra_edit(
   RETURNS record AS
 $BODY$
 
---###################################
---# Wrtten by: Edward Nygma         #
---# mailto: j4nusx@yahoo.com        #
---# 16 / february / 2019            #
---###################################
-
 DECLARE
 
     current_moment timestamp with time zone = now();
     coincidences integer := 0;
     latter_id integer := 0;
-    clave_unica character varying;
 
     -- dump of errors
     rmsg text;
@@ -51,13 +44,16 @@ BEGIN
         WHEN _obra_id = 0 THEN:
 
             -- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-            -- STARTS - Generation of clave_unica
+            -- STARTS - Validates clave unica
+            --
+            -- JUSTIFICATION: Clave unica is created by another division
+            -- We should only abide with the format
             -- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
             -- pending implementation
 
             -- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-            -- ENDS   - Generation of clave_unica
+            -- ENDS   - Validates clave_unica
             -- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
             INSERT INTO obras (
@@ -85,7 +81,8 @@ BEGIN
         WHEN _obra_id > 0 THEN
 
             -- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-            -- STARTS - Validate obra id
+            -- STARTS - Validates obra id
+            --
             -- JUSTIFICATION: Because UPDATE statement does not issue
             -- any exception if nothing was updated.
             -- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
