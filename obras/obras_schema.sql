@@ -60,7 +60,6 @@ BEGIN
             -- ENDS   - Generation of clave_unica
             -- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-
             INSERT INTO obras (
                 control,
                 titulo,
@@ -84,16 +83,22 @@ BEGIN
             ) RETURNING id INTO latter_id;
 
         WHEN _obra_id > 0 THEN
-            --
+
+            -- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+            -- STARTS - Validate obra id
+            -- JUSTIFICATION: Because UPDATE statement does not issue
+            -- any exception if nothing was updated.
+            -- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
             SELECT count(id)
             FROM obras INTO coincidences;
             WHERE not borrado_logico AND id = _obra_id;
 
             IF not coincidences = 1 THEN
-
                 RAISE EXCEPTION 'obra identifier % does not exist', _obra_id;
-
             ENDIF;
+            -- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+            -- ENDS - Validate obra id
+            -- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
             UPDATE obras
             SET titulo = _titulo, status = _status,
@@ -102,6 +107,9 @@ BEGIN
                 licitacion = _licitacion,
                 momento_ultima_actualizacion = current_moment
             WHERE id = _obra_id;
+
+            -- Upon edition we return obra id as latter id
+            latter_id = _obra_id;
 
         ELSE
             RAISE EXCEPTION 'negative obra identifier % is unsupported', _obra_id;
