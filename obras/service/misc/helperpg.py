@@ -12,7 +12,7 @@ class HelperPg(object):
         """opens a connection to database"""
 
         # order here matters
-        env_vars = ['MS_DBMS_DB', 'MS_DBMS_USER', 'MS_DBMS_HOST', 'MS_DBMS_PASS', 'MS_DBMS_PORT']
+        env_vars = ('DBMS_SCHEMA', 'DBMS_USER', 'DBMS_HOST', 'DBMS_PASS', 'DBMS_PORT')
         t = tuple(map(env_property, env_vars))
 
         try:
