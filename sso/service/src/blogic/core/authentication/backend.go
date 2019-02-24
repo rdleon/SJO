@@ -4,8 +4,13 @@ import (
 	"api.jwt.auth/core/redis"
 	"api.jwt.auth/services/models"
 	"api.jwt.auth/settings"
-	"golang.org/x/crypto/bcrypt"
 	jwt "github.com/dgrijalva/jwt-go"
+	"golang.org/x/crypto/bcrypt"
+	"time"
+)
+
+const (
+	expireOffset = 3600
 )
 
 func (backend *JWTAuthenticationBackend) Authenticate(user *models.User) bool {
