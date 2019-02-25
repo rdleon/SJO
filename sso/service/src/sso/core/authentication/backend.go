@@ -1,9 +1,9 @@
 package authentication
 
 import (
-	"api.jwt.auth/core/redis"
-	"api.jwt.auth/services/models"
-	"api.jwt.auth/settings"
+	"sso/core/redis"
+	"sso/services/models"
+	"sso/settings"
 	jwt "github.com/dgrijalva/jwt-go"
 	"golang.org/x/crypto/bcrypt"
 	"time"

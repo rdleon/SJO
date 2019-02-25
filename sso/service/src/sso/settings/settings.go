@@ -1,9 +1,7 @@
 package settings
 
 import (
-	"encoding/json"
-	"fmt"
-	"io/ioutil"
+	"strconv"
 	"os"
 )
 
@@ -16,9 +14,14 @@ type Settings struct {
 var settings Settings = Settings{}
 
 func Init() {
-	// Pending implementation
+	// This is error prone...
+	delta, _ := strconv.Atoi(os.Getenv("EXP_DELTA"))
+	settings = Settings{
+		PrivateKeyPath: os.Getenv("PRIVATE_KEY"),
+        PublicKeyPath: os.Getenv("PUBLIC_KEY"),
+		JWTExpirationDelta: delta,
+    }
 }
-
 func Get() Settings {
 	if &settings == nil {
 		Init()

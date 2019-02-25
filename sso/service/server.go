@@ -1,8 +1,8 @@
 package main
 
 import (
-	"blogic/routers"
-	"blogic/settings"
+	"sso/routers"
+	"sso/settings"
 	"github.com/codegangsta/negroni"
 	"net/http"
 )

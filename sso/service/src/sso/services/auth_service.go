@@ -1,9 +1,9 @@
 package services
 
 import (
-	"blogic/api/parameters"
-	"blogic/core/authentication"
-	"blogic/services/models"
+	"sso/api/parameters"
+	"sso/core/authentication"
+	"sso/services/models"
 	"encoding/json"
 	jwt "github.com/dgrijalva/jwt-go"
 	"net/http"

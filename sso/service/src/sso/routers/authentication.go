@@ -1,8 +1,8 @@
 package routers
 
 import (
-	"blogic/controllers"
-	"blogic/core/authentication"
+	"sso/controllers"
+	"sso/core/authentication"
 	"github.com/codegangsta/negroni"
 	"github.com/gorilla/mux"
 )

@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"blogic/services"
-	"blogic/services/models"
+	"sso/services"
+	"sso/services/models"
 	"encoding/json"
 	"net/http"
 )
