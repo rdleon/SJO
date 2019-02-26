@@ -6,6 +6,7 @@ import (
 	"sso/services/models"
 	"encoding/json"
 	jwt "github.com/dgrijalva/jwt-go"
+	request "github.com/dgrijalva/jwt-go/request"
 	"net/http"
 )
 
