@@ -30,6 +30,6 @@ WORKDIR $APP_DIR
 
 RUN go build -o server .
 
-EXPOSE 80
+EXPOSE 8080
 
 ENTRYPOINT ["/app/docker-entrypoint.sh"]
