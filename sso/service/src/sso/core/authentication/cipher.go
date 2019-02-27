@@ -1,12 +1,12 @@
 package authentication
 
 import (
-	"sso/settings"
 	"bufio"
 	"crypto/rsa"
 	"crypto/x509"
 	"encoding/pem"
 	"os"
+	"sso/settings"
 )
 
 type JWTAuthenticationBackend struct {

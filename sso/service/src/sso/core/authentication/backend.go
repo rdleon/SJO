@@ -1,11 +1,11 @@
 package authentication
 
 import (
+	jwt "github.com/dgrijalva/jwt-go"
+	"golang.org/x/crypto/bcrypt"
 	"sso/core/redis"
 	"sso/services/models"
 	"sso/settings"
-	jwt "github.com/dgrijalva/jwt-go"
-	"golang.org/x/crypto/bcrypt"
 	"time"
 )
 

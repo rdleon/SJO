@@ -1,10 +1,10 @@
 package routers
 
 import (
-	"sso/controllers"
-	"sso/core/authentication"
 	"github.com/codegangsta/negroni"
 	"github.com/gorilla/mux"
+	"sso/controllers"
+	"sso/core/authentication"
 )
 
 func SetAuthenticationRoutes(router *mux.Router) *mux.Router {
