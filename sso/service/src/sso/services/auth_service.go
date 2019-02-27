@@ -1,13 +1,13 @@
 package services
 
 import (
-	"sso/api/parameters"
-	"sso/core/authentication"
-	"sso/services/models"
 	"encoding/json"
 	jwt "github.com/dgrijalva/jwt-go"
 	request "github.com/dgrijalva/jwt-go/request"
 	"net/http"
+	"sso/api/parameters"
+	"sso/core/authentication"
+	"sso/services/models"
 )
 
 func Login(requestUser *models.User) (int, []byte) {

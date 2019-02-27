@@ -1,10 +1,10 @@
 package controllers
 
 import (
-	"sso/services"
-	"sso/services/models"
 	"encoding/json"
 	"net/http"
+	"sso/services"
+	"sso/services/models"
 )
 
 func Login(w http.ResponseWriter, r *http.Request) {
