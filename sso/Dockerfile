@@ -5,7 +5,7 @@ MAINTAINER edward@nygma.com
 RUN apt-get update
 
 # Minimal deb packages required
-RUN apt-get install -y --no-install-recommends curl ca-certificates
+RUN apt-get install -y --no-install-recommends curl ca-certificates git
 
 # no longer needed list of packages
 RUN rm -rf /var/lib/apt/lists/*
@@ -18,6 +18,11 @@ ENV PATH=$GOPATH/bin:$GOROOT/bin:$PATH \
     GOSETUP_URL="https://storage.googleapis.com/golang/$GOLANG_VERSION" \
     MD5="16bc3f6fa346b7081552ebcced6709a2" \
     GOSETUP_PKG="/$GOLANG_VERSION"
+ENV GO_DEPS_NEEDED="github.com/codegangsta/negroni \
+    github.com/dgrijalva/jwt-go \
+    github.com/garyburd/redigo/redis \
+    github.com/gorilla/mux \
+    golang.org/x/crypto/bcrypt"
 
 # Download and install Golang
 RUN curl -LO $GOSETUP_URL && \
@@ -28,6 +33,10 @@ RUN curl -LO $GOSETUP_URL && \
 COPY service $APP_DIR
 WORKDIR $APP_DIR
 
+# Fetches go dependencies for compilation
+RUN for _dep in $GO_DEPS_NEEDED; do go get -u "$_dep"; done
+
+# Compiles the sso server
 RUN go build -o server .
 
 EXPOSE 8080
