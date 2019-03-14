@@ -7,16 +7,19 @@ RUN apt-get update
 # Minimal deb packages required
 RUN apt-get install -y --no-install-recommends curl ca-certificates git
 
-# no longer needed list of packages
+# Remove downloaded .debs from cache
+RUN apt-get clean
+
+# No longer needed list of packages
 RUN rm -rf /var/lib/apt/lists/*
 
 ENV APP_DIR=/app
-ENV GOLANG_VERSION="go1.12rc1.linux-amd64.tar.gz" \
+ENV GOLANG_VERSION="go1.12.1.linux-amd64.tar.gz" \
     GOROOT="/go" \
     GOPATH=$APP_DIR
 ENV PATH=$GOPATH/bin:$GOROOT/bin:$PATH \
     GOSETUP_URL="https://storage.googleapis.com/golang/$GOLANG_VERSION" \
-    MD5="16bc3f6fa346b7081552ebcced6709a2" \
+    SHA256="2a3fdabf665496a0db5f41ec6af7a9b15a49fbe71a85a50ca38b1f13a103aeec" \
     GOSETUP_PKG="/$GOLANG_VERSION"
 ENV GO_DEPS_NEEDED="github.com/codegangsta/negroni \
     github.com/dgrijalva/jwt-go \
@@ -26,7 +29,7 @@ ENV GO_DEPS_NEEDED="github.com/codegangsta/negroni \
 
 # Download and install Golang
 RUN curl -LO $GOSETUP_URL && \
-    echo "$MD5 *$GOSETUP_PKG" | md5sum -c - && \
+    echo "$SHA256 *$GOSETUP_PKG" | sha256sum -c - && \
     tar xvzf $GOSETUP_PKG -C / && \
     rm -f $GOSETUP_PKG
 
