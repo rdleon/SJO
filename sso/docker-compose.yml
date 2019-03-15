@@ -1,0 +1,24 @@
+version: "3.5"
+
+services:
+    sso:
+        build: .
+        depends_on:
+            - pg
+        networks:
+            - sso_network
+
+    pg:
+        image: postgres
+        volumes:
+            - pg_data:/var/lib/postgresql/data
+        networks:
+            - sso_network
+
+networks:
+    sso_network:
+        name: sso_network
+        driver: bridge
+
+volumes:
+    pg_data:
