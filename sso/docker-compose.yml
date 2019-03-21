@@ -15,6 +15,11 @@ services:
         networks:
             - sso_network
 
+    redis:
+        image: redis
+        networks:
+            - sso_network
+
 networks:
     sso_network:
         name: sso_network
