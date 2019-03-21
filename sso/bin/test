@@ -1,0 +1,11 @@
+#!/bin/bash -e
+
+if [ "$1" = "-h" -o "$1" = "--help" ]; then
+    # echo "bin/test --nocache"
+    echo "usage: bin/test"
+    echo
+    echo "Run go tests on the docker container"
+    exit 0
+fi
+
+docker-compose run --no-deps --rm sso go test
