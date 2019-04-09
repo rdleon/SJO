@@ -1,0 +1,2 @@
+[{"name":"TOTAL DE OBRAS","y":3},{"name":"TERMINADAS","y":2},{"name":"EN TIEMPO","y":1},{"name":"CON RETRASO","y":0},{"name":"RESCINDIDAS","y":0},{"name":"AVANCE FINANCIERO MAYO AL FÍSICO","y":0},{"name":"OBRAS DE FUERZA CIVIL POLICÍA Y PENALES","y":0}]
+
