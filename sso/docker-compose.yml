@@ -5,6 +5,7 @@ services:
         build: .
         depends_on:
             - pg
+            - redis
         networks:
             - sso_network
 
