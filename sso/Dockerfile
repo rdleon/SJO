@@ -5,7 +5,8 @@ MAINTAINER edward@nygma.com
 RUN apt-get update --fix-missing
 
 # Minimal deb packages required
-RUN apt-get install --quiet -y --no-install-recommends curl ca-certificates git bash build-essential
+RUN apt-get install --quiet -y --no-install-recommends curl ca-certificates\
+ git build-essential
 
 # Remove downloaded .debs from cache
 RUN apt-get clean
@@ -29,13 +30,17 @@ RUN curl -LO $GOSETUP_URL && \
     tar xvzf $GOSETUP_PKG -C / && \
     rm -f $GOSETUP_PKG
 
-RUN mkdir -p $APP_DIR/{bin,pkg,src/service}
-WORKDIR $APP_DIR/src/service
-COPY ./service .
+RUN mkdir -p $APP_DIR/{bin,pkg,src}
+COPY docker-entrypoint.sh $APP_DIR/
+WORKDIR $APP_DIR/src/sso
+COPY ./sso .
+
+# Get the Go dependencies
+RUN go get
 
 # Compiles the sso server
 RUN go build -o server
 
 EXPOSE $PORT
 
-CMD ["/app/src/service/docker-entrypoint.sh"]
+CMD ["/app/docker-entrypoint.sh"]
