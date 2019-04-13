@@ -35,6 +35,9 @@ COPY docker-entrypoint.sh $APP_DIR/
 WORKDIR $APP_DIR/src/sso
 COPY ./sso .
 
+# Add swagger packages, used for documentation
+RUN go get -u github.com/go-swagger/go-swagger/cmd/swagger
+
 # Get the Go dependencies
 RUN go get
 
