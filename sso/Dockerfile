@@ -31,7 +31,8 @@ RUN curl -LO $GOSETUP_URL && \
     rm -f $GOSETUP_PKG
 
 RUN mkdir -p $APP_DIR/{bin,pkg,src}
-COPY docker-entrypoint.sh $APP_DIR/
+COPY ./docker-entrypoint.sh $APP_DIR/
+COPY ./scripts/ $APP_DIR/
 WORKDIR $APP_DIR/src/sso
 COPY ./sso .
 
