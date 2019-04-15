@@ -31,9 +31,13 @@ RUN curl -LO $GOSETUP_URL && \
     rm -f $GOSETUP_PKG
 
 RUN mkdir -p $APP_DIR/{bin,pkg,src}
-COPY docker-entrypoint.sh $APP_DIR/
+COPY ./docker-entrypoint.sh $APP_DIR/
+COPY ./scripts/ $APP_DIR/
 WORKDIR $APP_DIR/src/sso
 COPY ./sso .
+
+# Add swagger packages, used for documentation
+RUN go get -u github.com/go-swagger/go-swagger/cmd/swagger
 
 # Get the Go dependencies
 RUN go get
