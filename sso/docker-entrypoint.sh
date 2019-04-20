@@ -1,5 +1,5 @@
 #!/bin/bash
 
-echo "Starting single sing-on"
+echo "Starting the Single Sign On on port $PORT..."
 
-exec $APP_DIR/server
+exec $APP_DIR/src/sso/server
