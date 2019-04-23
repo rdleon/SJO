@@ -12,8 +12,6 @@ import (
 )
 
 func main() {
-	var defaultAddr = "0.0.0.0"
-
 	settings.Init()
 
 	router := routers.InitRoutes()
@@ -22,12 +20,12 @@ func main() {
 
 	port := os.Getenv("PORT")
 
-	if port != "" {
+	if port == "" {
 		fmt.Fprintf(os.Stderr, "Env var $PORT is not set, exiting...")
 		os.Exit(1)
 	}
 
-	addr := fmt.Sprintf("%s:%s", defaultAddr, port)
+	addr := fmt.Sprintf("%s", port)
 
 	fmt.Printf("Listening on %s...\n", addr)
 
