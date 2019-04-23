@@ -5,8 +5,6 @@ services:
         build: .
         volumes:
             - ./sso:/app/src/sso:cached
-            - ./tmp/pkg:/app/pkg
-            - ./tmp/bin:/app/bin
 
         depends_on:
             - pg
