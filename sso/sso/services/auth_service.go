@@ -2,9 +2,11 @@ package services
 
 import (
 	"encoding/json"
+	"net/http"
+
 	jwt "github.com/dgrijalva/jwt-go"
 	request "github.com/dgrijalva/jwt-go/request"
-	"net/http"
+
 	"sso/api/parameters"
 	"sso/core/authentication"
 	"sso/services/models"

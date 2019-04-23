@@ -3,6 +3,7 @@ package routers
 import (
 	"github.com/codegangsta/negroni"
 	"github.com/gorilla/mux"
+
 	"sso/controllers"
 	"sso/core/authentication"
 )
