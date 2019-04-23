@@ -1,12 +1,14 @@
 package authentication
 
 import (
+	"time"
+
 	jwt "github.com/dgrijalva/jwt-go"
 	"golang.org/x/crypto/bcrypt"
+
 	"sso/core/redis"
 	"sso/services/models"
 	"sso/settings"
-	"time"
 )
 
 const (
