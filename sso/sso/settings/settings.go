@@ -26,7 +26,7 @@ func Init() {
 	settings = Settings{
 		PrivateKeyPath:     os.Getenv("PRIVATE_KEY"),
 		PublicKeyPath:      os.Getenv("PUBLIC_KEY"),
-		DatabaseHost:       "pg", // Setup in the docker-compose
+		DatabaseHost:       os.Getenv("POSTGRES_HOST"),
 		DatabaseName:       os.Getenv("POSTGRES_DB"),
 		DatabaseUser:       os.Getenv("POSTGRES_USER"),
 		DatabasePassword:   os.Getenv("POSTGRES_PASSWORD"),

@@ -1,6 +1,7 @@
 version: "3.5"
 
 x-shared-environment: &commonEnv
+    POSTGRES_HOST: "pg"
     POSTGRES_DB: "single_sign_on"
     POSTGRES_USER: "postgres"
     POSTGRES_PASSWORD: "postgres"
