@@ -1,11 +1,17 @@
 version: "3.5"
 
+x-shared-environment: &commonEnv
+    POSTGRES_DB: "single_sign_on"
+    POSTGRES_USER: "postgres"
+    POSTGRES_PASSWORD: "postgres"
+    POSTGRES_PORT: 5432
+
 services:
     sso:
         build: .
         volumes:
             - ./sso:/app/src/sso:cached
-
+        environment: *commonEnv
         depends_on:
             - pg
             - redis
@@ -16,11 +22,13 @@ services:
         image: postgres
         volumes:
             - pg_data:/var/lib/postgresql/data
+        environment: *commonEnv
         networks:
             - sso_network
 
     redis:
         image: redis
+        environment: *commonEnv
         networks:
             - sso_network
 
