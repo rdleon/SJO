@@ -30,14 +30,16 @@ RUN curl -LO $GOSETUP_URL && \
     tar xvzf $GOSETUP_PKG -C / && \
     rm -f $GOSETUP_PKG
 
-RUN mkdir -p $APP_DIR/{bin,pkg,src}
-COPY ./docker-entrypoint.sh $APP_DIR/
-COPY ./scripts/ $APP_DIR/
+RUN mkdir -p $APP_DIR/
+ADD ./scripts $APP_DIR/
 WORKDIR $APP_DIR/src/sso
-COPY ./sso .
+ADD ./sso .
 
-# Add swagger packages, used for documentation
+# Add swagger and migrate packages, used for documentation and
+# building the database
 RUN go get -u github.com/go-swagger/go-swagger/cmd/swagger
+RUN go get -tags 'postgres' -u github.com/golang-migrate/migrate/cmd/migrate
+
 
 # Get the Go dependencies
 RUN go get
@@ -47,4 +49,4 @@ RUN go build -o server
 
 EXPOSE $PORT
 
-CMD ["/app/docker-entrypoint.sh"]
+CMD ["/app/run_server.sh"]
