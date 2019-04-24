@@ -8,8 +8,8 @@ import (
 type Settings struct {
 	PrivateKeyPath     string
 	PublicKeyPath      string
-	DatabaseName       string
 	DatabaseHost       string
+	DatabaseName       string
 	DatabaseUser       string
 	DatabasePassword   string
 	DatabasePort       int
@@ -21,13 +21,13 @@ var settings Settings = Settings{}
 func Init() {
 	// This is error prone...
 	delta, _ := strconv.Atoi(os.Getenv("EXP_DELTA"))
-	db_port, _ := strconv.Atoi(os.Getenv("DB_PORT"))
+	db_port, _ := strconv.Atoi(os.Getenv("POSTGRES_PORT"))
 
 	settings = Settings{
 		PrivateKeyPath:     os.Getenv("PRIVATE_KEY"),
 		PublicKeyPath:      os.Getenv("PUBLIC_KEY"),
+		DatabaseHost:       "pg", // Setup in the docker-compose
 		DatabaseName:       os.Getenv("POSTGRES_DB"),
-		DatabaseHost:       os.Getenv("POSTGRES_HOST"),
 		DatabaseUser:       os.Getenv("POSTGRES_USER"),
 		DatabasePassword:   os.Getenv("POSTGRES_PASSWORD"),
 		DatabasePort:       db_port,
