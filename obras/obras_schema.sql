@@ -2,6 +2,7 @@ CREATE TABLE obras (
     id serial NOT NULL,
     control character varying NOT NULL,
     titulo character varying NOT NULL,
+    desc character varying NOT NULL,
     status integer NOT NULL,
     municipio integer NOT NULL,
     categoria integer NOT NULL,
