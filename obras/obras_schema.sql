@@ -14,6 +14,14 @@ CREATE TABLE ent_project (
     touch_latter_time timestamp with time zone
 );
 
+COMMENT ON COLUMN ent_project.bureau IS 'Dependencia de gobierno';
+COMMENT ON COLUMN ent_project.title IS 'Nombre con el que se le conoce al proyecto';
+COMMENT ON COLUMN ent_project.planed_kickoff IS 'Fecha planeada para su inicio';
+COMMENT ON COLUMN ent_project.planed_ending IS 'Fecha planeada para su conclusion';
+COMMENT ON COLUMN ent_project.inception_time IS 'Fecha en la que se registro este proyecto';
+COMMENT ON COLUMN ent_project.touch_latter_time IS 'Apunta a la ultima fecha de alteracion de el registro';
+COMMENT ON COLUMN ent_project.blocked IS 'Implementacion de feature borrado logico';
+
 
 CREATE FUNCTION obra_edit(
     _obra_id integer,
