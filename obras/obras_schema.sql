@@ -14,8 +14,7 @@ CREATE TABLE ent_project (
     final_planeado date,
     blocked boolean DEFAULT false,
     creation_time timestamp with time zone NOT NULL,
-    update_latter_time timestamp with time zone,
-    blocked_time timestamp with time zone
+    touch_latter_time timestamp with time zone
 );
 
 
