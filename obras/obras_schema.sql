@@ -6,6 +6,7 @@ CREATE TABLE obras (
     status integer NOT NULL,
     municipio integer NOT NULL,
     categoria integer NOT NULL,
+    dependencia integer NOT NULL,
     monto double precision NOT NULL,
     contrato character varying NOT NULL,
     licitacion character varying NOT NULL,
