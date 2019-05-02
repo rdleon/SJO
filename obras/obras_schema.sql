@@ -10,8 +10,8 @@ CREATE TABLE ent_project (
     monto double precision NOT NULL,
     contrato character varying NOT NULL,
     licitacion character varying NOT NULL,
-    inicio_planeado date,
-    final_planeado date,
+    planed_kickoff date,
+    planed_ending date,
     blocked boolean DEFAULT false,
     creation_time timestamp with time zone NOT NULL,
     touch_latter_time timestamp with time zone
