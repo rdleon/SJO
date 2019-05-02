@@ -28,6 +28,8 @@ ALTER TABLE ONLY contracts
 
 COMMENT ON TABLE  contracts IS 'Relacion que alberga los contratos vinculados a un proyecto';
 COMMENT ON COLUMN contracts.title IS 'Nombre con el que se identifica a este contrato';
+COMMENT ON COLUMN contracts.inception_time IS 'Fecha en la que se registro este contrato';
+COMMENT ON COLUMN contracts.touch_latter_time IS 'Apunta a la ultima fecha de alteracion de el registro';
 
 
 CREATE TABLE categories ( 
