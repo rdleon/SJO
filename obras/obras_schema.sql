@@ -1,3 +1,34 @@
+CREATE TABLE contracts ( 
+    id serial NOT NULL,
+    number character varying NOT NULL,
+    title character varying NOT NULL,
+    description text,
+    provider integer NOT NULL,
+    delivery_status  integer NOT NULL,
+    initial_contracted_amount double precision NOT NULL,
+    kickoff date NOT NULL,
+    ending date NOT NULL,
+    down_payment date,
+    down_payment_amount double precision,
+    ext_agreement date,
+    ext_agreement_amount double precision,
+    final_contracted_amount double precision,
+    total_amount_paid double precision,
+    outstanding_down_payment double precision,
+    blocked boolean DEFAULT false,
+    inception_time timestamp with time zone NOT NULL,
+    touch_latter_time timestamp with time zone NOT NULL
+);
+
+ALTER TABLE ONLY contracts
+    ADD CONSTRAINT contract_pkey PRIMARY KEY (id);
+
+ALTER TABLE ONLY contracts
+    ADD CONSTRAINT contract_unique_title UNIQUE (title);
+
+COMMENT ON TABLE  categories IS 'Relacion que alberga los contratos vinculados a un proyecto';
+
+
 CREATE TABLE categories ( 
     id integer NOT NULL,
     title character varying NOT NULL,
