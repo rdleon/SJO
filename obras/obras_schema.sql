@@ -1,11 +1,11 @@
 CREATE TABLE ent_project (
     id serial NOT NULL,
     control character varying NOT NULL,
-    titulo character varying NOT NULL,
-    desc character varying NOT NULL,
+    title character varying NOT NULL,
+    description character varying NOT NULL,
     status integer NOT NULL,
-    municipio integer NOT NULL,
-    categoria integer NOT NULL,
+    city integer NOT NULL,
+    category integer NOT NULL,
     dependencia integer NOT NULL,
     monto double precision NOT NULL,
     contrato character varying NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE ent_project (
     planed_kickoff date,
     planed_ending date,
     blocked boolean DEFAULT false,
-    creation_time timestamp with time zone NOT NULL,
+    inception_time timestamp with time zone NOT NULL,
     touch_latter_time timestamp with time zone
 );
 
