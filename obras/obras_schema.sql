@@ -13,9 +13,9 @@ CREATE TABLE ent_project (
     inicio_planeado date,
     final_planeado date,
     blocked boolean DEFAULT false,
-    momento_alta timestamp with time zone NOT NULL,
-    momento_ultima_actualizacion timestamp with time zone,
-    momento_baja timestamp with time zone
+    creation_time timestamp with time zone NOT NULL,
+    update_latter_time timestamp with time zone,
+    blocked_time timestamp with time zone
 );
 
 
