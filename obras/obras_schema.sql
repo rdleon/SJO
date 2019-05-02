@@ -10,6 +10,8 @@ CREATE TABLE obras (
     monto double precision NOT NULL,
     contrato character varying NOT NULL,
     licitacion character varying NOT NULL,
+    inicio_planeado date,
+    final_planeado date,
     borrado_logico boolean DEFAULT false,
     momento_alta timestamp with time zone NOT NULL,
     momento_ultima_actualizacion timestamp with time zone,
