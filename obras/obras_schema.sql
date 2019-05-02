@@ -12,7 +12,7 @@ CREATE TABLE ent_project (
     licitacion character varying NOT NULL,
     inicio_planeado date,
     final_planeado date,
-    borrado_logico boolean DEFAULT false,
+    blocked boolean DEFAULT false,
     momento_alta timestamp with time zone NOT NULL,
     momento_ultima_actualizacion timestamp with time zone,
     momento_baja timestamp with time zone
