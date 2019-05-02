@@ -7,13 +7,18 @@ CREATE TABLE ent_project (
     bureau integer NOT NULL,
     budget double precision NOT NULL,
     contract integer NOT NULL,
-    planed_kickoff date,
-    planed_ending date,
+    planed_kickoff date NOT NULL,
+    planed_ending date NOT NULL,
     blocked boolean DEFAULT false,
     inception_time timestamp with time zone NOT NULL,
-    touch_latter_time timestamp with time zone
+    touch_latter_time timestamp with time zone NOT NULL
 );
 
+ALTER TABLE ONLY ent_project
+    ADD CONSTRAINT ent_project_pkey PRIMARY KEY (id);
+
+ALTER TABLE ONLY ent_project
+    ADD CONSTRAINT ent_project_unique_title UNIQUE (title);
 
 COMMENT ON COLUMN ent_project.category IS 'Llave foranea a tabla de attributo categoria';
 COMMENT ON COLUMN ent_project.contract IS 'Llave foranea a tabla de attributo contrato';
