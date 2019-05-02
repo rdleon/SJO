@@ -1,6 +1,7 @@
 CREATE TABLE categories ( 
     id integer NOT NULL,
-    title character varying NOT NULL
+    title character varying NOT NULL,
+    description character varying NOT NULL
 );
 
 ALTER TABLE ONLY categories
