@@ -1,4 +1,9 @@
-CREATE TABLE ent_project (
+CREATE TABLE categories ( 
+    id serial NOT NULL,
+    title character varying NOT NULL
+);
+
+CREATE TABLE projects (
     id serial NOT NULL,
     title character varying NOT NULL,
     description character varying NOT NULL,
@@ -14,21 +19,24 @@ CREATE TABLE ent_project (
     touch_latter_time timestamp with time zone NOT NULL
 );
 
-ALTER TABLE ONLY ent_project
-    ADD CONSTRAINT ent_project_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY projects
+    ADD CONSTRAINT project_pkey PRIMARY KEY (id);
 
-ALTER TABLE ONLY ent_project
-    ADD CONSTRAINT ent_project_unique_title UNIQUE (title);
+ALTER TABLE ONLY projects
+    ADD CONSTRAINT project_unique_title UNIQUE (title);
 
-COMMENT ON COLUMN ent_project.category IS 'Llave foranea a tabla de attributo categoria';
-COMMENT ON COLUMN ent_project.contract IS 'Llave foranea a tabla de attributo contrato';
-COMMENT ON COLUMN ent_project.bureau IS 'Llave foranea a table de attributo dependencia de gobierno';
-COMMENT ON COLUMN ent_project.title IS 'Nombre con el que se identifica a este proyecto';
-COMMENT ON COLUMN ent_project.planed_kickoff IS 'Fecha planeada para su inicio';
-COMMENT ON COLUMN ent_project.planed_ending IS 'Fecha planeada para su conclusion';
-COMMENT ON COLUMN ent_project.inception_time IS 'Fecha en la que se registro este proyecto';
-COMMENT ON COLUMN ent_project.touch_latter_time IS 'Apunta a la ultima fecha de alteracion de el registro';
-COMMENT ON COLUMN ent_project.blocked IS 'Implementacion de feature borrado logico';
+
+COMMENT ON TABLE  projects IS 'Relacion que alberga proyectos';
+
+COMMENT ON COLUMN projects.category IS 'Llave foranea a tabla de attributo categoria';
+COMMENT ON COLUMN projects.contract IS 'Llave foranea a tabla de attributo contrato';
+COMMENT ON COLUMN projects.bureau IS 'Llave foranea a table de attributo dependencia de gobierno';
+COMMENT ON COLUMN projects.title IS 'Nombre con el que se identifica a este proyecto';
+COMMENT ON COLUMN projects.planed_kickoff IS 'Fecha planeada para su inicio';
+COMMENT ON COLUMN projects.planed_ending IS 'Fecha planeada para su conclusion';
+COMMENT ON COLUMN projects.inception_time IS 'Fecha en la que se registro este proyecto';
+COMMENT ON COLUMN projects.touch_latter_time IS 'Apunta a la ultima fecha de alteracion de el registro';
+COMMENT ON COLUMN projects.blocked IS 'Implementacion de feature borrado logico';
 
 
 CREATE FUNCTION obra_edit(
