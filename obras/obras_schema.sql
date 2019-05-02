@@ -1,7 +1,17 @@
 CREATE TABLE categories ( 
-    id serial NOT NULL,
+    id integer NOT NULL,
     title character varying NOT NULL
 );
+
+ALTER TABLE ONLY categories
+    ADD CONSTRAINT category_pkey PRIMARY KEY (id);
+
+ALTER TABLE ONLY categories
+    ADD CONSTRAINT category_unique_title UNIQUE (title);
+
+COMMENT ON TABLE  categories IS 'Relacion que alberga los posibles valores para el attributo categoria de un proyecto';
+COMMENT ON COLUMN categories.title IS 'Nombre con el que se identifica a esta categoria';
+
 
 CREATE TABLE projects (
     id serial NOT NULL,
@@ -27,7 +37,6 @@ ALTER TABLE ONLY projects
 
 
 COMMENT ON TABLE  projects IS 'Relacion que alberga proyectos';
-
 COMMENT ON COLUMN projects.category IS 'Llave foranea a tabla de attributo categoria';
 COMMENT ON COLUMN projects.contract IS 'Llave foranea a tabla de attributo contrato';
 COMMENT ON COLUMN projects.bureau IS 'Llave foranea a table de attributo dependencia de gobierno';
