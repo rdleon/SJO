@@ -26,7 +26,8 @@ ALTER TABLE ONLY contracts
 ALTER TABLE ONLY contracts
     ADD CONSTRAINT contract_unique_title UNIQUE (title);
 
-COMMENT ON TABLE  categories IS 'Relacion que alberga los contratos vinculados a un proyecto';
+COMMENT ON TABLE  contracts IS 'Relacion que alberga los contratos vinculados a un proyecto';
+COMMENT ON COLUMN contracts.title IS 'Nombre con el que se identifica a este contrato';
 
 
 CREATE TABLE categories ( 
