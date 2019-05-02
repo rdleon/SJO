@@ -1,4 +1,4 @@
-CREATE TABLE obras (
+CREATE TABLE ent_project (
     id serial NOT NULL,
     control character varying NOT NULL,
     titulo character varying NOT NULL,
@@ -60,7 +60,7 @@ BEGIN
             -- ENDS   - Validates clave_unica
             -- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-            INSERT INTO obras (
+            INSERT INTO ent_project (
                 control,
                 titulo,
                 status,
@@ -101,7 +101,7 @@ BEGIN
             -- ENDS - Validate obra id
             -- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-            UPDATE obras
+            UPDATE ent_project
             SET titulo = _titulo, status = _status,
                 municipio = _municipio, categoria = _categoria,
                 monto = _monto, contrato = _contrato,
