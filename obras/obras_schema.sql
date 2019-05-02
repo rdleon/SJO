@@ -14,6 +14,21 @@ COMMENT ON TABLE  categories IS 'Relacion que alberga los posibles valores para 
 COMMENT ON COLUMN categories.title IS 'Nombre con el que se identifica a esta categoria';
 
 
+CREATE TABLE cities ( 
+    id integer NOT NULL,
+    title character varying NOT NULL
+);
+
+ALTER TABLE ONLY cities
+    ADD CONSTRAINT city_pkey PRIMARY KEY (id);
+
+ALTER TABLE ONLY cities
+    ADD CONSTRAINT city_unique_title UNIQUE (title);
+
+COMMENT ON TABLE  cities IS 'Relacion que alberga los posibles valores para el attributo ciudad de un proyecto';
+COMMENT ON COLUMN cities.title IS 'Nombre con el que se identifica a esta ciudad';
+
+
 CREATE TABLE projects (
     id serial NOT NULL,
     title character varying NOT NULL,
