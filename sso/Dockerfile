@@ -6,7 +6,7 @@ RUN apt-get update --fix-missing
 
 # Minimal deb packages required
 RUN apt-get install --quiet -y --no-install-recommends curl ca-certificates\
- git build-essential
+ git build-essential postgresql-client
 
 # Remove downloaded .debs from cache
 RUN apt-get clean
