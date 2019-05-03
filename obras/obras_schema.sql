@@ -104,18 +104,18 @@ COMMENT ON COLUMN projects.touch_latter_time IS 'Apunta a la ultima fecha de alt
 COMMENT ON COLUMN projects.blocked IS 'Implementacion de feature borrado logico';
 
 
-CREATE FUNCTION obra_edit(
-    _obra_id integer,
-    _titulo character varying,
-    _status integer,
-    _municipio integer,
-    _categoria integer,
-    _monto double precision,
-    _contrato character varying,
-    _licitacion character varying
-)
-  RETURNS record AS
-$BODY$
+CREATE FUNCTION project_edit(
+    _project_id integer,
+    _title character varying,
+    _description text,
+    _city integer,
+    _category integer,
+    _department integer,
+    _contract integer,
+    _budget double precision,
+    _planed_kickoff date,
+    _planed_ending date
+) RETURNS record LANGUAGE plpgsql AS $$
 
 DECLARE
 
@@ -130,7 +130,7 @@ BEGIN
 
     CASE
 
-        WHEN _obra_id = 0 THEN:
+        WHEN _project_id = 0 THEN
 
             -- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
             -- STARTS - Validates clave unica
@@ -145,29 +145,35 @@ BEGIN
             -- ENDS   - Validates clave_unica
             -- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-            INSERT INTO ent_project (
-                control,
-                titulo,
-                status,
-                municipio,
-                categoria,
-                monto,
-                contrato,
-                licitacion,
-                momento_alta
+            INSERT INTO projects (
+                title,
+                description,
+                city,
+                category,
+                department,
+                budget,
+                contract,
+                planed_kickoff,
+                planed_ending,
+                inceptor_uuid,
+                inception_time,
+                touch_latter_time
             ) VALUES (
-                clave_unica,
-                _titulo,
-                _status,
-                _municipio,
-                _categoria,
-                _monto,
-                _contrato,
-                _licitacion,
+                _title,
+                _description,
+                _city,
+                _category,
+                _department,
+                _budget,
+                _contract,
+                _planed_kickoff,
+                _planed_ending,
+                _inceptor_uuid,
+                current_moment,
                 current_moment
             ) RETURNING id INTO latter_id;
 
-        WHEN _obra_id > 0 THEN
+        WHEN _project_id > 0 THEN
 
             -- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
             -- STARTS - Validates obra id
@@ -176,26 +182,28 @@ BEGIN
             -- any exception if nothing was updated.
             -- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
             SELECT count(id)
-            FROM obras INTO coincidences;
-            WHERE not borrado_logico AND id = _obra_id;
+            FROM projects INTO coincidences
+            WHERE not blocked AND id = _project_id;
 
             IF not coincidences = 1 THEN
                 RAISE EXCEPTION 'obra identifier % does not exist', _obra_id;
-            ENDIF;
+            END IF;
             -- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
             -- ENDS - Validate obra id
             -- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-            UPDATE ent_project
-            SET titulo = _titulo, status = _status,
-                municipio = _municipio, categoria = _categoria,
-                monto = _monto, contrato = _contrato,
-                licitacion = _licitacion,
-                momento_ultima_actualizacion = current_moment
-            WHERE id = _obra_id;
+            UPDATE projects
+            SET title = _title, description = _description,
+                planed_kickoff = _planed_kickoff,
+	        planed_ending = _planed_ending,
+                city = _city, category = _category,
+                budget = _budget, contract = _contract,
+                department = _department,
+		touch_latter_time = current_moment
+            WHERE id = _project_id;
 
             -- Upon edition we return obra id as latter id
-            latter_id = _obra_id;
+            latter_id = _project_id;
 
         ELSE
             RAISE EXCEPTION 'negative obra identifier % is unsupported', _obra_id;
@@ -212,5 +220,4 @@ BEGIN
     RETURN rv;
 
 END;
-$BODY$
-  LANGUAGE plpgsql VOLATILE COST 100;
+$$;
