@@ -96,6 +96,7 @@ COMMENT ON COLUMN projects.department IS 'Llave foranea a table de attributo dep
 COMMENT ON COLUMN projects.title IS 'Nombre con el que se identifica a este proyecto';
 COMMENT ON COLUMN projects.planed_kickoff IS 'Fecha planeada para su inicio';
 COMMENT ON COLUMN projects.planed_ending IS 'Fecha planeada para su conclusion';
+COMMENT ON COLUMN projects.inceptor_uuid IS 'Usuario que origino este proyecto';
 COMMENT ON COLUMN projects.inception_time IS 'Fecha en la que se registro este proyecto';
 COMMENT ON COLUMN projects.touch_latter_time IS 'Apunta a la ultima fecha de alteracion de el registro';
 COMMENT ON COLUMN projects.blocked IS 'Implementacion de feature borrado logico';
