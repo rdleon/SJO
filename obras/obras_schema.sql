@@ -77,6 +77,7 @@ CREATE TABLE projects (
     planed_kickoff date NOT NULL,
     planed_ending date NOT NULL,
     blocked boolean DEFAULT false,
+    inceptor_uuid character varying NOT NULL,
     inception_time timestamp with time zone NOT NULL,
     touch_latter_time timestamp with time zone NOT NULL
 );
