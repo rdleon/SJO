@@ -16,6 +16,7 @@ CREATE TABLE contracts (
     total_amount_paid double precision,
     outstanding_down_payment double precision,
     blocked boolean DEFAULT false,
+    inceptor_uuid character varying NOT NULL,
     inception_time timestamp with time zone NOT NULL,
     touch_latter_time timestamp with time zone NOT NULL
 );
@@ -28,6 +29,7 @@ ALTER TABLE ONLY contracts
 
 COMMENT ON TABLE  contracts IS 'Relacion que alberga los contratos';
 COMMENT ON COLUMN contracts.title IS 'Nombre con el que se identifica a este contrato';
+COMMENT ON COLUMN contracts.inceptor_uuid IS 'Usuario que origino este proyecto';
 COMMENT ON COLUMN contracts.inception_time IS 'Fecha en la que se registro este contrato';
 COMMENT ON COLUMN contracts.touch_latter_time IS 'Apunta a la ultima fecha de alteracion de el registro';
 COMMENT ON COLUMN contracts.kickoff IS 'Fecha para su inicio';
