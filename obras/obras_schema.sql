@@ -71,7 +71,7 @@ CREATE TABLE projects (
     description character varying NOT NULL,
     city integer NOT NULL,
     category integer NOT NULL,
-    bureau integer NOT NULL,
+    department integer NOT NULL,
     budget double precision NOT NULL,
     contract integer NOT NULL,
     planed_kickoff date NOT NULL,
@@ -91,7 +91,7 @@ ALTER TABLE ONLY projects
 COMMENT ON TABLE  projects IS 'Relacion que alberga proyectos';
 COMMENT ON COLUMN projects.category IS 'Llave foranea a tabla de attributo categoria';
 COMMENT ON COLUMN projects.contract IS 'Llave foranea a tabla de attributo contrato';
-COMMENT ON COLUMN projects.bureau IS 'Llave foranea a table de attributo dependencia de gobierno';
+COMMENT ON COLUMN projects.department IS 'Llave foranea a table de attributo dependencia de gobierno';
 COMMENT ON COLUMN projects.title IS 'Nombre con el que se identifica a este proyecto';
 COMMENT ON COLUMN projects.planed_kickoff IS 'Fecha planeada para su inicio';
 COMMENT ON COLUMN projects.planed_ending IS 'Fecha planeada para su conclusion';
