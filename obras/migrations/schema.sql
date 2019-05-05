@@ -68,7 +68,7 @@ CREATE TABLE public.contracts (
     title character varying NOT NULL,
     description text,
     provider integer NOT NULL,
-    delivery_status integer NOT NULL,
+    delivery_stage integer NOT NULL,
     initial_contracted_amount double precision NOT NULL,
     kickoff date NOT NULL,
     ending date NOT NULL,
@@ -152,6 +152,17 @@ CREATE SEQUENCE public.contracts_id_seq
 --
 
 ALTER SEQUENCE public.contracts_id_seq OWNED BY public.contracts.id;
+
+
+--
+-- Name: delivery_stages; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.delivery_stages (
+    id integer NOT NULL,
+    title character varying NOT NULL,
+    description character varying NOT NULL
+);
 
 
 --
@@ -427,6 +438,22 @@ ALTER TABLE ONLY public.contracts
 
 
 --
+-- Name: delivery_stages delivery_stage_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.delivery_stages
+    ADD CONSTRAINT delivery_stage_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: delivery_stages delivery_stage_unique_title; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.delivery_stages
+    ADD CONSTRAINT delivery_stage_unique_title UNIQUE (title);
+
+
+--
 -- Name: departments department_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -472,6 +499,14 @@ ALTER TABLE ONLY public.providers
 
 ALTER TABLE ONLY public.providers
     ADD CONSTRAINT provider_unique_title UNIQUE (title);
+
+
+--
+-- Name: contracts contract_fk_provider; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.contracts
+    ADD CONSTRAINT contract_fk_provider FOREIGN KEY (provider) REFERENCES public.providers(id);
 
 
 --
