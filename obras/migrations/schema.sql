@@ -597,6 +597,14 @@ ALTER TABLE ONLY public.contracts
 
 
 --
+-- Name: follow_ups follow_up_fk_check_stage; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.follow_ups
+    ADD CONSTRAINT follow_up_fk_check_stage FOREIGN KEY (check_stage) REFERENCES public.check_stages(id);
+
+
+--
 -- Name: follow_ups follow_up_fk_project; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
