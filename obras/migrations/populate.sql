@@ -1,0 +1,10 @@
+INSERT INTO categories(id, title, description) VALUES (1, 'AMPLIACIÓN', 'NO DISPONIBLE');
+INSERT INTO categories(id, title, description) VALUES (2, 'CONSTRUCCIÓN EXISTENTE', 'NO DISPONIBLE');
+INSERT INTO categories(id, title, description) VALUES (3, 'CONSTRUCCIÓN NUEVA', 'NO DISPONIBLE');
+INSERT INTO categories(id, title, description) VALUES (4, 'EQUIPAMIENTO', 'NO DISPONIBLE');
+INSERT INTO categories(id, title, description) VALUES (5, 'MANTENIMIENTO', 'NO DISPONIBLE');
+INSERT INTO categories(id, title, description) VALUES (6, 'PAVIMENTACIÓN', 'NO DISPONIBLE');
+INSERT INTO categories(id, title, description) VALUES (7, 'RECONSTRUCCIÓN', 'NO DISPONIBLE');
+INSERT INTO categories(id, title, description) VALUES (8, 'REMODELACIÓN', 'NO DISPONIBLE');
+INSERT INTO categories(id, title, description) VALUES (9, 'RESTAURACIÓN', 'NO DISPONIBLE');
+INSERT INTO categories(id, title, description) VALUES (10,'REHABILITACIÓN', 'NO DISPONIBLE');
