@@ -191,6 +191,39 @@ COMMENT ON COLUMN public.departments.title IS 'Nombre con el que se identifica a
 
 
 --
+-- Name: follow_ups; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.follow_ups (
+    id integer NOT NULL,
+    project integer NOT NULL,
+    blocked boolean DEFAULT false,
+    inceptor_uuid character varying NOT NULL,
+    inception_time timestamp with time zone NOT NULL,
+    touch_latter_time timestamp with time zone NOT NULL
+);
+
+
+--
+-- Name: follow_ups_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.follow_ups_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: follow_ups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.follow_ups_id_seq OWNED BY public.follow_ups.id;
+
+
+--
 -- Name: projects; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -392,6 +425,13 @@ ALTER TABLE ONLY public.contracts ALTER COLUMN id SET DEFAULT nextval('public.co
 
 
 --
+-- Name: follow_ups id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.follow_ups ALTER COLUMN id SET DEFAULT nextval('public.follow_ups_id_seq'::regclass);
+
+
+--
 -- Name: projects id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -470,6 +510,14 @@ ALTER TABLE ONLY public.departments
 
 
 --
+-- Name: follow_ups follow_up_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.follow_ups
+    ADD CONSTRAINT follow_up_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: projects project_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -515,6 +563,14 @@ ALTER TABLE ONLY public.contracts
 
 ALTER TABLE ONLY public.contracts
     ADD CONSTRAINT contract_fk_provider FOREIGN KEY (provider) REFERENCES public.providers(id);
+
+
+--
+-- Name: follow_ups follow_up_fk_project; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.follow_ups
+    ADD CONSTRAINT follow_up_fk_project FOREIGN KEY (project) REFERENCES public.projects(id);
 
 
 --
