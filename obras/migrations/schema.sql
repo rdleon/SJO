@@ -59,6 +59,17 @@ COMMENT ON COLUMN public.categories.title IS 'Nombre con el que se identifica a 
 
 
 --
+-- Name: check_stages; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.check_stages (
+    id integer NOT NULL,
+    title character varying NOT NULL,
+    description character varying NOT NULL
+);
+
+
+--
 -- Name: contracts; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -200,7 +211,7 @@ CREATE TABLE public.follow_ups (
     verified_progress smallint DEFAULT 0,
     finalcial_advance smallint DEFAULT 0,
     img_paths text,
-    tracking_stage integer NOT NULL,
+    check_stage integer NOT NULL,
     blocked boolean DEFAULT false,
     inceptor_uuid character varying NOT NULL,
     inception_time timestamp with time zone NOT NULL,
@@ -463,6 +474,22 @@ ALTER TABLE ONLY public.categories
 
 ALTER TABLE ONLY public.categories
     ADD CONSTRAINT category_unique_title UNIQUE (title);
+
+
+--
+-- Name: check_stages check_stage_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.check_stages
+    ADD CONSTRAINT check_stage_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: check_stages check_stage_unique_title; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.check_stages
+    ADD CONSTRAINT check_stage_unique_title UNIQUE (title);
 
 
 --
