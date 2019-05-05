@@ -323,6 +323,69 @@ ALTER SEQUENCE public.projects_id_seq OWNED BY public.projects.id;
 
 
 --
+-- Name: providers; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.providers (
+    id integer NOT NULL,
+    title character varying NOT NULL,
+    city integer NOT NULL,
+    blocked boolean DEFAULT false,
+    inceptor_uuid character varying NOT NULL,
+    inception_time timestamp with time zone NOT NULL,
+    touch_latter_time timestamp with time zone NOT NULL
+);
+
+
+--
+-- Name: TABLE providers; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON TABLE public.providers IS 'Relacion que alberga los proveedores';
+
+
+--
+-- Name: COLUMN providers.title; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.providers.title IS 'Nombre con el que se identifica a este proveedor';
+
+
+--
+-- Name: COLUMN providers.inceptor_uuid; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.providers.inceptor_uuid IS 'Usuario que origino este proveedor';
+
+COMMENT ON COLUMN public.providers.inception_time IS 'Fecha en la que se registro este proveedor';
+
+--
+-- Name: COLUMN providers.touch_latter_time; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.providers.touch_latter_time IS 'Apunta a la ultima fecha de alteracion de el registro';
+
+
+--
+-- Name: providers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.providers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: providers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.providers_id_seq OWNED BY public.providers.id;
+
+
+--
 -- Name: contracts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -334,6 +397,13 @@ ALTER TABLE ONLY public.contracts ALTER COLUMN id SET DEFAULT nextval('public.co
 --
 
 ALTER TABLE ONLY public.projects ALTER COLUMN id SET DEFAULT nextval('public.projects_id_seq'::regclass);
+
+
+--
+-- Name: providers id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.providers ALTER COLUMN id SET DEFAULT nextval('public.providers_id_seq'::regclass);
 
 
 --
@@ -417,6 +487,22 @@ ALTER TABLE ONLY public.projects
 
 
 --
+-- Name: providers provider_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.providers
+    ADD CONSTRAINT provider_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: providers provider_unique_title; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.providers
+    ADD CONSTRAINT provider_unique_title UNIQUE (title);
+
+
+--
 -- Name: projects project_fk_category; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -446,6 +532,14 @@ ALTER TABLE ONLY public.projects
 
 ALTER TABLE ONLY public.projects
     ADD CONSTRAINT project_fk_department FOREIGN KEY (department) REFERENCES public.departments(id);
+
+
+--
+-- Name: providers provider_fk_city; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.providers
+    ADD CONSTRAINT provider_fk_city FOREIGN KEY (city) REFERENCES public.cities(id);
 
 
 --
