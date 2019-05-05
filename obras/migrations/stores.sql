@@ -1,6 +1,17 @@
-CREATE FUNCTION public.project_edit(_project_id integer, _title character varying, _description text, _city integer, _category integer, _department integer, _contract integer, _budget double precision, _planed_kickoff date, _planed_ending date) RETURNS record
-    LANGUAGE plpgsql
-    AS $$
+CREATE FUNCTION public.project_edit(
+    _project_id integer,
+    _title character varying,
+    _description text,
+    _city integer,
+    _category integer,
+    _department integer,
+    _contract integer,
+    _budget double precision,
+    _planed_kickoff date,
+    _planed_ending date
+) RETURNS record
+LANGUAGE plpgsql
+AS $$
 
 DECLARE
 
