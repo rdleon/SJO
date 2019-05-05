@@ -29,6 +29,7 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
+
 SET default_tablespace = '';
 
 SET default_with_oids = false;
@@ -176,6 +177,31 @@ CREATE SEQUENCE public.contracts_id_seq
 --
 
 ALTER SEQUENCE public.contracts_id_seq OWNED BY public.contracts.id;
+
+
+--
+-- Name: departments; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.departments (
+    id integer NOT NULL,
+    title character varying NOT NULL,
+    description character varying NOT NULL
+);
+
+
+--
+-- Name: TABLE departments; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON TABLE public.departments IS 'Relacion que alberga los posibles valores para el attributo departamento de un proyecto';
+
+
+--
+-- Name: COLUMN departments.title; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.departments.title IS 'Nombre con el que se identifica a este departamento';
 
 
 --
@@ -359,6 +385,22 @@ ALTER TABLE ONLY public.contracts
 
 
 --
+-- Name: departments department_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.departments
+    ADD CONSTRAINT department_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: departments department_unique_title; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.departments
+    ADD CONSTRAINT department_unique_title UNIQUE (title);
+
+
+--
 -- Name: projects project_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -396,6 +438,14 @@ ALTER TABLE ONLY public.projects
 
 ALTER TABLE ONLY public.projects
     ADD CONSTRAINT project_fk_contract FOREIGN KEY (contract) REFERENCES public.contracts(id);
+
+
+--
+-- Name: projects project_fk_department; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.projects
+    ADD CONSTRAINT project_fk_department FOREIGN KEY (department) REFERENCES public.departments(id);
 
 
 --
