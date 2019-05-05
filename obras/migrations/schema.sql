@@ -502,6 +502,14 @@ ALTER TABLE ONLY public.providers
 
 
 --
+-- Name: contracts contract_fk_delivery_stage; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.contracts
+    ADD CONSTRAINT contract_fk_delivery_stage FOREIGN KEY (delivery_stage) REFERENCES public.delivery_stages(id);
+
+
+--
 -- Name: contracts contract_fk_provider; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
