@@ -8,3 +8,17 @@ INSERT INTO categories(id, title, description) VALUES (7, 'RECONSTRUCCIÓN', 'NO
 INSERT INTO categories(id, title, description) VALUES (8, 'REMODELACIÓN', 'NO DISPONIBLE');
 INSERT INTO categories(id, title, description) VALUES (9, 'RESTAURACIÓN', 'NO DISPONIBLE');
 INSERT INTO categories(id, title, description) VALUES (10,'REHABILITACIÓN', 'NO DISPONIBLE');
+
+INSERT INTO departments(id, title, description) VALUES (1, 'INFRAESTRUCTURA', 'NO DISPONIBLE');
+INSERT INTO departments(id, title, description) VALUES (2, 'ICIFED', 'NO DISPONIBLE');
+INSERT INTO departments(id, title, description) VALUES (3, 'REA', 'NO DISPONIBLE');
+INSERT INTO departments(id, title, description) VALUES (4, 'SADM', 'NO DISPONIBLE');
+INSERT INTO departments(id, title, description) VALUES (5, 'SSNL', 'NO DISPONIBLE');
+INSERT INTO departments(id, title, description) VALUES (6, 'CODETUR', 'NO DISPONIBLE');
+INSERT INTO departments(id, title, description) VALUES (7, 'CODEFRONT', 'NO DISPONIBLE');
+INSERT INTO departments(id, title, description) VALUES (8, 'DIF', 'NO DISPONIBLE');
+INSERT INTO departments(id, title, description) VALUES (9, 'FIDEPROES', 'NO DISPONIBLE');
+INSERT INTO departments(id, title, description) VALUES (10, 'FUNDIDORA', 'NO DISPONIBLE');
+INSERT INTO departments(id, title, description) VALUES (11, 'CONALEP', 'NO DISPONIBLE');
+INSERT INTO departments(id, title, description) VALUES (12, 'CAMINOS', 'NO DISPONIBLE');
+INSERT INTO departments(id, title, description) VALUES (13, 'ISSSTELEON', 'NO DISPONIBLE');
