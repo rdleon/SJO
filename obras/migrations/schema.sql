@@ -29,7 +29,6 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
-
 SET default_tablespace = '';
 
 SET default_with_oids = false;
@@ -57,30 +56,6 @@ COMMENT ON TABLE public.categories IS 'Relacion que alberga los posibles valores
 --
 
 COMMENT ON COLUMN public.categories.title IS 'Nombre con el que se identifica a esta categoria';
-
-
---
--- Name: cities; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.cities (
-    id integer NOT NULL,
-    title character varying NOT NULL
-);
-
-
---
--- Name: TABLE cities; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON TABLE public.cities IS 'Relacion que alberga los posibles valores para el attributo ciudad de un proyecto';
-
-
---
--- Name: COLUMN cities.title; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.cities.title IS 'Nombre con el que se identifica a esta ciudad';
 
 
 --
@@ -241,6 +216,13 @@ COMMENT ON COLUMN public.projects.title IS 'Nombre con el que se identifica a es
 
 
 --
+-- Name: COLUMN projects.city; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.projects.city IS 'Identificador de municipio en cache autoritativo';
+
+
+--
 -- Name: COLUMN projects.category; Type: COMMENT; Schema: public; Owner: -
 --
 
@@ -329,7 +311,7 @@ ALTER SEQUENCE public.projects_id_seq OWNED BY public.projects.id;
 CREATE TABLE public.providers (
     id integer NOT NULL,
     title character varying NOT NULL,
-    city integer NOT NULL,
+    description character varying NOT NULL,
     blocked boolean DEFAULT false,
     inceptor_uuid character varying NOT NULL,
     inception_time timestamp with time zone NOT NULL,
@@ -357,7 +339,13 @@ COMMENT ON COLUMN public.providers.title IS 'Nombre con el que se identifica a e
 
 COMMENT ON COLUMN public.providers.inceptor_uuid IS 'Usuario que origino este proveedor';
 
+
+--
+-- Name: COLUMN providers.inception_time; Type: COMMENT; Schema: public; Owner: -
+--
+
 COMMENT ON COLUMN public.providers.inception_time IS 'Fecha en la que se registro este proveedor';
+
 
 --
 -- Name: COLUMN providers.touch_latter_time; Type: COMMENT; Schema: public; Owner: -
@@ -420,22 +408,6 @@ ALTER TABLE ONLY public.categories
 
 ALTER TABLE ONLY public.categories
     ADD CONSTRAINT category_unique_title UNIQUE (title);
-
-
---
--- Name: cities city_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.cities
-    ADD CONSTRAINT city_pkey PRIMARY KEY (id);
-
-
---
--- Name: cities city_unique_title; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.cities
-    ADD CONSTRAINT city_unique_title UNIQUE (title);
 
 
 --
@@ -511,14 +483,6 @@ ALTER TABLE ONLY public.projects
 
 
 --
--- Name: projects project_fk_city; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.projects
-    ADD CONSTRAINT project_fk_city FOREIGN KEY (city) REFERENCES public.cities(id);
-
-
---
 -- Name: projects project_fk_contract; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -532,14 +496,6 @@ ALTER TABLE ONLY public.projects
 
 ALTER TABLE ONLY public.projects
     ADD CONSTRAINT project_fk_department FOREIGN KEY (department) REFERENCES public.departments(id);
-
-
---
--- Name: providers provider_fk_city; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.providers
-    ADD CONSTRAINT provider_fk_city FOREIGN KEY (city) REFERENCES public.cities(id);
 
 
 --
