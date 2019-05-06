@@ -197,9 +197,10 @@ COMMENT ON COLUMN public.departments.title IS 'Nombre con el que se identifica a
 CREATE TABLE public.follow_ups (
     id integer NOT NULL,
     project integer NOT NULL,
-    progress smallint DEFAULT 0,
+    verified_progress smallint DEFAULT 0,
     finalcial_advance smallint DEFAULT 0,
     img_paths text,
+    tracking_stage integer NOT NULL,
     blocked boolean DEFAULT false,
     inceptor_uuid character varying NOT NULL,
     inception_time timestamp with time zone NOT NULL,
