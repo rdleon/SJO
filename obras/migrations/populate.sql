@@ -1,3 +1,8 @@
+INSERT INTO delivery_stages (id, title, description) VALUES (1, 'VERDE', 'NO DISPONIBLE');
+INSERT INTO delivery_stages (id, title, description) VALUES (2, 'AMARILLO', 'NO DISPONIBLE');
+INSERT INTO delivery_stages (id, title, description) VALUES (3, 'NARANJA', 'NO DISPONIBLE');
+INSERT INTO delivery_stages (id, title, description) VALUES (4, 'ROJO', 'NO DISPONIBLE');
+
 INSERT INTO categories(id, title, description) VALUES (1, 'AMPLIACIÓN', 'NO DISPONIBLE');
 INSERT INTO categories(id, title, description) VALUES (2, 'CONSTRUCCIÓN EXISTENTE', 'NO DISPONIBLE');
 INSERT INTO categories(id, title, description) VALUES (3, 'CONSTRUCCIÓN NUEVA', 'NO DISPONIBLE');
