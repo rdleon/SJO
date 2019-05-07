@@ -54,7 +54,7 @@ def block_project(project_id):
 
 
 def _alter_project(**kwargs):
-    sql = """select project_edit from project_edit(
+    sql = """select alter_project from alter_project(
         {}::integer,
         {}::character varying,
         {}::text,
