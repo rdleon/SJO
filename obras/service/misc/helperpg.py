@@ -15,12 +15,11 @@ def _connect():
         raise Exception('It is not possible to connect with database')
 
 
-def pgsql_exec(conn, sql, commit=False):
+def pgslack_exec(conn, sql):
     """Carries an sql query out to database"""
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     cur.execute(sql)
-    if commit:
-        conn.commit()
+    conn.commit()
     rows = cur.fetchall()
     cur.close()
     if len(rows) > 0:
@@ -29,7 +28,20 @@ def pgsql_exec(conn, sql, commit=False):
     raise Exception('There is not data retrieved')
 
 
-def pgsql_connected(func):
+def pgslack_update(conn, sql):
+    """Stands for updating tables"""
+    updated_rows = 0
+    cur = conn.cursor()
+    cur.execute(sql)
+    updated_rows = cur.rowcount
+    conn.commit()
+    cur.close()
+    if len(updated_rows) > 0:
+        return updated_rows
+    # We should not have reached this point
+    raise Exception('Nothing was updated at all')
+
+def pgslack_connected(func):
     """Handy decorator to fetch a database connection"""
     def wrapper(sql):
         c = _connect()
