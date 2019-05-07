@@ -13,6 +13,6 @@ def _exec_steady(conn, sql):
 
 def block_contract(contract_id):
     """Logical deletion of a contract entity"""
-    q = """UPDATE contracts set locked = true
+    q = """UPDATE contracts set blocked = true
            WHERE id = {}""".format(contract_id)
     _update_steady(q)
