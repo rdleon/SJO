@@ -15,7 +15,7 @@ def _connect():
         raise Exception('It is not possible to connect with database')
 
 
-def _query(conn, sql, commit=False):
+def pgsql_exec(conn, sql, commit=False):
     """Carries an sql query out to database"""
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     cur.execute(sql)
@@ -29,17 +29,14 @@ def _query(conn, sql, commit=False):
     raise Exception('There is not data retrieved')
 
 
-def pgsql(func):
+def pgsql_connected(func):
     """Handy decorator to fetch a database connection"""
-    def wrapper(q):
+    def wrapper(sql):
         c = _connect()
         try:
-            return func(c, q)
+            return func(c, sql)
         except:
             raise
         finally:
-            conn.close()
+            c.close()
     return wrapper
-
-
-
