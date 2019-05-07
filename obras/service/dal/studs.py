@@ -94,3 +94,14 @@ def create_project(**kwargs):
     """Creates a project entity"""
     kwargs['id'] = 0
     return _alter_project(**kwargs)
+
+
+def edit_contract(**kwargs):
+    """Edits the allowed properties of a contract entity"""
+    return _alter_contract(**kwargs)
+
+
+def create_contract(**kwargs):
+    """Creates a contract entity"""
+    kwargs['id'] = 0
+    return _alter_contract(**kwargs)
