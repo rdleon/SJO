@@ -57,7 +57,7 @@ def pgslack_connected(func):
 
 @pgslack_connected
 def pgslack_update_steady(conn, sql):
-    return pgslack_update(conn, sql):
+    return pgslack_update(conn, sql)
 
 
 @pgslack_connected
