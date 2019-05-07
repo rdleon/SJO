@@ -11,8 +11,20 @@ def _exec_steady(conn, sql):
     return misc.helperpg.pgslack_exec(conn, sql)
 
 
+def _delete_entity(entity_table, entity_id):
+    """Logical deletion of whichever entity"""
+    q = """UPDATE {}
+           SET locked = true,
+           touch_latter_time = now()
+           WHERE id = {}""".format(entity_table, entity_id)
+    _update_steady(q)
+
+
 def block_contract(contract_id):
     """Logical deletion of a contract entity"""
-    q = """UPDATE contracts set blocked = true
-           WHERE id = {}""".format(contract_id)
-    _update_steady(q)
+    _delete_entity('contracts', contract_id)
+
+
+def block_project(project_id):
+    """Logical deletion of a project entity"""
+    _delete_entity('projects', project_id)
