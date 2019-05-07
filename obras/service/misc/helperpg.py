@@ -41,6 +41,7 @@ def pgslack_update(conn, sql):
     # We should not have reached this point
     raise Exception('Nothing was updated at all')
 
+
 def pgslack_connected(func):
     """Handy decorator to fetch a database connection"""
     def wrapper(sql):
@@ -52,3 +53,13 @@ def pgslack_connected(func):
         finally:
             c.close()
     return wrapper
+
+
+@pgslack_connected
+def pgslack_update_steady(conn, sql):
+    return pgslack_update(conn, sql):
+
+
+@pgslack_connected
+def pgslack_exec_steady(conn, sql):
+    return pgslack_exec(conn, sql)
