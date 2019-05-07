@@ -23,6 +23,8 @@ def _run_sp_ra(conn, sql):
 
     rcode, rmsg = r.pop()
     if rcode != 0:
+        # FIXME
+        # We should feature a better exception that also catches the rcode
         raise Exception(rmsg)
     return (rcode, rmsg)
 
@@ -49,3 +51,41 @@ def block_contract(contract_id):
 def block_project(project_id):
     """Logical deletion of a project entity"""
     _delete_entity('projects', project_id)
+
+
+def _alter_project(**kwargs):
+    sql = """select project_edit from project_edit(
+        _project_id::integer,
+        _title::character varying,
+        _description::text,
+        _city::integer,
+        _category::integer,
+        _department::integer,
+        _contract::integer,
+        _budget::double precision,
+        _planed_kickoff::date,
+        _planed_ending::date
+    )""".format(
+        kwargs['id'],
+        kwargs['title'],
+        kwargs['description'],
+        kwargs['city'],
+        kwargs['category'],
+        kwargs['department'],
+        kwargs['contract'],
+        kwargs['budget'],
+        kwargs['planed_kickoff'],
+        kwargs['planed_ending']
+    )
+    _run_sp_ra(sql)
+
+
+def edit_project(**kwargs):
+    """Edits the allowed properties of a project entity"""
+    _alter_project(kwargs)
+
+
+def create_project(**kwargs):
+    """Creates a project entity"""
+    kwargs['id'] = 0
+    _alter_project(kwargs)
