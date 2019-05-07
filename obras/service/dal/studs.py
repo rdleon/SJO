@@ -14,7 +14,7 @@ def _exec_steady(conn, sql):
 def _delete_entity(entity_table, entity_id):
     """Logical deletion of whichever entity"""
     q = """UPDATE {}
-           SET locked = true,
+           SET blocked = true,
            touch_latter_time = now()
            WHERE id = {}""".format(entity_table, entity_id)
     _update_steady(q)
