@@ -82,10 +82,10 @@ def _alter_project(**kwargs):
 
 def edit_project(**kwargs):
     """Edits the allowed properties of a project entity"""
-    _alter_project(kwargs)
+    _alter_project(**kwargs)
 
 
 def create_project(**kwargs):
     """Creates a project entity"""
     kwargs['id'] = 0
-    _alter_project(kwargs)
+    _alter_project(**kwargs)
