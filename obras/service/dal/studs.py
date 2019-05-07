@@ -77,15 +77,15 @@ def _alter_project(**kwargs):
         kwargs['planed_kickoff'],
         kwargs['planed_ending']
     )
-    _run_sp_ra(sql)
+    return _run_sp_ra(sql)
 
 
 def edit_project(**kwargs):
     """Edits the allowed properties of a project entity"""
-    _alter_project(**kwargs)
+    return _alter_project(**kwargs)
 
 
 def create_project(**kwargs):
     """Creates a project entity"""
     kwargs['id'] = 0
-    _alter_project(**kwargs)
+    return _alter_project(**kwargs)
