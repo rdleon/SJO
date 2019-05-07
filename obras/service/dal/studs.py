@@ -11,6 +11,22 @@ def _exec_steady(conn, sql):
     return misc.helperpg.pgslack_exec(conn, sql)
 
 
+@misc.helperpg.pgslack_connected
+def _run_sp_ra(conn, sql):
+    """Runs a store procedure with rich answer"""
+
+    r = misc.helperpg.pgslack_exec(conn, sql)
+
+    # For this case we are just expecting one row
+    if len(r) != 1:
+        raise Exception('unexpected result regarding execution of store')
+
+    rcode, rmsg = r.pop()
+    if rcode != 0:
+        raise Exception(rmsg)
+    return (rcode, rmsg)
+
+
 def _delete_entity(entity_table, entity_id):
     """Logical deletion of whichever entity"""
     q = """UPDATE {}
