@@ -36,7 +36,7 @@ def pgslack_update(conn, sql):
     updated_rows = cur.rowcount
     conn.commit()
     cur.close()
-    if len(updated_rows) > 0:
+    if updated_rows > 0:
         return updated_rows
     # We should not have reached this point
     raise Exception('Nothing was updated at all')
@@ -53,13 +53,3 @@ def pgslack_connected(func):
         finally:
             c.close()
     return wrapper
-
-
-@pgslack_connected
-def pgslack_update_steady(conn, sql):
-    return pgslack_update(conn, sql)
-
-
-@pgslack_connected
-def pgslack_exec_steady(conn, sql):
-    return pgslack_exec(conn, sql)
