@@ -20,6 +20,11 @@ def _delete_entity(entity_table, entity_id):
     _update_steady(q)
 
 
+def block_provider(provider_id):
+    """Logical deletion of a provider entity"""
+    _delete_entity('providers', provider_id)
+
+
 def block_contract(contract_id):
     """Logical deletion of a contract entity"""
     _delete_entity('contracts', contract_id)
