@@ -55,16 +55,16 @@ def block_project(project_id):
 
 def _alter_project(**kwargs):
     sql = """select project_edit from project_edit(
-        _project_id::integer,
-        _title::character varying,
-        _description::text,
-        _city::integer,
-        _category::integer,
-        _department::integer,
-        _contract::integer,
-        _budget::double precision,
-        _planed_kickoff::date,
-        _planed_ending::date
+        {}::integer,
+        {}::character varying,
+        {}::text,
+        {}::integer,
+        {}::integer,
+        {}::integer,
+        {}::integer,
+        {}::double precision,
+        {}::date,
+        {}::date
     )""".format(
         kwargs['id'],
         kwargs['title'],
