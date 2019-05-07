@@ -1,4 +1,4 @@
-CREATE FUNCTION public.project_edit(
+CREATE FUNCTION public.alter_project(
     _project_id integer,
     _title character varying,
     _description text,
@@ -112,8 +112,6 @@ BEGIN
         WHEN OTHERS THEN
             GET STACKED DIAGNOSTICS rmsg = MESSAGE_TEXT;
             return ( -1::integer, rmsg::text );
-
-    RETURN rv;
 
 END;
 $$;
