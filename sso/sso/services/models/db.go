@@ -32,3 +32,11 @@ func InitDB() (*sql.DB, error) {
 
 	return DB, err
 }
+
+func GetDB() *sql.DB {
+	if DB == nil {
+		DB, _ = InitDB()
+	}
+
+	return DB
+}
