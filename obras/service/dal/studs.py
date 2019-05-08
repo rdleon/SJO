@@ -35,7 +35,12 @@ def _delete_entity(entity_table, entity_id):
            SET blocked = true,
            touch_latter_time = now()
            WHERE id = {}""".format(entity_table, entity_id)
-    _update_steady(q)
+    hits = _update_steady(q)
+
+    # Expecting just one hit
+    if hits > 1:
+        msg = "Why did this update hit {} entities !!".format(hits)
+        raise Exception(msg)
 
 
 def block_provider(provider_id):
