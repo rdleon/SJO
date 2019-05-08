@@ -1,5 +1,21 @@
 CREATE FUNCTION public.alter_contract(
     _contract_id integer,
+    _number character varying,
+    _title character varying,
+    _description text,
+    _provider integer,
+    _delivery_stage integer,
+    _initial_contracted_amount double precision,
+    _kickoff date,
+    _ending date,
+    _down_payment date,
+    _down_payment_amount double precision,
+    _ext_agreement date,
+    _ext_agreement_amount double precision,
+    _final_contracted_amount double precision,
+    _total_amount_paid double precision,
+    _outstanding_down_payment double precision,
+    _inceptor_uuid character varying
 ) RETURNS record
 LANGUAGE plpgsql
 AS $$
@@ -34,9 +50,29 @@ BEGIN
                 ext_agreement_amount,
                 final_contracted_amount,
                 total_amount_paid double,
-                outstanding_down_payment
+                outstanding_down_payment,
+                inceptor_uuid,
+                inception_time,
+                touch_latter_time
             ) VALUES (
-                
+                _number,
+                _title,
+                _description,
+                _provider,
+                _delivery_stage,
+                _initial_contracted_amount,
+                _kickoff,
+                _ending,
+                _down_payment,
+                _down_payment_amount,
+                _ext_agreement,
+                _ext_agreement_amount,
+                _final_contracted_amount,
+                _total_amount_paid,
+                _outstanding_down_payment,
+                _inceptor_uuid,
+                current_moment,
+                current_moment		
             ) RETURNING id INTO latter_id;
 
         WHEN _contract_id > 0 THEN
@@ -66,7 +102,8 @@ CREATE FUNCTION public.alter_project(
     _contract integer,
     _budget double precision,
     _planed_kickoff date,
-    _planed_ending date
+    _planed_ending date,
+    _inceptor_uuid character varying
 ) RETURNS record
 LANGUAGE plpgsql
 AS $$
