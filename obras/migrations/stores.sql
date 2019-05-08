@@ -85,7 +85,7 @@ BEGIN
             -- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
             SELECT count(id)
             FROM contracts INTO coincidences
-            WHERE not blocked AND id = contract_id;
+            WHERE not blocked AND id = _contract_id;
 
             IF not coincidences = 1 THEN
                 RAISE EXCEPTION 'contract identifier % does not exist', _contract_id;
