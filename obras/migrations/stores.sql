@@ -77,6 +77,31 @@ BEGIN
 
         WHEN _contract_id > 0 THEN
 
+            -- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+            -- STARTS - Validates contract id
+            --
+            -- JUSTIFICATION: Because UPDATE statement does not issue
+            -- any exception if nothing was updated.
+            -- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+            SELECT count(id)
+            FROM contracts INTO coincidences
+            WHERE not blocked AND id = contract_id;
+
+            IF not coincidences = 1 THEN
+                RAISE EXCEPTION 'contract identifier % does not exist', _contract_id;
+            END IF;
+            -- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+            -- ENDS - Validate contract id
+            -- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+            UPDATE contracts
+            SET 
+		touch_latter_time = current_moment
+            WHERE id = _contract_id;
+
+            -- Upon edition we return obra id as latter id
+            latter_id = _contract_id;
+
         ELSE
             RAISE EXCEPTION 'negative contract identifier % is unsupported', _contract_id;
 
