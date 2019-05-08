@@ -20,7 +20,7 @@ func Login(requestUser *models.User) (int, []byte) {
 		if err != nil {
 			return http.StatusInternalServerError, []byte("")
 		} else {
-			response, _ := json.Marshal(parameters.TokenAuthentication{token})
+			response, _ := json.Marshal(parameters.TokenAuthentication{Token: token})
 			return http.StatusOK, response
 		}
 	}
@@ -34,7 +34,7 @@ func RefreshToken(requestUser *models.User) []byte {
 	if err != nil {
 		panic(err)
 	}
-	response, err := json.Marshal(parameters.TokenAuthentication{token})
+	response, err := json.Marshal(parameters.TokenAuthentication{Token: token})
 	if err != nil {
 		panic(err)
 	}
