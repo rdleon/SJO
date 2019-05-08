@@ -9,11 +9,16 @@ import (
 )
 
 func Login(w http.ResponseWriter, r *http.Request) {
-	requestUser := new(models.User)
-	decoder := json.NewDecoder(r.Body)
-	decoder.Decode(&requestUser)
+	type Credentials struct {
+		Username string `json:"username" form:"username"`
+		Password string `json:"password" form:"password"`
+	}
 
-	responseStatus, token := services.Login(requestUser)
+	credentials := new(Credentials)
+	decoder := json.NewDecoder(r.Body)
+	decoder.Decode(&credentials)
+
+	responseStatus, token := services.Login(credentials.Username, credentials.Password)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(responseStatus)
 	w.Write(token)

@@ -44,6 +44,29 @@ func LoadUser(uuid string) *User {
 	}
 }
 
+func GetUserByUsername(username string) *User {
+	var (
+		uuid      string
+		createdAt int64
+		isActive  bool
+	)
+
+	db := GetDB()
+
+	err := db.QueryRow("SELECT uuid, is_active, craeted_at FROM users WHERE uuid = $1;", uuid).Scan(&uuid, &isActive, &createdAt)
+
+	if err != nil {
+		return nil
+	}
+
+	return &User{
+		UUID:      uuid,
+		Username:  username,
+		IsActive:  isActive,
+		CreatedAt: createdAt,
+	}
+}
+
 func (user *User) UpdatePassword(password string) error {
 	err := ValidatePassword(password)
 
