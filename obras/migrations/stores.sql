@@ -1,3 +1,41 @@
+CREATE FUNCTION public.alter_contract(
+    _contract_id integer,
+) RETURNS record
+LANGUAGE plpgsql
+AS $$
+
+DECLARE
+
+    current_moment timestamp with time zone = now();
+    coincidences integer := 0;
+    latter_id integer := 0;
+
+    -- dump of errors
+    rmsg text;
+
+BEGIN
+
+    CASE
+
+        WHEN _contract_id = 0 THEN
+
+        WHEN _project_id > 0 THEN
+
+        ELSE
+            RAISE EXCEPTION 'negative contract identifier % is unsupported', _contract_id;
+
+    END CASE;
+
+    return ( latter_id::integer, ''::text );
+
+    EXCEPTION
+        WHEN OTHERS THEN
+            GET STACKED DIAGNOSTICS rmsg = MESSAGE_TEXT;
+            return ( -1::integer, rmsg::text );
+
+END;
+$$;
+
 CREATE FUNCTION public.alter_project(
     _project_id integer,
     _title character varying,
