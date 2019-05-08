@@ -72,17 +72,16 @@ def _alter_project(**kwargs):
         {}::date,
         {}::date
     )""".format(
-        kwargs['id'],
-        kwargs['title'],
-        kwargs['description'],
-        kwargs['city'],
-        kwargs['category'],
-        kwargs['department'],
-        kwargs['contract'],
-        kwargs['budget'],
-        kwargs['planed_kickoff'],
-        kwargs['planed_ending']
-    )
+            kwargs['id'],
+            kwargs['title'],
+            kwargs['description'],
+            kwargs['city'],
+            kwargs['category'],
+            kwargs['department'],
+            kwargs['contract'],
+            kwargs['budget'],
+            kwargs['planed_kickoff'],
+            kwargs['planed_ending'])
     return _run_sp_ra(sql)
 
 
@@ -134,6 +133,7 @@ def _alter_contract(**kwargs):
             kwargs['total_amount_paid'],
             kwargs['outstanding_down_payment'])
     return _run_sp_ra(sql)
+
 
 def edit_contract(**kwargs):
     """Edits the allowed properties of a contract entity"""
