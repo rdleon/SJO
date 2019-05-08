@@ -19,7 +19,7 @@ BEGIN
 
         WHEN _contract_id = 0 THEN
 
-        WHEN _project_id > 0 THEN
+        WHEN _contract_id > 0 THEN
 
         ELSE
             RAISE EXCEPTION 'negative contract identifier % is unsupported', _contract_id;
@@ -120,7 +120,7 @@ BEGIN
             WHERE not blocked AND id = _project_id;
 
             IF not coincidences = 1 THEN
-                RAISE EXCEPTION 'obra identifier % does not exist', _obra_id;
+                RAISE EXCEPTION 'obra identifier % does not exist', _project_id;
             END IF;
             -- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
             -- ENDS - Validate obra id
@@ -140,7 +140,7 @@ BEGIN
             latter_id = _project_id;
 
         ELSE
-            RAISE EXCEPTION 'negative obra identifier % is unsupported', _obra_id;
+            RAISE EXCEPTION 'negative obra identifier % is unsupported', _project_id;
 
     END CASE;
 
