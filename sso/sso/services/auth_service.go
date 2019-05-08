@@ -12,11 +12,12 @@ import (
 	"sso/services/models"
 )
 
-func Login(requestUser *models.User) (int, []byte) {
+func Login(username string, password string) (int, []byte) {
 	authBackend := authentication.InitJWTAuthenticationBackend()
 
-	if authBackend.Authenticate(requestUser) {
-		token, err := authBackend.GenerateToken(requestUser.UUID)
+	if models.ValidLogin(username, password) {
+		var user *models.User = models.GetUserByUsername(username)
+		token, err := authBackend.GenerateToken(user.UUID)
 		if err != nil {
 			return http.StatusInternalServerError, []byte("")
 		} else {
