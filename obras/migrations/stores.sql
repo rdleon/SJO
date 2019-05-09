@@ -49,7 +49,7 @@ BEGIN
                 ext_agreement,
                 ext_agreement_amount,
                 final_contracted_amount,
-                total_amount_paid double,
+                total_amount_paid,
                 outstanding_down_payment,
                 inceptor_uuid,
                 inception_time,
