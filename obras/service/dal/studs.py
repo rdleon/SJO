@@ -22,7 +22,7 @@ def _run_sp_ra(conn, sql):
         raise Exception('unexpected result regarding execution of store')
 
     rcode, rmsg = r.pop()
-    if rcode != 0:
+    if rcode < 0:
         # FIXME
         # We should feature a better exception that also catches the rcode
         raise Exception(rmsg)
@@ -60,14 +60,16 @@ def block_project(project_id):
 
 def _alter_provider(**kwargs):
     """Calls sp in charge of create and edit a provider"""
-    sql = """select alter_provider from alter_provider(
+    sql = """SELECT * FROM alter_provider(
         {}::integer,
-        {}::character varying,
-        {}::character varying,
-    )""".format(
-            kwargs['id'],
+        '{}'::character varying,
+        '{}'::character varying,
+        '{}'::character varying)
+        AS result( rc integer, msg text )""".format(
+            kwargs['provider_id'],
             kwargs['title'],
-            kwargs['description'])
+            kwargs['description'],
+            kwargs['inceptor_uuid'])
     return _run_sp_ra(sql)
 
 
@@ -78,7 +80,7 @@ def edit_provider(**kwargs):
 
 def create_provider(**kwargs):
     """Creates a provider entity"""
-    kwargs['id'] = 0
+    kwargs['provider_id'] = 0
     return _alter_provider(**kwargs)
 
 
