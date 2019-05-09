@@ -95,8 +95,17 @@ BEGIN
             -- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
             UPDATE contracts
-            SET 
-		touch_latter_time = current_moment
+            SET number = _number, title  = _title, description = _description,
+                provider = _provider, delivery_stage = _delivery_stage,
+                initial_contracted_amount = _initial_contracted_amount,
+                kickoff = _kickoff, ending = _ending, down_payment = _down_payment,
+                down_payment_amount = _down_payment_amount,
+                ext_agreement = _ext_agreement,
+                ext_agreement_amount = _ext_agreement_amount,
+                final_contracted_amount = _final_contracted_amount,
+                total_amount_paid = _total_amount_paid,
+                outstanding_down_payment = _outstanding_down_payment,
+                touch_latter_time = current_moment
             WHERE id = _contract_id;
 
             -- Upon edition we return obra id as latter id
@@ -211,11 +220,11 @@ BEGIN
             UPDATE projects
             SET title = _title, description = _description,
                 planed_kickoff = _planed_kickoff,
-	        planed_ending = _planed_ending,
+                planed_ending = _planed_ending,
                 city = _city, category = _category,
                 budget = _budget, contract = _contract,
                 department = _department,
-		touch_latter_time = current_moment
+                touch_latter_time = current_moment
             WHERE id = _project_id;
 
             -- Upon edition we return obra id as latter id
