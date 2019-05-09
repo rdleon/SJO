@@ -58,6 +58,30 @@ def block_project(project_id):
     _delete_entity('projects', project_id)
 
 
+def _alter_provider(**kwargs):
+    """Calls sp in charge of create and edit a provider"""
+    sql = """select alter_provider from alter_provider(
+        {}::integer,
+        {}::character varying,
+        {}::character varying,
+    )""".format(
+            kwargs['id'],
+            kwargs['title'],
+            kwargs['description'])
+    return _run_sp_ra(sql)
+
+
+def edit_provider(**kwargs):
+    """Edits the allowed properties of a provider entity"""
+    return _alter_provider(**kwargs)
+
+
+def create_provider(**kwargs):
+    """Creates a provider entity"""
+    kwargs['id'] = 0
+    return _alter_provider(**kwargs)
+
+
 def _alter_project(**kwargs):
     """Calls sp in charge of create and edit a project"""
     sql = """select alter_project from alter_project(
