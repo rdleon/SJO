@@ -1,3 +1,84 @@
+CREATE FUNCTION public.alter_provider(
+    _provider_id integer,
+    _title character varying,
+    _description character varying,
+    _inceptor_uuid character varying
+) RETURNS record
+LANGUAGE plpgsql
+AS $$
+
+DECLARE
+
+    current_moment timestamp with time zone = now();
+    coincidences integer := 0;
+    latter_id integer := 0;
+
+    -- dump of errors
+    rmsg text;
+
+BEGIN
+
+    CASE
+
+        WHEN _provider_id = 0 THEN
+
+            INSERT INTO providers (
+                title,
+                description,
+                inceptor_uuid,
+                inception_time,
+                touch_latter_time
+            ) VALUES (
+                _title,
+                _description,
+                _inceptor_uuid,
+                current_moment,
+                current_moment		
+            ) RETURNING id INTO latter_id;
+
+        WHEN _provider_id > 0 THEN
+
+            -- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+            -- STARTS - Validates provider id
+            --
+            -- JUSTIFICATION: Because UPDATE statement does not issue
+            -- any exception if nothing was updated.
+            -- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+            SELECT count(id)
+            FROM providers INTO coincidences
+            WHERE not blocked AND id = _provider_id;
+
+            IF not coincidences = 1 THEN
+                RAISE EXCEPTION 'provider identifier % does not exist', _provider_id;
+            END IF;
+            -- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+            -- ENDS - Validate provider id
+            -- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+            UPDATE providers
+            SET title  = _title, description = _description,
+                touch_latter_time = current_moment
+            WHERE id = _provider_id;
+
+            -- Upon edition we return provider id as latter id
+            latter_id = _provider_id;
+
+        ELSE
+            RAISE EXCEPTION 'negative provider identifier % is unsupported', _provider_id;
+
+    END CASE;
+
+    return ( latter_id::integer, ''::text );
+
+    EXCEPTION
+        WHEN OTHERS THEN
+            GET STACKED DIAGNOSTICS rmsg = MESSAGE_TEXT;
+            return ( -1::integer, rmsg::text );
+
+END;
+$$;
+
+
 CREATE FUNCTION public.alter_contract(
     _contract_id integer,
     _number character varying,
@@ -108,7 +189,7 @@ BEGIN
                 touch_latter_time = current_moment
             WHERE id = _contract_id;
 
-            -- Upon edition we return obra id as latter id
+            -- Upon edition we return contract id as latter id
             latter_id = _contract_id;
 
         ELSE
