@@ -86,19 +86,20 @@ def create_provider(**kwargs):
 
 def _alter_project(**kwargs):
     """Calls sp in charge of create and edit a project"""
-    sql = """select alter_project from alter_project(
+    sql = """select * from alter_project(
         {}::integer,
-        {}::character varying,
-        {}::text,
+        '{}'::character varying,
+        '{}'::text,
         {}::integer,
         {}::integer,
         {}::integer,
         {}::integer,
         {}::double precision,
-        {}::date,
-        {}::date
-    )""".format(
-            kwargs['id'],
+        '{}'::date,
+        '{}'::date,
+        '{}'::character varying)
+    AS result( rc integer, msg text )""".format(
+            kwargs['project_id'],
             kwargs['title'],
             kwargs['description'],
             kwargs['city'],
@@ -107,7 +108,8 @@ def _alter_project(**kwargs):
             kwargs['contract'],
             kwargs['budget'],
             kwargs['planed_kickoff'],
-            kwargs['planed_ending'])
+            kwargs['planed_ending'],
+            kwargs['inceptor_uuid'])
     return _run_sp_ra(sql)
 
 
@@ -118,7 +120,7 @@ def edit_project(**kwargs):
 
 def create_project(**kwargs):
     """Creates a project entity"""
-    kwargs['id'] = 0
+    kwargs['project_id'] = 0
     return _alter_project(**kwargs)
 
 
