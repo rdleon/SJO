@@ -124,25 +124,26 @@ def create_project(**kwargs):
 
 def _alter_contract(**kwargs):
     """Calls sp in charge of create and edit a contract"""
-    sql = """select alter_contract from alter_contract(
+    sql = """select * from alter_contract(
         {}::integer,
-        {}::character varying,
-        {}::character varying,
-        {}::text,
+        '{}'::character varying,
+        '{}'::character varying,
+        '{}'::text,
         {}::integer,
         {}::integer,
         {}::double precision,
-        {}::date,
-        {}::date,
-        {}::date,
+        '{}'::date,
+        '{}'::date,
+        '{}'::date,
         {}::double precision,
-        {}::date,
+        '{}'::date,
         {}::double precision,
         {}::double precision,
         {}::double precision,
-        {}::double precision
-    """.format(
-            kwargs['id'],
+        {}::double precision,
+        '{}'::character varying)
+        AS result( rc integer, msg text )""".format(
+            kwargs['contract_id'],
             kwargs['number'],
             kwargs['title'],
             kwargs['description'],
@@ -153,11 +154,12 @@ def _alter_contract(**kwargs):
             kwargs['ending'],
             kwargs['down_payment'],
             kwargs['down_payment_amount'],
-            kwargs['ext_agreement date'],
+            kwargs['ext_agreement'],
             kwargs['ext_agreement_amount'],
             kwargs['final_contracted_amount'],
             kwargs['total_amount_paid'],
-            kwargs['outstanding_down_payment'])
+            kwargs['outstanding_down_payment'],
+            kwargs['inceptor_uuid'])
     return _run_sp_ra(sql)
 
 
@@ -168,5 +170,5 @@ def edit_contract(**kwargs):
 
 def create_contract(**kwargs):
     """Creates a contract entity"""
-    kwargs['id'] = 0
+    kwargs['contract_id'] = 0
     return _alter_contract(**kwargs)
