@@ -103,6 +103,7 @@ func CreateUser(username string, password string) (*User, error) {
 
 	err = db.QueryRow("INSERT INTO users(username) VALUES('$1')", username).Scan(&uuid)
 
+	// TODO: Return custom error if username already exists
 	if err != nil {
 		return nil, err
 	}
