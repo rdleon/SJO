@@ -21,21 +21,25 @@ func (backend *JWTAuthenticationBackend) getTokenRemainingValidity(timestamp int
 			return int(remainer.Seconds() + expireOffset)
 		}
 	}
+
 	return expireOffset
 }
 
 func (backend *JWTAuthenticationBackend) GenerateToken(userUUID string) (string, error) {
 	token := jwt.New(jwt.SigningMethodRS512)
+
 	token.Claims = jwt.MapClaims{
 		"exp": time.Now().Add(time.Hour * time.Duration(settings.Get().JWTExpirationDelta)).Unix(),
 		"iat": time.Now().Unix(),
 		"sub": userUUID,
 	}
+
 	tokenString, err := token.SignedString(backend.privateKey)
+
 	if err != nil {
 		panic(err)
-		return "", err
 	}
+
 	return tokenString, nil
 }
 
