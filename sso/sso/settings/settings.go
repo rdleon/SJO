@@ -13,10 +13,34 @@ type Settings struct {
 	DatabaseUser       string
 	DatabasePassword   string
 	DatabasePort       int
+	RedisHost          string
+	RedisPassword      string
+	RedisPort          int
+	RedisDatabase      int
 	JWTExpirationDelta int
 }
 
 var settings Settings = Settings{}
+
+func getRedisPort() int {
+	port, err := strconv.Atoi(os.Getenv("REDIS_PORT"))
+
+	if err != nil {
+		port = 6379
+	}
+
+	return port
+}
+
+func getRedisDatabase() int {
+	database, err := strconv.Atoi(os.Getenv("REDIS_DB"))
+
+	if err != nil {
+		database = 0
+	}
+
+	return database
+}
 
 func Init() {
 	delta, _ := strconv.Atoi(os.Getenv("EXP_DELTA"))
@@ -30,6 +54,10 @@ func Init() {
 		DatabaseUser:       os.Getenv("POSTGRES_USER"),
 		DatabasePassword:   os.Getenv("POSTGRES_PASSWORD"),
 		DatabasePort:       db_port,
+		RedisHost:          os.Getenv("REDIS_HOST"),
+		RedisPassword:      os.Getenv("REDIS_PASSWORD"),
+		RedisPort:          getRedisPort(),
+		RedisDatabase:      getRedisDatabase(),
 		JWTExpirationDelta: delta,
 	}
 
@@ -39,6 +67,10 @@ func Init() {
 
 	if settings.PublicKeyPath == "" {
 		panic("Missing PUBLIC_KEY env variable")
+	}
+
+	if settings.RedisHost == "" {
+		settings.RedisHost = "localhost"
 	}
 }
 

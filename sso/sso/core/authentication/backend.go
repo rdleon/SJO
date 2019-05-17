@@ -5,7 +5,7 @@ import (
 
 	jwt "github.com/dgrijalva/jwt-go"
 
-	"sso/core/redis"
+	"sso/services/redis"
 	"sso/settings"
 )
 
@@ -44,15 +44,18 @@ func (backend *JWTAuthenticationBackend) GenerateToken(userUUID string) (string,
 }
 
 func (backend *JWTAuthenticationBackend) Logout(tokenString string, token *jwt.Token) error {
-	redisConn := redis.Connect()
-	return redisConn.SetValue(tokenString, tokenString, backend.getTokenRemainingValidity(token.Claims.(jwt.MapClaims)["exp"]))
+	expiry := time.Duration(backend.getTokenRemainingValidity(token.Claims.(jwt.MapClaims)["exp"]))
+	return redis.Client.SaveExp(tokenString, tokenString, expiry)
 }
 
 func (backend *JWTAuthenticationBackend) IsInBlacklist(token string) bool {
-	redisConn := redis.Connect()
-	redisToken, _ := redisConn.GetValue(token)
+	redisToken, err := redis.Client.Load(token)
 
-	if redisToken == nil {
+	if err == redis.Nil {
+		return false
+	}
+
+	if redisToken == "" {
 		return false
 	}
 
