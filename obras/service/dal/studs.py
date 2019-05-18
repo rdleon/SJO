@@ -43,6 +43,20 @@ def _delete_entity(entity_table, entity_id):
         raise Exception(msg)
 
 
+def _find_entity(entity_table, entity_id):
+    """Finds an entity non blocked"""
+    q = """SELECT *
+           FROM {}
+           WHERE id = {} and blocked = false""".format(entity_table, entity_id)
+    r = _exec_steady(q)
+
+    # For this case we are just expecting one row
+    if len(r) != 1:
+        raise Exception('Just expecting one entity')
+
+    return r.pop()
+
+
 def block_provider(provider_id):
     """Logical deletion of a provider entity"""
     _delete_entity('providers', provider_id)
@@ -56,6 +70,21 @@ def block_contract(contract_id):
 def block_project(project_id):
     """Logical deletion of a project entity"""
     _delete_entity('projects', project_id)
+
+
+def find_provider(provider_id):
+    """Find a provider as per id"""
+    return _find_entity('providers', provider_id)
+
+
+def find_contract(contract_id):
+    """Find a contract as per id"""
+    return _find_entity('contracts', contract_id)
+
+
+def find_project(project_id):
+    """Find a project as per id"""
+    return _find_entity('projects', project_id)
 
 
 def _alter_provider(**kwargs):
