@@ -29,6 +29,24 @@ def _run_sp_ra(conn, sql):
     return (rcode, rmsg)
 
 
+def _page_entities(entity_table, page_number, page_size, order_by, asc):
+    q = """SELECT *
+           FROM {}
+           WHERE blocked = false
+           ORDER BY {} {}
+           LIMIT {} OFFSET {}""".format(entity_table,
+                                        order_by,
+                                        asc,
+                                        page_size,
+                                        page_number)
+    r = _exec_steady(q)
+
+    if len(r) == 0:
+        raise Exception('Paging an empty set of entities')
+
+    return r
+
+
 def _delete_entity(entity_table, entity_id):
     """Logical deletion of whichever entity"""
     q = """UPDATE {}
@@ -114,6 +132,10 @@ def find_contract(contract_id):
 def find_project(project_id):
     """Find a project as per id"""
     return _find_entity('projects', project_id)
+
+
+def page_contracts(page_number, page_size, order_by, asc):
+    return _page_entities('contracts', page_size, order_by, asc)
 
 
 def _alter_provider(**kwargs):
