@@ -57,6 +57,35 @@ def _find_entity(entity_table, entity_id):
     return r.pop()
 
 
+def _count_entities(entity_table):
+    """Counts the entities non blocked"""
+    q = """SELECT count(id)::int as total
+           FROM {}
+           WHERE blocked = false""".format(entity_table)
+    r = _exec_steady(q)
+
+    # For this case we are just expecting one row
+    if len(r) != 1:
+        raise Exception('Just expecting one total as a result')
+
+    return r.pop()['total']
+
+
+def count_providers():
+    """Number of non logical deleted providers"""
+    return _count_entities('providers')
+
+
+def count_contracts():
+    """Number of non logical deleted contracts"""
+    return _count_entities('contracts')
+
+
+def count_projects():
+    """Number of non logical deleted projects"""
+    return _count_entities('projects')
+
+
 def block_provider(provider_id):
     """Logical deletion of a provider entity"""
     _delete_entity('providers', provider_id)
