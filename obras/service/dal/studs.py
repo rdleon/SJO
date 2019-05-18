@@ -44,7 +44,7 @@ def _delete_entity(entity_table, entity_id):
 
 
 def _find_entity(entity_table, entity_id):
-    """Finds an entity non blocked"""
+    """Finds an entity non blocked by id"""
     q = """SELECT *
            FROM {}
            WHERE id = {} and blocked = false""".format(entity_table, entity_id)
