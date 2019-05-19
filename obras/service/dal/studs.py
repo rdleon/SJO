@@ -134,8 +134,16 @@ def find_project(project_id):
     return _find_entity('projects', project_id)
 
 
+def page_providers(page_number, page_size, order_by, asc):
+    return _page_entities('providers', page_size, order_by, asc)
+
+
 def page_contracts(page_number, page_size, order_by, asc):
     return _page_entities('contracts', page_size, order_by, asc)
+
+
+def page_projects(page_number, page_size, order_by, asc):
+    return _page_entities('projects', page_size, order_by, asc)
 
 
 def _alter_provider(**kwargs):
