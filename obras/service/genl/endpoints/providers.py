@@ -30,7 +30,7 @@ class ProviderItem(Resource):
         dal.studs.edit_provider(**dic_req)
         return None, 204
 
-    @api.response(204, 'Post successfully deleted.')
+    @api.response(204, 'Provider successfully deleted.')
     def delete(self, provider_id):
         """
         Deletes a provider.
