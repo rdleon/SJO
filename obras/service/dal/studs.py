@@ -30,6 +30,7 @@ def _run_sp_ra(conn, sql):
 
 
 def fetch_providers():
+    """Fetches the overall of non blocked providers"""
     entity_table = 'providers'
     attributes = set(['id', 'title', 'description', 'inceptor_uuid'])
     q = """SELECT *
@@ -212,7 +213,7 @@ def _alter_project(**kwargs):
         '{}'::date,
         '{}'::character varying)
     AS result( rc integer, msg text )""".format(
-            kwargs['project_id'],
+            kwargs['id'],
             kwargs['title'],
             kwargs['description'],
             kwargs['city'],
@@ -233,7 +234,7 @@ def edit_project(**kwargs):
 
 def create_project(**kwargs):
     """Creates a project entity"""
-    kwargs['project_id'] = 0
+    kwargs['id'] = 0
     return _alter_project(**kwargs)
 
 
@@ -258,7 +259,7 @@ def _alter_contract(**kwargs):
         {}::double precision,
         '{}'::character varying)
         AS result( rc integer, msg text )""".format(
-            kwargs['contract_id'],
+            kwargs['id'],
             kwargs['number'],
             kwargs['title'],
             kwargs['description'],
@@ -285,5 +286,5 @@ def edit_contract(**kwargs):
 
 def create_contract(**kwargs):
     """Creates a contract entity"""
-    kwargs['contract_id'] = 0
+    kwargs['id'] = 0
     return _alter_contract(**kwargs)
