@@ -122,7 +122,7 @@ def block_project(project_id):
 def find_provider(provider_id):
     """Find a provider as per id"""
     ent = _find_entity('providers', provider_id)
-    attributes = set(['id','title','description'])
+    attributes = set(['id', 'title', 'description', 'inceptor_uuid'])
     return {attr: ent[attr] for attr in attributes}
 
 

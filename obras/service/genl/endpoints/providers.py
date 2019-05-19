@@ -1,7 +1,15 @@
 import dal.studs
-from flask import request
-from flask_restplus import Resource
+from flask import request, json
+from flask_restplus import Resource, fields
 from genl.restplus import api
+
+
+provider_model = api.model('Provider Model', {
+    'id': fields.Integer(description='The unique identifier'),
+    'title': fields.String(required=True, description='Name of'),
+    'description': fields.String(required=True, description='Desc'),
+    'inceptor_uuid': fields.String(required=True, description='uuid creator')
+})
 
 
 ns = api.namespace('providers',
@@ -20,6 +28,7 @@ class ProviderItem(Resource):
         return entity
 
     @api.response(204, 'Provider successfully updated.')
+    @api.expect(provider_model)
     def put(self, provider_id):
         """
         Updates a provider.
