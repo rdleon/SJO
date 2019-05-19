@@ -16,6 +16,22 @@ ns = api.namespace('providers',
                     description='Operations related to providers')
 
 
+@ns.route('/')
+class ProviderCollection(Resource):
+
+    @api.response(201, 'Provider successfully created.')
+    @api.expect(provider_model)
+    def post(self):
+        """
+        Creates a new provider.
+        """
+        req = request.data
+        dic_req = json.loads(req)
+        dal.studs.create_provider(**dic_req)
+        return None, 201
+
+
+
 @ns.route('/<int:provider_id>')
 @api.response(404, 'Provider not found.')
 class ProviderItem(Resource):
@@ -35,7 +51,7 @@ class ProviderItem(Resource):
         """
         req = request.data
         dic_req = json.loads(req)
-        dic_req['provider_id'] = provider_id
+        dic_req['id'] = provider_id
         dal.studs.edit_provider(**dic_req)
         return None, 204
 

@@ -156,7 +156,7 @@ def _alter_provider(**kwargs):
         '{}'::character varying,
         '{}'::character varying)
         AS result( rc integer, msg text )""".format(
-            kwargs['provider_id'],
+            kwargs['id'],
             kwargs['title'],
             kwargs['description'],
             kwargs['inceptor_uuid'])
@@ -170,7 +170,7 @@ def edit_provider(**kwargs):
 
 def create_provider(**kwargs):
     """Creates a provider entity"""
-    kwargs['provider_id'] = 0
+    kwargs['id'] = 0
     return _alter_provider(**kwargs)
 
 
