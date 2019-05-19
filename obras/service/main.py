@@ -1,7 +1,7 @@
 import logging
 from flask import Flask, Blueprint
 from genl.restplus import api
-from genl.endpoints import providers
+from genl.endpoints import providers, contracts
 
 
 def setup_app(flask_app):
@@ -10,6 +10,7 @@ def setup_app(flask_app):
     api.init_app(blueprint)
 
     api.add_namespace(providers.ns)
+    api.add_namespace(contracts.ns)
 
     flask_app.register_blueprint(blueprint)
 
