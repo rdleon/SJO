@@ -6,8 +6,8 @@ from genl.restplus import api
 
 provider_model = api.model('Provider Model', {
     'id': fields.Integer(description='The unique identifier'),
-    'title': fields.String(required=True, description='Name of'),
-    'description': fields.String(required=True, description='Desc'),
+    'title': fields.String(required=True, description='Name of provider'),
+    'description': fields.String(required=True, description='Desc of provider'),
     'inceptor_uuid': fields.String(required=True, description='uuid creator')
 })
 
@@ -30,6 +30,13 @@ class ProviderCollection(Resource):
         dal.studs.create_provider(**dic_req)
         return None, 201
 
+    @api.marshal_list_with(provider_model)
+    def get(self):
+        """
+        Returns list of providers.
+        """
+        entities = dal.studs.fetch_providers()
+        return entities
 
 
 @ns.route('/<int:provider_id>')

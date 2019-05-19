@@ -29,6 +29,21 @@ def _run_sp_ra(conn, sql):
     return (rcode, rmsg)
 
 
+def fetch_providers():
+    entity_table = 'providers'
+    attributes = set(['id', 'title', 'description', 'inceptor_uuid'])
+    q = """SELECT *
+           FROM {}
+           WHERE blocked = false""".format(entity_table)
+
+    rs = _exec_steady(q)
+
+    if len(rs) == 0:
+        raise Exception('Paging an empty set of entities')
+
+    return [{attr: row[attr] for attr in attributes} for row in rs]
+
+
 def _page_entities(entity_table, page_number, page_size, order_by, asc):
     q = """SELECT *
            FROM {}
@@ -134,10 +149,6 @@ def find_contract(contract_id):
 def find_project(project_id):
     """Find a project as per id"""
     return _find_entity('projects', project_id)
-
-
-def page_providers(page_number, page_size, order_by, asc):
-    return _page_entities('providers', page_size, order_by, asc)
 
 
 def page_contracts(page_number, page_size, order_by, asc):
