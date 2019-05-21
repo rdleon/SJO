@@ -165,7 +165,7 @@ def find_project(project_id):
 
 
 def page_contracts(page_number, page_size, order_by, asc):
-    return _page_entities('contracts', page_size, order_by, asc)
+    return _page_entities('contracts', page_number, page_size, order_by, asc)
 
 
 def page_projects(page_number, page_size, order_by, asc):
