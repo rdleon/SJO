@@ -52,9 +52,9 @@ class ContractCollection(Resource):
         param = mask.split(',')
         
         contractList = dal.studs.page_contracts( param[0], param[1], param[2], param[3] )
+        print(contractList)
         #Pending return
         return contractList
-
 
 
 

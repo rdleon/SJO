@@ -181,7 +181,6 @@ def page_contracts(page_number, page_size, order_by, asc):
 
     return [{attr: row[attr] for attr in attributes} for row in rs]
 
-
 def page_projects(page_number, page_size, order_by, asc):
     return _page_entities('projects', page_size, order_by, asc)
 
