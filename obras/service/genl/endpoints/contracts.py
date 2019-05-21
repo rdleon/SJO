@@ -48,30 +48,13 @@ class ContractCollection(Resource):
         """
         Returns list of contracts.
         """
-        #data = requests.get('/contracts/', headers={'X-Fields': mask})
         mask = request.headers.get('X-Fields')
         param = mask.split(',')
-        entities = dal.studs.page_contracts( param[0], param[1], param[2], param[3] )
-
-        attributes = set(['id', 'number', 'title', 'description',
-                      'provider', 'delivery_stage',
-                      'initial_contracted_amount',
-                      'kickoff', 'ending', 'down_payment',
-                      'down_payment_amount', 'ext_agreement',
-                      'ext_agreement_amount',
-                      'final_contracted_amount',
-                      'total_amount_paid',
-                      'outstanding_down_payment',
-                      'inceptor_uuid'])
-
-        entArr = []
-
-        for ent in entities:
-            entArr.append(json.dumps({attr: ent[attr] for attr in attributes}))
         
+        contractList = dal.studs.page_contracts( param[0], param[1], param[2], param[3] )
+        print(contractList)
         #Pending return
-        return entArr
-
+        return contractList
 
 
 
