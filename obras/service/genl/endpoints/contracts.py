@@ -87,13 +87,7 @@ class ContractItem(Resource):
         """
         Returns a contract.
         """
-
         entity = dal.contract.find(contract_id)
-
-        entity["ext_agreement"] = entity["ext_agreement"].strftime("%Y-%m-%d")
-        entity["kickoff"] = entity["kickoff"].strftime("%Y-%m-%d")
-        entity["down_payment"] = entity["down_payment"].strftime("%Y-%m-%d")
-        entity["ending"] = entity["ending"].strftime("%Y-%m-%d")
 
         return entity
 
