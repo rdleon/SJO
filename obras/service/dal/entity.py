@@ -47,3 +47,19 @@ def find_entity(entity_table, entity_id):
         raise Exception("Just expecting one entity")
 
     return r.pop()
+
+
+def page_entities(entity_table, page_number, page_size, order_by, asc):
+    q = """SELECT *
+           FROM {}
+           WHERE blocked = false
+           ORDER BY {} {}
+           LIMIT {} OFFSET {}""".format(
+        entity_table, order_by, asc, page_size, page_number
+    )
+    r = exec_steady(q)
+
+    if len(r) == 0:
+        raise Exception("Paging an empty set of entities")
+
+    return r

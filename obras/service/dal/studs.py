@@ -1,4 +1,4 @@
-from .entity import count_entities, delete_entity, find_entity
+from .entity import count_entities, delete_entity, find_entity, page_entities
 from .helper import exec_steady, run_store_procedure
 
 
@@ -18,22 +18,6 @@ def fetch_providers():
         raise Exception("Paging an empty set of entities")
 
     return [{attr: row[attr] for attr in attributes} for row in rs]
-
-
-def _page_entities(entity_table, page_number, page_size, order_by, asc):
-    q = """SELECT *
-           FROM {}
-           WHERE blocked = false
-           ORDER BY {} {}
-           LIMIT {} OFFSET {}""".format(
-        entity_table, order_by, asc, page_size, page_number
-    )
-    r = exec_steady(q)
-
-    if len(r) == 0:
-        raise Exception("Paging an empty set of entities")
-
-    return r
 
 
 def count_providers():
@@ -68,36 +52,8 @@ def find_project(project_id):
     return find_entity("projects", project_id)
 
 
-def page_contracts(page_number, page_size, order_by, asc):
-    rs = _page_entities("contracts", page_number, page_size, order_by, asc)
-
-    attributes = set(
-        [
-            "id",
-            "number",
-            "title",
-            "description",
-            "provider",
-            "delivery_stage",
-            "initial_contracted_amount",
-            "kickoff",
-            "ending",
-            "down_payment",
-            "down_payment_amount",
-            "ext_agreement",
-            "ext_agreement_amount",
-            "final_contracted_amount",
-            "total_amount_paid",
-            "outstanding_down_payment",
-            "inceptor_uuid",
-        ]
-    )
-
-    return [{attr: row[attr] for attr in attributes} for row in rs]
-
-
 def page_projects(page_number, page_size, order_by, asc):
-    return _page_entities("projects", page_size, order_by, asc)
+    return page_entities("projects", page_size, order_by, asc)
 
 
 def _alter_provider(**kwargs):

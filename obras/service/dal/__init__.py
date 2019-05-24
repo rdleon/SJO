@@ -1,4 +1,5 @@
-from .adbcache import authoritative, ADBCache
+from .adbcache import ADBCache, authoritative
+
 
 def populate():
     """
