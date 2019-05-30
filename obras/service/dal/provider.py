@@ -2,12 +2,12 @@ from .entity import delete_entity, find_entity, page_entities
 from .helper import run_store_procedure
 
 
-def block_provider(provider_id):
+def block(provider_id):
     """Logical deletion of a provider entity"""
     delete_entity("providers", provider_id)
 
 
-def find_provider(provider_id):
+def find(provider_id):
     """Find a provider as per id"""
     ent = find_entity("providers", provider_id)
     attributes = set(["id", "title", "description", "inceptor_uuid"])
@@ -26,20 +26,17 @@ def _alter_provider(**kwargs):
         '{}'::character varying,
         '{}'::character varying)
         AS result( rc integer, msg text )""".format(
-        kwargs["id"],
-        kwargs["title"],
-        kwargs["description"],
-        kwargs["inceptor_uuid"],
+        kwargs["id"], kwargs["title"], kwargs["description"], kwargs["inceptor_uuid"]
     )
     return run_store_procedure(sql)
 
 
-def edit_provider(**kwargs):
+def edit(**kwargs):
     """Edits the allowed properties of a provider entity"""
     return _alter_provider(**kwargs)
 
 
-def create_provider(**kwargs):
+def create(**kwargs):
     """Creates a provider entity"""
     kwargs["id"] = 0
     return _alter_provider(**kwargs)

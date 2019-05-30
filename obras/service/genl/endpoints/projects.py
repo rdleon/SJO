@@ -27,7 +27,7 @@ class ProjectItem(Resource):
         req = request.data
         dic_req = json.loads(req)
         dic_req["project_id"] = project_id
-        dal.studs.edit(**dic_req)
+        dal.project.edit(**dic_req)
 
         return None, 204
 
