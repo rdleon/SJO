@@ -14,11 +14,16 @@
  -->
             <nav id="sidebar">
                 <div class="sidebar-header">
-                	<img width="244" height="119" class="img-fluid" src="images/genl_logo.png">
+                    <div class="sjo-logo-big">
+                	    <img width="244" height="119" class="img-fluid" src="<c:url value="images/logo.png" />">
+                    </div>
+                    <div class="sjo-logo-small">
+                	    <img width="244" height="119" class="img-fluid" src="<c:url value="images/escudo.png" />">
+                    </div>                
                 </div>
 
                 <ul class="list-unstyled components">
-                
+                	<!-- 
                     <li>
                         <a href="#homeSubmenu" data-toggle="collapse">
                             <i class="fa fa-cogs fa-fw"></i>
@@ -50,19 +55,23 @@
 			                </li>                     
 			             </ul>
                     </li>
-                    <li><a id="portfolio" href="/portfolio"><i class="fa fa-briefcase fa-fw">
-                    </i><span class="menu-title">Portafolio</span></a>                       
+                     -->
+                    <li><a id="portfolio" href="/providers"><i class="fa fa-briefcase fa-fw">
+                    </i><span class="menu-title">Proveedores</span></a>                       
                     </li>
-                    <li><a href="#"><i class="fa fa-sitemap fa-fw">
-                    </i><span class="menu-title">Definición de Proyecto</span></a>
+                    <li><a id="contracts" href="/contracts"><i class="fa fa-briefcase fa-fw">
+                    </i><span class="menu-title">Contratos</span></a>                       
                     </li>
-                    <li><a href="#"><i class="fa fa-tasks fa-fw">
-                    </i><span class="menu-title">Gestión de Proyecto</span></a>                          
+                    <li><a id="projects" href="/projects"><i class="fa fa-sitemap fa-fw">
+                    </i><span class="menu-title">Proyectos</span></a>
                     </li>
-                    <li><a href="#"><i class="fa fa-table fa-fw">
+                    <li><a id="follow_up" href="/follow_up"><i class="fa fa-tasks fa-fw">
+                    </i><span class="menu-title">Registro de Avance</span></a>                          
+                    </li>
+                    <li><a id="contracts" href="/reports"><i class="fa fa-table fa-fw">
                     </i><span class="menu-title">Reportes</span></a>                 
                     </li>
-                    <li><a href="/dashboard"><i class="fa fa-tachometer fa-fw">
+                    <li><a id="dashboard" href="/dashboard"><i class="fa fa-tachometer fa-fw">
                     </i><span class="menu-title">Tablero</span></a>
                     </li>
                     

@@ -203,7 +203,7 @@ La obra se encuentra detenida en espera de que llegue el equipo detector de los 
 					//alert( this.value );
 					var id=this.value;
 					try {
-					   //var data = $.get("http://localhost:8080/mock/json_data_dashboard"+id+".txt");
+					   //var data = $.get("http://ec2-15-164-48-84.ap-northeast-2.compute.amazonaws.com:8080/mock/json_data_dashboard"+id+".txt");
 					   //strJSon = JSON.stringify(data);
 					   //alert(strJSon);
 					   var strJSon = "";
