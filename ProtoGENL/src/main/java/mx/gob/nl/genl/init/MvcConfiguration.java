@@ -12,6 +12,7 @@
 ********************************************************/
 package mx.gob.nl.genl.init;
 
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -27,7 +28,9 @@ import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan("mx.gob.nl.genl.controllers")
+@EnableAutoConfiguration
+//@ComponentScan("mx.gob.nl.genl.controller")
+@ComponentScan(basePackages = {"mx.gob.nl.genl", "mx.gob.nl.genl.controller", "mx.gob.nl.genl.entity", "mx.gob.nl.genl.init"})
 public class MvcConfiguration extends WebMvcConfigurerAdapter {
 	
 	public MvcConfiguration() {

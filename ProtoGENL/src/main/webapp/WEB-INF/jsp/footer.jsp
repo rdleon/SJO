@@ -17,8 +17,21 @@
 		<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 		<script src="https://code.jquery.com/jquery-migrate-3.0.0.min.js"></script>
 		<!-- Bootstrap Js CDN -->
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+		
+		<script src="https://www.jqueryscript.net/demo/Dialog-Modal-Dialogify/dist/dialogify.min.js?v2"></script>
+		
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+		
+		<!-- Others -->
+		<script src="<c:url value="script/jsonpath-0.8.0.js" />"></script>
+		<script src="<c:url value="script/jquery.inputmask.bundle.min.js" />"></script>		
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.devbridge-autocomplete/1.2.26/jquery.autocomplete.min.js"></script>
+		<!-- 
 	    <script src="<c:url value="script/jquery-ui.js" />"></script>
+	     -->
+	    <!-- 
 	    <script src="<c:url value="script/bootstrap-hover-dropdown.js" />"></script>
 	    <script src="<c:url value="script/html5shiv.js" />"></script>
 	    <script src="<c:url value="script/respond.min.js" />"></script>
@@ -42,6 +55,8 @@
 	    <script src="<c:url value="script/jquery.flot.spline.js" />"></script>
 	    <script src="<c:url value="script/zabuto_calendar.min.js" />"></script>
 	    <script src="<c:url value="script/index.js" />"></script>
+	     -->
+	    
 	    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 	    <!-- 
 	    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.jqueryui.min.js"></script>
@@ -54,7 +69,7 @@
 		<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js"></script>
 		<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js"></script>
 	     
-	    <!--LOADING SCRIPTS FOR CHARTS-->
+	    <!-- SCRIPTS FOR CHARTS-->
 	    <script src="https://code.highcharts.com/highcharts.js"></script>
 	    <!-- 
 	    <script src="<c:url value="script/highcharts.js" />"></script>
@@ -68,4 +83,16 @@
 	     -->
 	    <script src="<c:url value="script/charts-highchart-more.js" />"></script>
 	    <script src="<c:url value="script/charts-flotchart.js" />"></script>
+	    
+	    <!-- OTHER -->
+	    <!-- Datepicker Bootstrap 44 -->
+	    <script src="https://daemonite.github.io/material/js/material.min.js"></script>
+	    <script src="https://cdn.jsdelivr.net/gh/moment/moment@develop/min/moment-with-locales.min.js"></script>
+	    <script src="https://cdn.jsdelivr.net/gh/djibe/bootstrap-material-datetimepicker@83a10c38ee94dd27fd946ea137af6667c65a738f/js/bootstrap-material-datetimepicker-bs4.min.js"></script>
+	    <!-- Easyautocomplete -->
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/easy-autocomplete/1.3.5/jquery.easy-autocomplete.min.js"></script>
+	    
+	    <!-- OWNER SCRIPT  -->
+	    <script src="<c:url value="script/genl_obras_core.js" />" charset="UTF-8"></script>
+	    <script src="<c:url value="script/genl_crud_restfull.js?v=37" />" charset="UTF-8"></script>
 	    
