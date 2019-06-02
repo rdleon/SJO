@@ -200,7 +200,7 @@
 				});
 
 				var table = $('#example').DataTable( {
-			        "ajax": 'http://ec2-15-164-48-84.ap-northeast-2.compute.amazonaws.com:8080/mock/json_data_table2.txt',
+			        "ajax": 'http://localhost:8080/mock/json_data_table2.txt',
 			        dom: 'Bfrtip',
 			        buttons: [
 			            'copy', 'csv', 'excel', 'pdf', 'print'

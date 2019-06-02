@@ -56,23 +56,23 @@
 			             </ul>
                     </li>
                      -->
-                    <li><a id="portfolio" href="/providers"><i class="fa fa-briefcase fa-fw">
+                    <li id="li_providers"><a href="/providers"><i class="fa fa-address-card fa-fw">
                     </i><span class="menu-title">Proveedores</span></a>                       
                     </li>
-                    <li><a id="contracts" href="/contracts"><i class="fa fa-briefcase fa-fw">
+                    <li id="li_contracts"><a href="/contracts"><i class="fa fa-file fa-fw">
                     </i><span class="menu-title">Contratos</span></a>                       
                     </li>
-                    <li><a id="projects" href="/projects"><i class="fa fa-sitemap fa-fw">
+                    <li id="li_projects"><a href="/projects"><i class="fa fa-sitemap fa-fw">
                     </i><span class="menu-title">Proyectos</span></a>
                     </li>
-                    <li><a id="follow_up" href="/follow_up"><i class="fa fa-tasks fa-fw">
+                    <li id="li_follow_up"><a href="/follow_up"><i class="fa fa-tasks fa-fw">
                     </i><span class="menu-title">Registro de Avance</span></a>                          
                     </li>
-                    <li><a id="contracts" href="/reports"><i class="fa fa-table fa-fw">
+                    <li id="li_contracts"><a href="#"><i class="fa fa-table fa-fw">
                     </i><span class="menu-title">Reportes</span></a>                 
                     </li>
-                    <li><a id="dashboard" href="/dashboard"><i class="fa fa-tachometer fa-fw">
-                    </i><span class="menu-title">Tablero</span></a>
+                    <li id="li_dashboard"><a href="/dashboard"><i class="fa fa-list-alt fa-fw">
+                    </i><span class="menu-title">Tableros</span></a>
                     </li>
                     
                 </ul>
