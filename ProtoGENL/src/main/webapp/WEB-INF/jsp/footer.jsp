@@ -92,7 +92,17 @@
 	    <!-- Easyautocomplete -->
 	    <script src="https://cdnjs.cloudflare.com/ajax/libs/easy-autocomplete/1.3.5/jquery.easy-autocomplete.min.js"></script>
 	    
+	    <!-- Fileinput -->
+	    <script src="<c:url value="script/fileinput/fileinput.min.js" />" type="text/javascript"></script>
+	    <script src="<c:url value="script/fileinput/themes/gly/theme.js" />" type="text/javascript"></script>
+  		<script src="<c:url value="script/fileinput/locales/es.js" />" type="text/javascript" charset="UTF-8"></script>
+	    
+	    <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+	    
+	    
 	    <!-- OWNER SCRIPT  -->
 	    <script src="<c:url value="script/genl_obras_core.js" />" charset="UTF-8"></script>
-	    <script src="<c:url value="script/genl_crud_restfull.js?v=37" />" charset="UTF-8"></script>
+	    <script src="<c:url value="script/genl_crud_restfull.js?v=43" />" charset="UTF-8"></script>
+	    <script src="<c:url value="script/dashboards_charts.js" />" charset="UTF-8"></script>
+	    
 	    

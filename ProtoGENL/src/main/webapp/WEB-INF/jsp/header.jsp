@@ -37,7 +37,7 @@
 		<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 	    
-	    <link href="<c:url value="styles/obras.css" />" rel="stylesheet" type="text/css">
+	    <link href="<c:url value="styles/obras.css?v=2" />" rel="stylesheet" type="text/css">
 	    <link href="<c:url value="styles/cssLaton.css" />" rel="stylesheet" type="text/css">
 	    
 	    <!-- 
@@ -54,6 +54,7 @@
 	    <link href="<c:url value="styles/all.css" />" rel="stylesheet" type="text/css">
 	     -->
 	     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+	    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
 	    
 	    <link href="<c:url value="styles/main.css" />" rel="stylesheet" type="text/css">
 	    
@@ -71,6 +72,10 @@
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.9/css/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
 		 -->
 		 
+		 <!-- DataTable -->
+		 <link href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css" rel="stylesheet" type="text/css" />
+		 
+		 
 		 <!-- Easyautocomplete -->
 		 <link href="https://cdnjs.cloudflare.com/ajax/libs/easy-autocomplete/1.3.5/easy-autocomplete.min.css" rel="stylesheet">
 		 <link href="https://cdnjs.cloudflare.com/ajax/libs/easy-autocomplete/1.3.5/easy-autocomplete.themes.min.css" rel="stylesheet">
@@ -80,5 +85,8 @@
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/djibe/bootstrap-material-datetimepicker@6659d24c7d2a9c782dc2058dcf4267603934c863/css/bootstrap-material-datetimepicker-bs4.min.css"/>
 		 
+		<!-- Fileinput -->
+		<link href="<c:url value="styles/fileinput/fileinput.min.css" />" media="all" rel="stylesheet" type="text/css" />
+		
 		<!-- Our Custom CSS -->
-        <link href="<c:url value="styles/style4.css" />" rel="stylesheet" type="text/css">
+        <link href="<c:url value="styles/style4.css?v=1" />" rel="stylesheet" type="text/css">
