@@ -7,6 +7,11 @@ def block(provider_id):
     delete_entity("providers", provider_id)
 
 
+def count():
+    """Number of non logical deleted providers"""
+    return count_entities("providers")
+
+
 def find(provider_id):
     """Find a provider as per id"""
     ent = find_entity("providers", provider_id)
