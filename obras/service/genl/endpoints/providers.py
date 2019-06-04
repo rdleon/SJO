@@ -28,7 +28,7 @@ class ProviderCollection(Resource):
         """
         req = request.data
         dic_req = json.loads(req)
-        dal.provider.create_provider(**dic_req)
+        dal.provider.create(**dic_req)
         return None, 201
 
     @api.marshal_list_with(provider_model)
@@ -36,7 +36,7 @@ class ProviderCollection(Resource):
         """
         Returns list of providers.
         """
-        entities = dal.provider.fetch_providers()
+        entities = dal.provider.fetch()
         return entities
 
 
@@ -47,7 +47,7 @@ class ProviderItem(Resource):
         """
         Returns a provider.
         """
-        entity = dal.provider.find_provider(provider_id)
+        entity = dal.provider.find(provider_id)
         return entity
 
     @api.response(204, "Provider successfully updated.")
@@ -59,7 +59,7 @@ class ProviderItem(Resource):
         req = request.data
         dic_req = json.loads(req)
         dic_req["id"] = provider_id
-        dal.provider.edit_provider(**dic_req)
+        dal.provider.edit(**dic_req)
         return None, 204
 
     @api.response(204, "Provider successfully deleted.")
@@ -67,5 +67,5 @@ class ProviderItem(Resource):
         """
         Deletes a provider.
         """
-        dal.provider.block_provider(provider_id)
+        dal.provider.block(provider_id)
         return None, 204
