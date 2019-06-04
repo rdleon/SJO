@@ -5,9 +5,10 @@ services:
         build: .
         depends_on:
             - pg
+        ports:
+            - "80:80"
         networks:
             - obras_network
-
     pg:
         image: postgres
         volumes:
