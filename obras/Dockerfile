@@ -2,11 +2,12 @@ FROM ubuntu:bionic
 MAINTAINER edward@nygma.com
 
 # getting last software catalog
-RUN apt-get update
+RUN apt-get update --fix-missing
 
 # Minimal deb packages required
 RUN apt-get install -y --no-install-recommends nginx build-essential \
-    python3-wheel python3-setuptools python3-pip python3-dev python3-venv
+    python3-wheel python3-setuptools python3-pip python3-dev python3-venv\
+    libpq-dev
 
 # Remove downloaded .debs from cache
 RUN apt-get clean
