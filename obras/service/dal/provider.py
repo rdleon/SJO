@@ -2,6 +2,19 @@ from .entity import delete_entity, find_entity, page_entities
 from .helper import run_store_procedure
 
 
+def _alter_provider(**kwargs):
+    """Calls sp in charge of create and edit a provider"""
+    sql = """SELECT * FROM alter_provider(
+        {}::integer,
+        '{}'::character varying,
+        '{}'::character varying,
+        '{}'::character varying)
+        AS result( rc integer, msg text )""".format(
+        kwargs["id"], kwargs["title"], kwargs["description"], kwargs["inceptor_uuid"]
+    )
+    return run_store_procedure(sql)
+
+
 def block(provider_id):
     """Logical deletion of a provider entity"""
     delete_entity("providers", provider_id)
@@ -21,19 +34,6 @@ def find(provider_id):
 
 def page_projects(page_number, page_size, order_by, asc):
     return page_entities("projects", page_size, order_by, asc)
-
-
-def _alter_provider(**kwargs):
-    """Calls sp in charge of create and edit a provider"""
-    sql = """SELECT * FROM alter_provider(
-        {}::integer,
-        '{}'::character varying,
-        '{}'::character varying,
-        '{}'::character varying)
-        AS result( rc integer, msg text )""".format(
-        kwargs["id"], kwargs["title"], kwargs["description"], kwargs["inceptor_uuid"]
-    )
-    return run_store_procedure(sql)
 
 
 def edit(**kwargs):
