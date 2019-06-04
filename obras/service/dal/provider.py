@@ -32,8 +32,8 @@ def find(provider_id):
     return {attr: ent[attr] for attr in attributes}
 
 
-def page_projects(page_number, page_size, order_by, asc):
-    return page_entities("projects", page_size, order_by, asc)
+def paged(page, size, order_by, asc):
+    return page_entities("providers", page, size, order_by, asc)
 
 
 def edit(**kwargs):

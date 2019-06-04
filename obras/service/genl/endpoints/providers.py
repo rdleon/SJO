@@ -36,7 +36,7 @@ class ProviderCollection(Resource):
         """
         Returns list of providers.
         """
-        entities = dal.provider.fetch()
+        entities = dal.provider.paged(1, 100, "id", "desc")
         return entities
 
 

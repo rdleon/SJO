@@ -1,4 +1,4 @@
-from .entity import count_entities, delete_entity, find_entity
+from .entity import count_entities, delete_entity, find_entity, page_entities
 from .helper import run_store_procedure
 
 
@@ -65,3 +65,7 @@ def find(project_id):
     entity = find_entity("projects", project_id)
 
     return _marshall(entity)
+
+
+def paged(page, size, order_by, asc):
+    return page_entities("providers", page, size, order_by, asc)
