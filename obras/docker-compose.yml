@@ -1,16 +1,26 @@
 version: "3.5"
 
+x-shared-environment: &commonEnv
+    POSTGRES_HOST: "pg"
+    POSTGRES_DB: "obras"
+    POSTGRES_USER: "postgres"
+    POSTGRES_PASSWORD: "postgres"
+    POSTGRES_PORT: 5432
+    FLASK_ENV: "development"
+
 services:
     obras:
         build: .
+        environment: *commonEnv
         depends_on:
             - pg
         ports:
-            - "80:80"
+            - "80:8080"
         networks:
             - obras_network
     pg:
         image: postgres
+        environment: *commonEnv
         volumes:
             - pg_data:/var/lib/postgresql/data
         networks:
