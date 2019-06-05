@@ -7,7 +7,7 @@ RUN apt-get update --fix-missing
 # Minimal deb packages required
 RUN apt-get install -y --no-install-recommends nginx build-essential \
     python3-wheel python3-setuptools python3-pip python3-dev python3-venv\
-    libpq-dev
+    postgresql-client libpq-dev
 
 # Remove downloaded .debs from cache
 RUN apt-get clean
