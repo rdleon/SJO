@@ -68,6 +68,17 @@ class ProjectsCollection(Resource):
         return project, 201
 
 
+@ns.route("/count")
+class ProjectCount(Resource):
+    def get(self):
+        try:
+            count = dal.project.count()
+        except EmptySetError:
+            count = 0
+
+        return {"count": count}
+
+
 @ns.route("/<int:project_id>")
 @api.response(404, "Project not found.")
 class ProjectItem(Resource):

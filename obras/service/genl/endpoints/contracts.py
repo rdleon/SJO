@@ -85,6 +85,17 @@ class ContractCollection(Resource):
         return contract, 201
 
 
+@ns.route("/count")
+class ContractCount(Resource):
+    def get(self):
+        try:
+            count = dal.contract.count()
+        except EmptySetError:
+            count = 0
+
+        return {"count": count}
+
+
 @ns.route("/<int:contract_id>")
 @api.response(404, "Contract not found.")
 class ContractItem(Resource):

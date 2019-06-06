@@ -49,6 +49,17 @@ class ProviderCollection(Resource):
         return provider, 201
 
 
+@ns.route("/count")
+class ProvidersCount(Resource):
+    def get(self):
+        try:
+            count = dal.provider.count()
+        except EmptySetError:
+            count = 0
+
+        return {"count": count}
+
+
 @ns.route("/<int:provider_id>")
 @api.response(404, "Provider not found.")
 class ProviderItem(Resource):
