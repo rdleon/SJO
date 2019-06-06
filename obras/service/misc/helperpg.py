@@ -4,6 +4,10 @@ import psycopg2.extras
 from .common import env_property
 
 
+class EmptySetError(Exception):
+    pass
+
+
 def _connect():
     """Opens a connection to database"""
     # order here matters
@@ -31,14 +35,10 @@ def pgslack_exec(conn, sql):
     rows = cur.fetchall()
     cur.close()
 
-    if len(rows) > 0:
-        entities = []
-        for row in rows:
-            entities.append(dict(row))
-
-        return entities
+    if len(rows) < 1:
+        return rows
     # We should not have reached this point
-    raise Exception("There is not data retrieved")
+    raise EmptySetError("There is not data retrieved")
 
 
 def pgslack_update(conn, sql):
@@ -49,10 +49,12 @@ def pgslack_update(conn, sql):
     updated_rows = cur.rowcount
     conn.commit()
     cur.close()
+
     if updated_rows > 0:
         return updated_rows
+
     # We should not have reached this point
-    raise Exception("Nothing was updated at all")
+    raise EmptySetError("Nothing was updated at all")
 
 
 def pgslack_connected(func):

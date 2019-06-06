@@ -3,6 +3,7 @@ from flask_restplus import Resource, fields
 
 import dal.contract
 from genl.restplus import api
+from misc.helperpg import EmptySetError
 
 contract_model = api.model(
     "Contract Model",
@@ -54,6 +55,10 @@ ns = api.namespace("contracts", description="Operations related to contracts")
 @ns.route("/")
 class ContractCollection(Resource):
     @api.marshal_list_with(contract_model)
+    @api.param("offset", "From which record to start recording, used for pagination")
+    @api.param("limit", "How many records to return")
+    @api.param("order_by", "Which field use to order the providers")
+    @api.param("order", "ASC or DESC, which ordering to use")
     def get(self):
         """
         Returns list of contracts.
@@ -80,6 +85,17 @@ class ContractCollection(Resource):
         return contract, 201
 
 
+@ns.route("/count")
+class ContractCount(Resource):
+    def get(self):
+        try:
+            count = dal.contract.count()
+        except EmptySetError:
+            count = 0
+
+        return {"count": count}
+
+
 @ns.route("/<int:contract_id>")
 @api.response(404, "Contract not found.")
 class ContractItem(Resource):
@@ -88,9 +104,12 @@ class ContractItem(Resource):
         """
         Returns a contract.
         """
-        entity = dal.contract.find(contract_id)
+        try:
+            contract = dal.contract.find(contract_id)
+        except EmptySetError:
+            return {"message": "Contract not found"}, 404
 
-        return entity
+        return contract
 
     @api.response(200, "Contract successfully updated.")
     @api.expect(contract_model)

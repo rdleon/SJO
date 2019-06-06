@@ -5,6 +5,7 @@ from flask_restplus import Resource, fields
 
 import dal.project
 from genl.restplus import api
+from misc.helperpg import EmptySetError
 
 ns = api.namespace("projects", description="Operations related to projects")
 
@@ -39,6 +40,10 @@ project_model = api.model(
 @ns.route("/")
 class ProjectsCollection(Resource):
     @api.marshal_list_with(project_model)
+    @api.param("offset", "From which record to start recording, used for pagination")
+    @api.param("limit", "How many records to return")
+    @api.param("order_by", "Which field use to order the providers")
+    @api.param("order", "ASC or DESC, which ordering to use")
     def get(self):
         """
         Returns list of providers.
@@ -63,6 +68,17 @@ class ProjectsCollection(Resource):
         return project, 201
 
 
+@ns.route("/count")
+class ProjectCount(Resource):
+    def get(self):
+        try:
+            count = dal.project.count()
+        except EmptySetError:
+            count = 0
+
+        return {"count": count}
+
+
 @ns.route("/<int:project_id>")
 @api.response(404, "Project not found.")
 class ProjectItem(Resource):
@@ -71,7 +87,12 @@ class ProjectItem(Resource):
         """
         Returns a project.
         """
-        return dal.project.find(project_id)
+        try:
+            project = dal.project.find(project_id)
+        except EmptySetError:
+            return {"message": "Project not found"}, 404
+
+        return project
 
     @api.response(204, "Project successfully updated.")
     @api.expect(project_model)

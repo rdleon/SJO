@@ -16,6 +16,7 @@ def run_store_procedure(conn, sql):
         # FIXME
         # We should feature a better exception that also catches the rcode
         raise Exception(rmsg)
+
     return (rcode, rmsg)
 
 
