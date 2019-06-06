@@ -8,19 +8,30 @@ from genl.restplus import api
 
 ns = api.namespace("projects", description="Operations related to projects")
 
-project_model = api.model("Project Model", {
-    "id": fields.Integer(required=True, description="Unique identifier"),
-    "title": fields.String(required=True, description="Project name"),
-    "description": fields.String(required=True, description="Short description of the project"),
-    "city": fields.Integer(required=True, description="DB id of the city"),
-    "category": fields.Integer(required=True, description="DB id of the city"),
-    "department": fields.Integer(required=True, description="DB id of the city"),
-    "budget": fields.Integer(required=True, description="DB id of the city"),
-    "contract": fields.Integer(required=True, description="DB id of the city"),
-    "planed_kickoff": fields.Date(required=True, description="When the project is planned to start"),
-    "planed_ending": fields.Date(required=True, description="When the project is planned to end"),
-    "inceptor_uuid": fields.String(required=True, description"UUID of the user who created the project"),   
-})
+project_model = api.model(
+    "Project Model",
+    {
+        "id": fields.Integer(required=True, description="Unique identifier"),
+        "title": fields.String(required=True, description="Project name"),
+        "description": fields.String(
+            required=True, description="Short description of the project"
+        ),
+        "city": fields.Integer(required=True, description="DB id of the city"),
+        "category": fields.Integer(required=True, description="DB id of the city"),
+        "department": fields.Integer(required=True, description="DB id of the city"),
+        "budget": fields.Integer(required=True, description="DB id of the city"),
+        "contract": fields.Integer(required=True, description="DB id of the city"),
+        "planed_kickoff": fields.Date(
+            required=True, description="When the project is planned to start"
+        ),
+        "planed_ending": fields.Date(
+            required=True, description="When the project is planned to end"
+        ),
+        "inceptor_uuid": fields.String(
+            required=True, description="UUID of the user who created the project"
+        ),
+    },
+)
 
 
 @ns.route("/")
@@ -39,6 +50,7 @@ class ProjectsCollection(Resource):
 
     @api.response(201, "Provider successfully created.")
     @api.expect(project_model)
+    @api.marshal_with(project_model)
     def post(self):
         """
         Creates a new provider.
@@ -52,6 +64,7 @@ class ProjectsCollection(Resource):
 @ns.route("/<int:project_id>")
 @api.response(404, "Project not found.")
 class ProjectItem(Resource):
+    @api.marshal_with(project_model)
     def get(self, project_id):
         """
         Returns a project.
@@ -59,6 +72,7 @@ class ProjectItem(Resource):
         return dal.project.find(project_id)
 
     @api.response(204, "Project successfully updated.")
+    @api.expect(project_model)
     def put(self, project_id):
         """
         Updates a project.
