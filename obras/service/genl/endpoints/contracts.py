@@ -24,9 +24,7 @@ contract_model = api.model(
         "ending": fields.Date(
             required=True, description="End date of project according to contract"
         ),
-        "down_payment": fields.DateTime(
-            required=True, description="Down payment date"
-        ),
+        "down_payment": fields.DateTime(required=True, description="Down payment date"),
         "down_payment_amount": fields.Float(
             required=True, description="Down payment amount"
         ),
@@ -55,34 +53,37 @@ ns = api.namespace("contracts", description="Operations related to contracts")
 
 @ns.route("/")
 class ContractCollection(Resource):
-    @api.response(201, "Contract successfully created.")
-    @api.expect(contract_model)
-    def post(self):
-        """
-        Creates a new contract.
-        """
-        req = request.data
-        dic_req = json.loads(req)
-        dal.contract.create(**dic_req)
-        return None, 201
-
     @api.marshal_list_with(contract_model)
     def get(self):
         """
         Returns list of contracts.
         """
-        mask = request.headers.get("X-Fields")
-        param = mask.split(",")
+        offset = request.args.get("offset", 0)
+        limit = request.args.get("limit", 10)
+        order_by = request.args.get("order_by", "id")
+        order = request.args.get("order", "ASC")
 
-        contractList = dal.contract.page(param[0], param[1], param[2], param[3])
-        print(contractList)
-        # Pending return
+        contractList = dal.contract.page(offset, limit, order_by, order)
+
         return contractList
+
+    @api.response(201, "Contract successfully created.")
+    @api.expect(contract_model)
+    @api.marshal_with(contract_model)
+    def post(self):
+        """
+        Creates a new contract.
+        """
+        contract = json.loads(request.data)
+        dal.contract.create(**contract)
+
+        return contract, 201
 
 
 @ns.route("/<int:contract_id>")
 @api.response(404, "Contract not found.")
 class ContractItem(Resource):
+    @api.marshal_with(contract_model)
     def get(self, contract_id):
         """
         Returns a contract.
@@ -91,17 +92,18 @@ class ContractItem(Resource):
 
         return entity
 
-    @api.response(204, "Contract successfully updated.")
+    @api.response(200, "Contract successfully updated.")
     @api.expect(contract_model)
+    @api.marshal_with(contract_model)
     def put(self, contract_id):
         """
         Updates a contract.
         """
-        req = request.data
-        dic_req = json.loads(req)
-        dic_req["id"] = contract_id
-        dal.contract.edit(**dic_req)
-        return None, 204
+        contract = json.loads(request.data)
+        contract["id"] = contract_id
+        dal.contract.edit(**contract)
+
+        return contract, 200
 
     @api.response(204, "Contract successfully deleted.")
     def delete(self, contract_id):
@@ -109,4 +111,5 @@ class ContractItem(Resource):
         Deletes a contract.
         """
         dal.contract.block(contract_id)
+
         return None, 204

@@ -1,33 +1,85 @@
 import json
 
 from flask import request
-from flask_restplus import Resource
+from flask_restplus import Resource, fields
 
 import dal.project
 from genl.restplus import api
 
 ns = api.namespace("projects", description="Operations related to projects")
 
+project_model = api.model(
+    "Project Model",
+    {
+        "id": fields.Integer(required=True, description="Unique identifier"),
+        "title": fields.String(required=True, description="Project name"),
+        "description": fields.String(
+            required=True, description="Short description of the project"
+        ),
+        "city": fields.Integer(required=True, description="DB id of the city"),
+        "category": fields.Integer(required=True, description="DB id of the city"),
+        "department": fields.Integer(required=True, description="DB id of the city"),
+        "budget": fields.Integer(required=True, description="DB id of the city"),
+        "contract": fields.Integer(required=True, description="DB id of the city"),
+        "planed_kickoff": fields.Date(
+            required=True, description="When the project is planned to start"
+        ),
+        "planed_ending": fields.Date(
+            required=True, description="When the project is planned to end"
+        ),
+        "inceptor_uuid": fields.String(
+            required=True, description="UUID of the user who created the project"
+        ),
+    },
+)
+
+
+@ns.route("/")
+class ProjectsCollection(Resource):
+    @api.marshal_list_with(project_model)
+    def get(self):
+        """
+        Returns list of providers.
+        """
+        offset = request.args.get("offset", 0)
+        limit = request.args.get("limit", 10)
+        order_by = request.args.get("order_by", "id")
+        order = request.args.get("order", "ASC")
+
+        return dal.project.paged(offset, limit, order_by, order)
+
+    @api.response(201, "Provider successfully created.")
+    @api.expect(project_model)
+    @api.marshal_with(project_model)
+    def post(self):
+        """
+        Creates a new provider.
+        """
+        project = json.loads(request.data)
+        dal.project.create(**project)
+
+        return project, 201
+
 
 @ns.route("/<int:project_id>")
 @api.response(404, "Project not found.")
 class ProjectItem(Resource):
+    @api.marshal_with(project_model)
     def get(self, project_id):
         """
         Returns a project.
         """
-        entity = dal.project.find(project_id)
-        return entity
+        return dal.project.find(project_id)
 
     @api.response(204, "Project successfully updated.")
+    @api.expect(project_model)
     def put(self, project_id):
         """
         Updates a project.
         """
-        req = request.data
-        dic_req = json.loads(req)
-        dic_req["project_id"] = project_id
-        dal.project.edit(**dic_req)
+        project = json.loads(request.data)
+        project["project_id"] = project_id
+        dal.project.edit(**project)
 
         return None, 204
 
@@ -37,4 +89,5 @@ class ProjectItem(Resource):
         Deletes a project.
         """
         dal.project.block(project_id)
+
         return None, 204
