@@ -17,10 +17,12 @@ project_model = api.model(
             required=True, description="Short description of the project"
         ),
         "city": fields.Integer(required=True, description="DB id of the city"),
-        "category": fields.Integer(required=True, description="DB id of the city"),
-        "department": fields.Integer(required=True, description="DB id of the city"),
-        "budget": fields.Integer(required=True, description="DB id of the city"),
-        "contract": fields.Integer(required=True, description="DB id of the city"),
+        "category": fields.Integer(required=True, description="DB id of the category"),
+        "department": fields.Integer(
+            required=True, description="DB id of the department"
+        ),
+        "budget": fields.Integer(required=True, description="DB id of the budget"),
+        "contract": fields.Integer(required=True, description="DB id of the contract"),
         "planed_kickoff": fields.Date(
             required=True, description="When the project is planned to start"
         ),
