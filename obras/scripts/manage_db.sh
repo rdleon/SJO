@@ -1,0 +1,3 @@
+#!/bin/sh
+
+psql postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@pg:$POSTGRES_PORT/$POSTGRES_DB

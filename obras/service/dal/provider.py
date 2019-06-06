@@ -1,4 +1,4 @@
-from .entity import delete_entity, find_entity, page_entities
+from .entity import count_entities, delete_entity, find_entity, page_entities
 from .helper import run_store_procedure
 
 
@@ -32,8 +32,8 @@ def find(provider_id):
     return {attr: ent[attr] for attr in attributes}
 
 
-def paged(page, size, order_by, asc):
-    return page_entities("providers", page, size, order_by, asc)
+def paged(offset, limit, order_by, order):
+    return page_entities("providers", offset, limit, order_by, order)
 
 
 def edit(**kwargs):
