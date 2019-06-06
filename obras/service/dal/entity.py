@@ -57,6 +57,7 @@ def page_entities(entity_table, page_number, page_size, order_by, asc):
            LIMIT {} OFFSET {}""".format(
         entity_table, order_by, asc, page_size, page_number
     )
+
     r = exec_steady(q)
 
     if len(r) == 0:
