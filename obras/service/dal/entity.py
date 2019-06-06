@@ -49,14 +49,12 @@ def find_entity(entity_table, entity_id):
     return r.pop()
 
 
-def page_entities(entity_table, page_number, page_size, order_by, asc):
-    q = """SELECT *
-           FROM {}
+def page_entities(entity_table, offset, limit, order_by, order):
+    q = f"""SELECT *
+           FROM {entity_table}
            WHERE blocked = false
-           ORDER BY {} {}
-           LIMIT {} OFFSET {}""".format(
-        entity_table, order_by, asc, page_size, page_number
-    )
+           ORDER BY {order_by} {order}
+           LIMIT {limit} OFFSET {offset}"""
 
     r = exec_steady(q)
 

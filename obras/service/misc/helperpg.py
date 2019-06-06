@@ -30,8 +30,13 @@ def pgslack_exec(conn, sql):
     conn.commit()
     rows = cur.fetchall()
     cur.close()
+
     if len(rows) > 0:
-        return rows
+        entities = []
+        for row in rows:
+            entities.append(dict(row))
+
+        return entities
     # We should not have reached this point
     raise Exception("There is not data retrieved")
 
