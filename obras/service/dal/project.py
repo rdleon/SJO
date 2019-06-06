@@ -37,11 +37,6 @@ def _alter_project(**kwargs):
     return run_store_procedure(sql)
 
 
-def count():
-    """Number of non logical deleted projects"""
-    return count_entities("projects")
-
-
 def create(**kwargs):
     """Creates a project entity"""
     kwargs["id"] = 0
@@ -67,5 +62,10 @@ def find(project_id):
     return _marshall(entity)
 
 
-def paged(page, size, order_by, asc):
-    return page_entities("providers", page, size, order_by, asc)
+def count(search_params=None):
+    """Number of non logical deleted projects"""
+    return count_entities("projects", search_params)
+
+
+def paged(page, size, order_by, asc, search_params=None):
+    return page_entities("providers", page, size, order_by, asc, search_params)

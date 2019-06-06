@@ -20,11 +20,6 @@ def block(provider_id):
     delete_entity("providers", provider_id)
 
 
-def count():
-    """Number of non logical deleted providers"""
-    return count_entities("providers")
-
-
 def find(provider_id):
     """Find a provider as per id"""
     ent = find_entity("providers", provider_id)
@@ -32,8 +27,13 @@ def find(provider_id):
     return {attr: ent[attr] for attr in attributes}
 
 
-def paged(offset, limit, order_by, order):
-    return page_entities("providers", offset, limit, order_by, order)
+def count(search_params):
+    """Number of non logical deleted providers"""
+    return count_entities("providers", search_params)
+
+
+def paged(offset, limit, order_by, order, search_params):
+    return page_entities("providers", offset, limit, order_by, order, search_params)
 
 
 def edit(**kwargs):

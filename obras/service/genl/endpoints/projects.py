@@ -5,6 +5,7 @@ from flask_restplus import Resource, fields
 
 import dal.project
 from genl.restplus import api
+from misc.helper import get_search_params
 from misc.helperpg import EmptySetError
 
 ns = api.namespace("projects", description="Operations related to projects")
@@ -44,6 +45,8 @@ class ProjectsCollection(Resource):
     @api.param("limit", "How many records to return")
     @api.param("order_by", "Which field use to order the providers")
     @api.param("order", "ASC or DESC, which ordering to use")
+    @api.param("title", "Terms to filter in the title for")
+    @api.param("description", "Terms to filter in the description")
     def get(self):
         """
         Returns list of providers.
@@ -53,7 +56,9 @@ class ProjectsCollection(Resource):
         order_by = request.args.get("order_by", "id")
         order = request.args.get("order", "ASC")
 
-        return dal.project.paged(offset, limit, order_by, order)
+        search_params = get_search_params(request.args, ["title", "description"])
+
+        return dal.project.paged(offset, limit, order_by, order, search_params)
 
     @api.response(201, "Provider successfully created.")
     @api.expect(project_model)
@@ -70,9 +75,12 @@ class ProjectsCollection(Resource):
 
 @ns.route("/count")
 class ProjectCount(Resource):
+    @api.param("title", "Terms to filter in the title for")
+    @api.param("description", "Terms to filter in the description")
     def get(self):
+        search_params = get_search_params(request.args, ["title", "description"])
         try:
-            count = dal.project.count()
+            count = dal.project.count(search_params)
         except EmptySetError:
             count = 0
 

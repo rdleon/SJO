@@ -3,6 +3,7 @@ from flask_restplus import Resource, fields
 
 import dal.contract
 from genl.restplus import api
+from misc.helper import get_search_params
 from misc.helperpg import EmptySetError
 
 contract_model = api.model(
@@ -59,6 +60,9 @@ class ContractCollection(Resource):
     @api.param("limit", "How many records to return")
     @api.param("order_by", "Which field use to order the providers")
     @api.param("order", "ASC or DESC, which ordering to use")
+    @api.param("title", "Terms to filter in the title for")
+    @api.param("description", "Terms to filter in the description")
+    @api.param("number", "The number of the contract")
     def get(self):
         """
         Returns list of contracts.
@@ -68,7 +72,11 @@ class ContractCollection(Resource):
         order_by = request.args.get("order_by", "id")
         order = request.args.get("order", "ASC")
 
-        contractList = dal.contract.page(offset, limit, order_by, order)
+        search_params = get_search_params(
+            request.args, ["title", "description", "number"]
+        )
+
+        contractList = dal.contract.page(offset, limit, order_by, order, search_params)
 
         return contractList
 
@@ -87,9 +95,15 @@ class ContractCollection(Resource):
 
 @ns.route("/count")
 class ContractCount(Resource):
+    @api.param("title", "Terms to filter in the title for")
+    @api.param("description", "Terms to filter in the description")
+    @api.param("number", "The number of the contract")
     def get(self):
+        search_params = get_search_params(
+            request.args, ["title", "description", "number"]
+        )
         try:
-            count = dal.contract.count()
+            count = dal.contract.count(search_params)
         except EmptySetError:
             count = 0
 
