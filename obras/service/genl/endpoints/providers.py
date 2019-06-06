@@ -3,6 +3,7 @@ from flask_restplus import Resource, fields
 
 import dal.provider
 from genl.restplus import api
+from misc.helperpg import EmptySetError
 
 provider_model = api.model(
     "Provider Model",
@@ -21,6 +22,10 @@ ns = api.namespace("providers", description="Operations related to providers")
 @ns.route("/")
 class ProviderCollection(Resource):
     @api.marshal_list_with(provider_model)
+    @api.param("offset", "From which record to start recording, used for pagination")
+    @api.param("limit", "How many records to return")
+    @api.param("order_by", "Which field use to order the providers")
+    @api.param("order", "ASC or DESC, which ordering to use")
     def get(self):
         """
         Returns list of providers.
@@ -51,7 +56,12 @@ class ProviderItem(Resource):
         """
         Returns a provider.
         """
-        return dal.provider.find(provider_id)
+        try:
+            provider = dal.provider.find(provider_id)
+        except EmptySetError:
+            return {"message": "Provider not found"}, 404
+
+        return provider
 
     @api.response(204, "Provider successfully updated.")
     @api.expect(provider_model)

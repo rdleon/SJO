@@ -1,20 +1,30 @@
+from misc.helperpg import EmptySetError
+
 from .helper import exec_steady, update_steady
+
+
+class NoResultFound(Exception):
+    pass
+
+
+class MultipleResultsFound(Exception):
+    pass
 
 
 def count_entities(entity_table):
     """Counts the entities non blocked"""
-    q = """SELECT count(id)::int as total
-           FROM {}
-           WHERE blocked = false""".format(
-        entity_table
-    )
-    r = exec_steady(q)
+    query = f"""SELECT count(id)::int as total
+           FROM {entity_table}
+           WHERE blocked = false"""
+    rows = exec_steady(query)
 
     # For this case we are just expecting one row
-    if len(r) != 1:
-        raise Exception("Just expecting one total as a result")
+    if len(rows) == 0:
+        raise NoResultFound("Just expecting one total as a result")
+    elif len(rows) > 1:
+        raise MultipleResultsFound("Just expecting one row as a result")
 
-    return r.pop()["total"]
+    return rows.pop()["total"]
 
 
 def delete_entity(entity_table, entity_id):
@@ -35,30 +45,36 @@ def delete_entity(entity_table, entity_id):
 
 def find_entity(entity_table, entity_id):
     """Finds an entity non blocked by id"""
-    q = """SELECT *
-           FROM {}
-           WHERE id = {} and blocked = false""".format(
-        entity_table, entity_id
-    )
-    r = exec_steady(q)
+    query = f"""SELECT *
+           FROM {entity_table}
+           WHERE id = {entity_id} and blocked = false"""
+
+    rows = exec_steady(query)
 
     # For this case we are just expecting one row
-    if len(r) != 1:
-        raise Exception("Just expecting one entity")
+    if len(rows) == 0:
+        raise NoResultFound("Just expecting one total as a result")
+    elif len(rows) > 1:
+        raise MultipleResultsFound("Just expecting one row as a result")
 
-    return r.pop()
+    return rows.pop()
 
 
 def page_entities(entity_table, offset, limit, order_by, order):
-    q = f"""SELECT *
+    """Returns a paginated set of entities"""
+    query = f"""SELECT *
            FROM {entity_table}
            WHERE blocked = false
            ORDER BY {order_by} {order}
            LIMIT {limit} OFFSET {offset}"""
 
-    r = exec_steady(q)
+    try:
+        rows = exec_steady(query)
+    except EmptySetError:
+        return []
 
-    if len(r) == 0:
-        raise Exception("Paging an empty set of entities")
+    entities = []
+    for row in rows:
+        entities.append(dict(row))
 
-    return r
+    return entities
