@@ -20,6 +20,18 @@ ns = api.namespace("providers", description="Operations related to providers")
 
 @ns.route("/")
 class ProviderCollection(Resource):
+    @api.marshal_list_with(provider_model)
+    def get(self):
+        """
+        Returns list of providers.
+        """
+        offset = request.args.get("offset", 0)
+        limit = request.args.get("limit", 10)
+        order_by = request.args.get("order_by", "id")
+        order = request.args.get("order", "ASC")
+
+        return dal.provider.paged(offset, limit, order_by, order)
+
     @api.response(201, "Provider successfully created.")
     @api.expect(provider_model)
     def post(self):
@@ -29,15 +41,8 @@ class ProviderCollection(Resource):
         req = request.data
         dic_req = json.loads(req)
         dal.provider.create(**dic_req)
-        return None, 201
 
-    @api.marshal_list_with(provider_model)
-    def get(self):
-        """
-        Returns list of providers.
-        """
-        entities = dal.provider.paged(1, 100, "id", "desc")
-        return entities
+        return None, 201
 
 
 @ns.route("/<int:provider_id>")
