@@ -1,0 +1,6 @@
+
+#!/bin/sh -e
+
+docker-compose run \
+--rm -v $(pwd)/scripts:/scripts -v $(pwd)/migrations:/migrations \
+obras /scripts/manage_db.sh
