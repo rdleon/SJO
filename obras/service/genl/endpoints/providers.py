@@ -38,11 +38,10 @@ class ProviderCollection(Resource):
         """
         Creates a new provider.
         """
-        req = request.data
-        dic_req = json.loads(req)
-        dal.provider.create(**dic_req)
+        provider = json.loads(request.data)
+        dal.provider.create(**provider)
 
-        return None, 201
+        return provider, 201
 
 
 @ns.route("/<int:provider_id>")
@@ -52,8 +51,7 @@ class ProviderItem(Resource):
         """
         Returns a provider.
         """
-        entity = dal.provider.find(provider_id)
-        return entity
+        return dal.provider.find(provider_id)
 
     @api.response(204, "Provider successfully updated.")
     @api.expect(provider_model)
@@ -61,10 +59,10 @@ class ProviderItem(Resource):
         """
         Updates a provider.
         """
-        req = request.data
-        dic_req = json.loads(req)
-        dic_req["id"] = provider_id
-        dal.provider.edit(**dic_req)
+        provider = json.loads(request.data)
+        provider["id"] = provider_id
+        dal.provider.edit(**provider)
+
         return None, 204
 
     @api.response(204, "Provider successfully deleted.")
@@ -73,4 +71,5 @@ class ProviderItem(Resource):
         Deletes a provider.
         """
         dal.provider.block(provider_id)
+
         return None, 204
