@@ -43,13 +43,13 @@ class ProjectsCollection(Resource):
     @api.marshal_list_with(project_model)
     @api.param("offset", "From which record to start recording, used for pagination")
     @api.param("limit", "How many records to return")
-    @api.param("order_by", "Which field use to order the providers")
+    @api.param("order_by", "Which field use to order the projects")
     @api.param("order", "ASC or DESC, which ordering to use")
     @api.param("title", "Terms to filter in the title for")
     @api.param("description", "Terms to filter in the description")
     def get(self):
         """
-        Returns list of providers.
+        Returns list of projects.
         """
         offset = request.args.get("offset", 0)
         limit = request.args.get("limit", 10)
