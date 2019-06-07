@@ -109,7 +109,7 @@ class ProjectItem(Resource):
         Updates a project.
         """
         project = json.loads(request.data)
-        project["project_id"] = project_id
+        project["id"] = project_id
         dal.project.edit(**project)
 
         return None, 204

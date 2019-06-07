@@ -69,7 +69,7 @@ def find_entity(entity_table, entity_id):
     elif len(rows) > 1:
         raise MultipleResultsFound("Just expecting one row as a result")
 
-    return rows.pop()
+    return dict(rows.pop())
 
 
 def page_entities(entity_table, offset, limit, order_by, order, search_params):
