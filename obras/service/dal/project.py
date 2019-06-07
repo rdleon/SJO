@@ -68,4 +68,4 @@ def count(search_params=None):
 
 
 def paged(page, size, order_by, asc, search_params=None):
-    return page_entities("providers", page, size, order_by, asc, search_params)
+    return page_entities("projects", page, size, order_by, asc, search_params)
