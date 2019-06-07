@@ -35,8 +35,9 @@ def pgslack_exec(conn, sql):
     rows = cur.fetchall()
     cur.close()
 
-    if len(rows) < 1:
+    if len(rows) > 0:
         return rows
+
     # We should not have reached this point
     raise EmptySetError("There is not data retrieved")
 
