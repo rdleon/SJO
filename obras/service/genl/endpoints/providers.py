@@ -3,6 +3,7 @@ from flask_restplus import Resource, fields
 
 import dal.provider
 from genl.restplus import api
+from misc.helper import get_search_params
 from misc.helperpg import EmptySetError
 
 provider_model = api.model(
@@ -26,6 +27,8 @@ class ProviderCollection(Resource):
     @api.param("limit", "How many records to return")
     @api.param("order_by", "Which field use to order the providers")
     @api.param("order", "ASC or DESC, which ordering to use")
+    @api.param("title", "Terms to filter in the title for")
+    @api.param("description", "Terms to filter in the description")
     def get(self):
         """
         Returns list of providers.
@@ -35,7 +38,9 @@ class ProviderCollection(Resource):
         order_by = request.args.get("order_by", "id")
         order = request.args.get("order", "ASC")
 
-        return dal.provider.paged(offset, limit, order_by, order)
+        search_params = get_search_params(request.args, ["title", "description"])
+
+        return dal.provider.paged(offset, limit, order_by, order, search_params)
 
     @api.response(201, "Provider successfully created.")
     @api.expect(provider_model)
@@ -51,9 +56,13 @@ class ProviderCollection(Resource):
 
 @ns.route("/count")
 class ProvidersCount(Resource):
+    @api.param("title", "Terms to filter in the title for")
+    @api.param("description", "Terms to filter in the description")
     def get(self):
+        search_params = get_search_params(request.args, ["title", "description"])
+
         try:
-            count = dal.provider.count()
+            count = dal.provider.count(search_params)
         except EmptySetError:
             count = 0
 

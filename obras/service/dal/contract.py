@@ -103,12 +103,14 @@ def find(contract_id):
     return _marshall(entity)
 
 
-def page(page_number, page_size, order_by, asc):
-    rows = page_entities("contracts", page_number, page_size, order_by, asc)
+def count(search_params):
+    """Number of non logical deleted contracts"""
+    return count_entities("contracts", search_params)
+
+
+def page(page_number, page_size, order_by, asc, search_params):
+    rows = page_entities(
+        "contracts", page_number, page_size, order_by, asc, search_params
+    )
 
     return [_marshall(entity) for entity in rows]
-
-
-def count():
-    """Number of non logical deleted contracts"""
-    return count_entities("contracts")

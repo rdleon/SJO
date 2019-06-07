@@ -11,11 +11,23 @@ class MultipleResultsFound(Exception):
     pass
 
 
-def count_entities(entity_table):
+def _setup_search_criteria(entity_table, search_params):
+    criteria = []
+    for field, value in search_params:
+        criteria.append(f"{entity_table}.{field} ILIKE '%{value}%")
+
+    return " AND ".join(criteria)
+
+
+def count_entities(entity_table, search_params):
     """Counts the entities non blocked"""
     query = f"""SELECT count(id)::int as total
            FROM {entity_table}
            WHERE blocked = false"""
+
+    if search_params is not None:
+        query += " AND " + _setup_search_criteria(entity_table, search_params)
+
     rows = exec_steady(query)
 
     # For this case we are just expecting one row
@@ -60,13 +72,16 @@ def find_entity(entity_table, entity_id):
     return rows.pop()
 
 
-def page_entities(entity_table, offset, limit, order_by, order):
+def page_entities(entity_table, offset, limit, order_by, order, search_params):
     """Returns a paginated set of entities"""
     query = f"""SELECT *
            FROM {entity_table}
            WHERE blocked = false
            ORDER BY {order_by} {order}
            LIMIT {limit} OFFSET {offset}"""
+
+    if search_params is not None:
+        query += " AND " + _setup_search_criteria(entity_table, search_params)
 
     try:
         rows = exec_steady(query)
