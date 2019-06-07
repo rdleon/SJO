@@ -72,6 +72,7 @@ class ProvidersCount(Resource):
 @ns.route("/<int:provider_id>")
 @api.response(404, "Provider not found.")
 class ProviderItem(Resource):
+    @api.marshal_with(provider_model)
     def get(self, provider_id):
         """
         Returns a provider.
