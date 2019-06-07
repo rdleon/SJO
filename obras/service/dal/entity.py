@@ -13,8 +13,8 @@ class MultipleResultsFound(Exception):
 
 def _setup_search_criteria(entity_table, search_params):
     criteria = []
-    for field, value in search_params:
-        criteria.append(f"{entity_table}.{field} ILIKE '%{value}%")
+    for field, value in search_params.items():
+        criteria.append(f"{entity_table}.{field} ILIKE '%{value}%'")
 
     return " AND ".join(criteria)
 
@@ -76,12 +76,12 @@ def page_entities(entity_table, offset, limit, order_by, order, search_params):
     """Returns a paginated set of entities"""
     query = f"""SELECT *
            FROM {entity_table}
-           WHERE blocked = false
-           ORDER BY {order_by} {order}
-           LIMIT {limit} OFFSET {offset}"""
+           WHERE blocked = false"""
 
     if search_params is not None:
         query += " AND " + _setup_search_criteria(entity_table, search_params)
+
+    query += f" ORDER BY {order_by} {order} LIMIT {limit} OFFSET {offset}"
 
     try:
         rows = exec_steady(query)
