@@ -1,41 +1,5 @@
-from datetime import datetime
-
 from .entity import count_entities, delete_entity, find_entity, page_entities
 from .helper import run_store_procedure
-
-
-def _marshall(entity):
-    """ Gets a contract from the database and marshalls the it's data"""
-    contract = {}
-    attributes = set(
-        [
-            "id",
-            "number",
-            "title",
-            "description",
-            "provider",
-            "delivery_stage",
-            "initial_contracted_amount",
-            "kickoff",
-            "ending",
-            "down_payment",
-            "down_payment_amount",
-            "ext_agreement",
-            "ext_agreement_amount",
-            "final_contracted_amount",
-            "total_amount_paid",
-            "outstanding_down_payment",
-            "inceptor_uuid",
-        ]
-    )
-
-    for attr in attributes:
-        if type(entity[attr]) == datetime:
-            contract[attr] = entity[attr].strftime("%Y-%m-%d")
-        else:
-            contract[attr] = entity[attr]
-
-    return contract
 
 
 def _alter_contract(**kwargs):
@@ -100,7 +64,7 @@ def find(contract_id):
     """Find a contract as per id"""
     entity = find_entity("contracts", contract_id)
 
-    return _marshall(entity)
+    return entity
 
 
 def count(search_params):
@@ -109,8 +73,6 @@ def count(search_params):
 
 
 def page(page_number, page_size, order_by, asc, search_params):
-    rows = page_entities(
+    return page_entities(
         "contracts", page_number, page_size, order_by, asc, search_params
     )
-
-    return [_marshall(entity) for entity in rows]

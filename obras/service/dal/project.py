@@ -2,11 +2,6 @@ from .entity import count_entities, delete_entity, find_entity, page_entities
 from .helper import run_store_procedure
 
 
-def _marshall(entity):
-    """Gets the database entity into a more usable object"""
-    return entity
-
-
 def _alter_project(**kwargs):
     """Calls sp in charge of create and edit a project"""
     sql = """select * from alter_project(
@@ -40,9 +35,7 @@ def _alter_project(**kwargs):
 def create(**kwargs):
     """Creates a project entity"""
     kwargs["id"] = 0
-    entity = _alter_project(**kwargs)
-
-    return _marshall(entity)
+    return _alter_project(**kwargs)
 
 
 def edit(**kwargs):
@@ -57,9 +50,7 @@ def block(project_id):
 
 def find(project_id):
     """Find a project as per id"""
-    entity = find_entity("projects", project_id)
-
-    return _marshall(entity)
+    return find_entity("projects", project_id)
 
 
 def count(search_params=None):
