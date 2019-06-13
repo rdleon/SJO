@@ -1,5 +1,36 @@
+from flask_restplus import fields
+
+from genl.restplus import api
+
 from .entity import count_entities, delete_entity, find_entity, page_entities
 from .helper import run_store_procedure
+
+model = api.model(
+    "Project Model",
+    {
+        "id": fields.Integer(required=True, description="Unique identifier"),
+        "title": fields.String(required=True, description="Project name"),
+        "description": fields.String(
+            required=True, description="Short description of the project"
+        ),
+        "city": fields.Integer(required=True, description="DB id of the city"),
+        "category": fields.Integer(required=True, description="DB id of the category"),
+        "department": fields.Integer(
+            required=True, description="DB id of the department"
+        ),
+        "budget": fields.Integer(required=True, description="DB id of the budget"),
+        "contract": fields.Integer(required=True, description="DB id of the contract"),
+        "planed_kickoff": fields.Date(
+            required=True, description="When the project is planned to start"
+        ),
+        "planed_ending": fields.Date(
+            required=True, description="When the project is planned to end"
+        ),
+        "inceptor_uuid": fields.String(
+            required=True, description="UUID of the user who created the project"
+        ),
+    },
+)
 
 
 def _alter_project(**kwargs):

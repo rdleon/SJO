@@ -1,5 +1,19 @@
+from flask_restplus import fields
+
+from genl.restplus import api
+
 from .entity import count_entities, delete_entity, find_entity, page_entities
 from .helper import run_store_procedure
+
+model = api.model(
+    "Provider Model",
+    {
+        "id": fields.Integer(description="The unique identifier"),
+        "title": fields.String(required=True, description="Name of provider"),
+        "description": fields.String(required=True, description="Desc of provider"),
+        "inceptor_uuid": fields.String(required=True, description="uuid creator"),
+    },
+)
 
 
 def _alter_provider(**kwargs):

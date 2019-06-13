@@ -1,5 +1,52 @@
+from flask_restplus import fields
+
+from genl.restplus import api
+
 from .entity import count_entities, delete_entity, find_entity, page_entities
 from .helper import run_store_procedure
+
+model = api.model(
+    "Contract Model",
+    {
+        "id": fields.Integer(description="The unique identifier"),
+        "number": fields.String(required=True, description="Number of contract"),
+        "title": fields.String(required=True, description="Name of contract"),
+        "description": fields.String(required=True, description="Desc of contract"),
+        "provider": fields.Integer(required=True, description="Id of privider"),
+        "delivery_stage": fields.Integer(
+            required=True, description="Delivery stage of contract"
+        ),
+        "initial_contracted_amount": fields.Float(
+            required=True, description="Initial contracted amount of contract"
+        ),
+        "kickoff": fields.Date(
+            required=True, description="Start date of project according to contract"
+        ),
+        "ending": fields.Date(
+            required=True, description="End date of project according to contract"
+        ),
+        "down_payment": fields.DateTime(required=True, description="Down payment date"),
+        "down_payment_amount": fields.Float(
+            required=True, description="Down payment amount"
+        ),
+        "ext_agreement": fields.Date(
+            required=True, description="Date of the economic expansion agreement"
+        ),
+        "ext_agreement_amount": fields.Float(
+            required=True, description="Amount of the economic expansion agreement"
+        ),
+        "final_contracted_amount": fields.Float(
+            required=True, description="Final contracted amount"
+        ),
+        "total_amount_paid": fields.Float(
+            required=True, description="Total amount paid"
+        ),
+        "outstanding_down_payment": fields.Float(
+            required=True, description="Outstanding down payment"
+        ),
+        "inceptor_uuid": fields.String(required=True, description="uuid creator"),
+    },
+)
 
 
 def _alter_contract(**kwargs):
