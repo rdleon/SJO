@@ -1,3 +1,4 @@
 .env
 obras_venv/
+service/logs/
 **/__pycache__/
