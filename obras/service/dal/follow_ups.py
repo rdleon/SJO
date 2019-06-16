@@ -10,8 +10,8 @@ model = api.model(
     {
         "id": fields.Integer(description="The unique db identifier"),
         "project": fields.Integer(required=True, description="Id of project"),
-        "verified_progress": fields.String(),
-        "financial_advance": fields.String(),
+        "verified_progress": fields.Integer(),
+        "financial_advance": fields.Integer(),
         "img_paths": fields.String(),
         "check_stage": fields.Integer(),
         "check_date": fields.Date(),
@@ -20,9 +20,9 @@ model = api.model(
 )
 
 
-def _alter_follow_up(**kwargs):
+def _alter_follow_ups(**kwargs):
     """Calls a store procedure to create or edit a follow up record"""
-    sql = """SELECT * FROM alter_follow_up(
+    sql = """SELECT * FROM alter_follow_ups(
     {}::integer,
     {}::integer,
     {}::smallint,
@@ -49,11 +49,11 @@ def _alter_follow_up(**kwargs):
 def create(**kwargs):
     """Creates follow up entity"""
     kwargs["id"] = 0
-    return _alter_follow_up(**kwargs)
+    return _alter_follow_ups(**kwargs)
 
 
 def edit(**kwargs):
-    return _alter_follow_up(**kwargs)
+    return _alter_follow_ups(**kwargs)
 
 
 def block(follow_up_id):
