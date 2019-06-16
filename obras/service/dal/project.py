@@ -65,6 +65,26 @@ def _alter_project(**kwargs):
     return run_store_procedure(sql)
 
 
+def _setup_search_criteria(search_params):
+    filters = {
+        "project": "projects.id",
+        "contract_number": "contracts.id",
+        "contract": "contracts.id",
+        "category": "categories.id",
+    }
+
+    if search_params is not None:
+        criteria = []
+        for field, value in search_params.items():
+            criteria.append(f"{filters[field]} = {value}")
+
+        search = " AND " + " AND ".join(criteria)
+    else:
+        search = ""
+
+    return search
+
+
 def paged_with_follow_ups(offset=0, limit=10, search_params=None):
     sql = """
     SELECT
@@ -90,11 +110,8 @@ def paged_with_follow_ups(offset=0, limit=10, search_params=None):
     OFFSET {} LIMIT {};
     """
 
-    if search_params is not None:
-        search = " AND "
-    else:
-        search = ""
-
+    search = _setup_search_criteria(search_params)
+    print(search)
     sql = sql.format(search, offset, limit)
 
     try:
@@ -120,10 +137,15 @@ def paged_with_follow_ups_count(search_params=None):
     JOIN categories ON categories.id = projects.category
     JOIN departments ON departments.id = projects.department
     LEFT JOIN follow_ups ON follow_ups.project = projects.id
-    WHERE projects.blocked = false
+    WHERE projects.blocked = false {}
     GROUP BY projects.id, follow_ups.check_stage
     ORDER BY follow_ups.check_stage
     """
+
+    search = _setup_search_criteria(search_params)
+    print(search)
+    sql = sql.format(search)
+
     try:
         rows = exec_steady(sql)
     except EmptySetError:
