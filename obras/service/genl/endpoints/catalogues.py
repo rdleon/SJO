@@ -1,7 +1,9 @@
 from flask_restplus import Resource
 
 from dal.entity import page_entities
+from dal.helper import exec_steady
 from genl.restplus import api
+from misc.helperpg import EmptySetError
 
 ns = api.namespace("catalogues", description="Read-only catalogues of data")
 
@@ -9,12 +11,26 @@ ns = api.namespace("catalogues", description="Read-only catalogues of data")
 def _get_100_entities(table_name):
     offset = 0
     limit = 100
-    order_by = "id"
-    order = "asc"
 
-    search_params = None
+    sql = """
+    SELECT id, title, description
+    FROM {}
+    ORDER BY id ASC
+    OFFSET {} LIMIT {};
+    """.format(
+        table_name, offset, limit
+    )
 
-    return page_entities(table_name, offset, limit, order_by, order, search_params)
+    try:
+        rows = exec_steady(sql)
+    except EmptySetError:
+        return []
+
+    entities = []
+    for row in rows:
+        entities.append(dict(row))
+
+    return entities
 
 
 @ns.route("/delivery_stages")
