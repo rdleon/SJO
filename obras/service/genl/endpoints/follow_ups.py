@@ -50,7 +50,7 @@ class FollowUpCollection(Resource):
 
 
 @ns.route("/count")
-class ContractCount(Resource):
+class FollowUpCount(Resource):
     @api.param("project", "")
     @api.param("verified_progress", "")
     @api.param("check_stage", "")
@@ -68,7 +68,7 @@ class ContractCount(Resource):
 
 @ns.route("/<int:follow_up_id>")
 @api.response(404, "Follow up not found.")
-class ContractItem(Resource):
+class FollowUpItem(Resource):
     @api.marshal_with(dal.follow_up.model)
     def get(self, follow_up_id):
         """
@@ -77,7 +77,7 @@ class ContractItem(Resource):
         try:
             follow_up = dal.follow_up.find(follow_up_id)
         except EmptySetError:
-            return {"message": "Contract not found"}, 404
+            return {"message": "Follow up not found"}, 404
 
         return follow_up
 
