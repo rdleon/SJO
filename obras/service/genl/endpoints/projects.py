@@ -60,6 +60,23 @@ class ProjectCount(Resource):
         return {"count": count}
 
 
+@ns.route("/with_follow_up")
+class ProjectsWithFollowUpCollection(Resource):
+    @api.param("offset", "From which record to start recording, used for pagination")
+    @api.param("limit", "How many records to return")
+    def get(self):
+        offset = request.args.get("offset", 0)
+        limit = request.args.get("limit", 0)
+
+        return dal.project.paged_with_follow_ups(offset, limit)
+
+
+@ns.route("/with_follow_up/count")
+class ProjectsWithFollowUpCount(Resource):
+    def get(self):
+        return dal.project.paged_with_follow_ups_count()
+
+
 @ns.route("/<int:project_id>")
 @api.response(404, "Project not found.")
 class ProjectItem(Resource):
