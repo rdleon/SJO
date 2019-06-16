@@ -1,17 +1,20 @@
 import logging
-from flask import Flask, Blueprint
+
+from flask import Blueprint, Flask
+
+from genl.endpoints import contracts, follow_ups, projects, providers
 from genl.restplus import api
-from genl.endpoints import providers, contracts, projects
 
 
 def setup_app(flask_app):
     """Setup flask app instance"""
-    blueprint = Blueprint('api', __name__, url_prefix='/api/v1')
+    blueprint = Blueprint("api", __name__, url_prefix="/api/v1")
     api.init_app(blueprint)
 
     api.add_namespace(providers.ns)
     api.add_namespace(contracts.ns)
     api.add_namespace(projects.ns)
+    api.add_namespace(follow_ups.ns)
 
     flask_app.register_blueprint(blueprint)
 
@@ -22,7 +25,7 @@ setup_app(app)
 
 if __name__ == "__main__":
     # For the sake of faster development
-    app.run(host='0.0.0.0')
+    app.run(host="0.0.0.0")
 else:
     # On production It is needed for WSGI
     gunicorn_logger = logging.getLogger("gunicorn.error")

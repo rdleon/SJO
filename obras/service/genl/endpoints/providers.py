@@ -1,28 +1,17 @@
 from flask import json, request
-from flask_restplus import Resource, fields
+from flask_restplus import Resource
 
 import dal.provider
 from genl.restplus import api
 from misc.helper import get_search_params
 from misc.helperpg import EmptySetError
 
-provider_model = api.model(
-    "Provider Model",
-    {
-        "id": fields.Integer(description="The unique identifier"),
-        "title": fields.String(required=True, description="Name of provider"),
-        "description": fields.String(required=True, description="Desc of provider"),
-        "inceptor_uuid": fields.String(required=True, description="uuid creator"),
-    },
-)
-
-
 ns = api.namespace("providers", description="Operations related to providers")
 
 
 @ns.route("/")
 class ProviderCollection(Resource):
-    @api.marshal_list_with(provider_model)
+    @api.marshal_list_with(dal.provider.model)
     @api.param("offset", "From which record to start recording, used for pagination")
     @api.param("limit", "How many records to return")
     @api.param("order_by", "Which field use to order the providers")
@@ -43,7 +32,7 @@ class ProviderCollection(Resource):
         return dal.provider.paged(offset, limit, order_by, order, search_params)
 
     @api.response(201, "Provider successfully created.")
-    @api.expect(provider_model)
+    @api.expect(dal.provider.model)
     def post(self):
         """
         Creates a new provider.
@@ -72,7 +61,7 @@ class ProvidersCount(Resource):
 @ns.route("/<int:provider_id>")
 @api.response(404, "Provider not found.")
 class ProviderItem(Resource):
-    @api.marshal_with(provider_model)
+    @api.marshal_with(dal.provider.model)
     def get(self, provider_id):
         """
         Returns a provider.
@@ -85,7 +74,7 @@ class ProviderItem(Resource):
         return provider
 
     @api.response(204, "Provider successfully updated.")
-    @api.expect(provider_model)
+    @api.expect(dal.provider.model)
     def put(self, provider_id):
         """
         Updates a provider.
