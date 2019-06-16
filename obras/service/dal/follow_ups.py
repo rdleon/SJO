@@ -1,9 +1,10 @@
 from flask_restplus import fields
 
 from genl.restplus import api
+from misc.helperpg import EmptySetError
 
-from .entity import count_entities, delete_entity, find_entity, page_entities
-from .helper import run_store_procedure
+from .entity import count_entities, delete_entity, find_entity
+from .helper import exec_steady, run_store_procedure
 
 model = api.model(
     "Follow Up Model",
@@ -18,6 +19,14 @@ model = api.model(
         "inceptor_uuid": fields.String(required=True, description="UUID of creator"),
     },
 )
+
+
+def _setup_search_criteria(search_params):
+    criteria = []
+    for field, value in search_params.items():
+        criteria.append(f"follow_ups.{field} = {value}")
+
+    return " AND ".join(criteria)
 
 
 def _alter_follow_ups(**kwargs):
@@ -70,5 +79,23 @@ def count(search_params=None):
     return count_entities("follow_ups", search_params)
 
 
-def paged(page, size, order_by, asc, search_params=None):
-    return page_entities("follow_ups", page, size, order_by, asc, search_params)
+def paged(offset, limit, order_by, order, search_params=None):
+    query = """SELECT *
+           FROM follow_ups
+           WHERE blocked = false"""
+
+    if search_params is not None:
+        query += " AND " + _setup_search_criteria(search_params)
+
+    query += f" ORDER BY {order_by} {order} LIMIT {limit} OFFSET {offset}"
+
+    try:
+        rows = exec_steady(query)
+    except EmptySetError:
+        return []
+
+    entities = []
+    for row in rows:
+        entities.append(dict(row))
+
+    return entities
