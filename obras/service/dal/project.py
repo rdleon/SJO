@@ -3,7 +3,8 @@ from flask_restplus import fields
 from genl.restplus import api
 from misc.helperpg import EmptySetError
 
-from .entity import count_entities, delete_entity, find_entity, page_entities
+from .entity import (MultipleResultsFound, NoResultFound, count_entities,
+                     delete_entity, find_entity, page_entities)
 from .helper import exec_steady, run_store_procedure
 
 model = api.model(
@@ -67,6 +68,7 @@ def _alter_project(**kwargs):
 def paged_with_follow_ups(offset=0, limit=10):
     sql = """
     SELECT
+        distinct(projects.id),
         projects.id,
         projects.title,
         projects.city AS city_id,
@@ -82,6 +84,7 @@ def paged_with_follow_ups(offset=0, limit=10):
     JOIN categories ON categories.id = projects.category
     JOIN departments ON departments.id = projects.department
     LEFT JOIN follow_ups ON follow_ups.project = projects.id
+    WHERE projects.blocked = false
     ORDER BY follow_ups.check_stage
     OFFSET {} LIMIT {};
     """.format(
@@ -100,16 +103,33 @@ def paged_with_follow_ups(offset=0, limit=10):
     return entities
 
 
-def paged_with_follow_ups_count():
-    sql = """SELECT count(projects.id)
+def paged_with_follow_ups_count(search_params=None):
+    sql = """
+    SELECT
+        distinct(projects.id),
+        count(projects.id)::int as total,
+        follow_ups.check_stage
     FROM projects
+    JOIN contracts ON contracts.id = projects.contract
     JOIN categories ON categories.id = projects.category
     JOIN departments ON departments.id = projects.department
-    JOIN follow_ups ON follow_ups.project = projects.id
+    LEFT JOIN follow_ups ON follow_ups.project = projects.id
+    WHERE projects.blocked = false
+    GROUP BY projects.id, follow_ups.check_stage
     ORDER BY follow_ups.check_stage
     """
+    try:
+        rows = exec_steady(sql)
+    except EmptySetError:
+        return 0
 
-    return exec_steady(sql)
+    # For this case we are just expecting one row
+    if len(rows) == 0:
+        raise NoResultFound("Just expecting one total as a result")
+    elif len(rows) > 1:
+        raise MultipleResultsFound("Just expecting one row as a result")
+
+    return rows.pop()["total"]
 
 
 def create(**kwargs):
