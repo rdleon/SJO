@@ -64,17 +64,32 @@ class ProjectCount(Resource):
 class ProjectsWithFollowUpCollection(Resource):
     @api.param("offset", "From which record to start recording, used for pagination")
     @api.param("limit", "How many records to return")
+    @api.param("project", "The DB id of a project")
+    @api.param("contract_number", "Contract number")
+    @api.param("contract", "Contract DB id")
+    @api.param("category", "Category id")
     def get(self):
         offset = request.args.get("offset", 0)
         limit = request.args.get("limit", 0)
 
-        return dal.project.paged_with_follow_ups(offset, limit)
+        search_params = get_search_params(
+            request.args, ["project", "contract", "contract_number", "category"]
+        )
+
+        return dal.project.paged_with_follow_ups(offset, limit, search_params)
 
 
 @ns.route("/with_follow_up/count")
 class ProjectsWithFollowUpCount(Resource):
+    @api.param("project", "The DB id of a project")
+    @api.param("contract_number", "Contract number")
+    @api.param("contract", "Contract DB id")
+    @api.param("category", "Category id")
     def get(self):
-        return dal.project.paged_with_follow_ups_count()
+        search_params = get_search_params(
+            request.args, ["project", "contract", "contract_number", "category"]
+        )
+        return dal.project.paged_with_follow_ups_count(search_params)
 
 
 @ns.route("/<int:project_id>")
