@@ -65,13 +65,14 @@ def _alter_project(**kwargs):
     return run_store_procedure(sql)
 
 
-def paged_with_follow_ups(offset=0, limit=10):
+def paged_with_follow_ups(offset=0, limit=10, search_params=None):
     sql = """
     SELECT
         distinct(projects.id),
         projects.id,
         projects.title,
         projects.city AS city_id,
+        contracts.number AS contract_number,
         departments.title AS department,
         departments.id AS department_id,
         categories.title AS category,
@@ -84,12 +85,17 @@ def paged_with_follow_ups(offset=0, limit=10):
     JOIN categories ON categories.id = projects.category
     JOIN departments ON departments.id = projects.department
     LEFT JOIN follow_ups ON follow_ups.project = projects.id
-    WHERE projects.blocked = false
+    WHERE projects.blocked = false {}
     ORDER BY follow_ups.check_stage
     OFFSET {} LIMIT {};
-    """.format(
-        offset, limit
-    )
+    """
+
+    if search_params is not None:
+        search = " AND "
+    else:
+        search = ""
+
+    sql = sql.format(search, offset, limit)
 
     try:
         rows = exec_steady(sql)
