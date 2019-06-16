@@ -65,17 +65,23 @@ def _alter_project(**kwargs):
 
 
 def paged_with_follow_ups(offset=0, limit=10):
-    sql = """SELECT
+    sql = """
+    SELECT
         projects.id,
+        projects.title,
+        projects.city AS city_id,
         departments.title AS department,
+        departments.id AS department_id,
         categories.title AS category,
+        categories.id AS category_id,
         follow_ups.verified_progress,
         follow_ups.check_stage,
         follow_ups.check_date
     FROM projects
+    JOIN contracts ON contracts.id = projects.contract
     JOIN categories ON categories.id = projects.category
     JOIN departments ON departments.id = projects.department
-    JOIN follow_ups ON follow_ups.project = projects.id
+    LEFT JOIN follow_ups ON follow_ups.project = projects.id
     ORDER BY follow_ups.check_stage
     OFFSET {} LIMIT {};
     """.format(
