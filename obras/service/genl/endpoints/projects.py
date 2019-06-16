@@ -4,6 +4,7 @@ from flask import request
 from flask_restplus import Resource
 
 import dal.project
+from dal.follow_ups import project_follow_ups_model
 from genl.restplus import api
 from misc.helper import get_search_params
 from misc.helperpg import EmptySetError
@@ -68,9 +69,10 @@ class ProjectsWithFollowUpCollection(Resource):
     @api.param("contract_number", "Contract number")
     @api.param("contract", "Contract DB id")
     @api.param("category", "Category id")
+    @api.marshal_with(project_follow_ups_model)
     def get(self):
         offset = request.args.get("offset", 0)
-        limit = request.args.get("limit", 0)
+        limit = request.args.get("limit", 10)
 
         search_params = get_search_params(
             request.args, ["project", "contract", "contract_number", "category"]

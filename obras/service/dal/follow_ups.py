@@ -21,6 +21,23 @@ model = api.model(
     },
 )
 
+project_follow_ups_model = api.model(
+    "Projects with follow ups model",
+    {
+        "project_id": fields.Integer(),
+        "project_title": fields.String(),
+        "city_id": fields.Integer(),
+        "contract_number": fields.String(),
+        "department_id": fields.Integer(),
+        "department": fields.String(),
+        "category_id": fields.Integer(),
+        "category": fields.String(),
+        "verified_progess": fields.Integer(),
+        "check_stage": fields.Integer(),
+        "check_date": fields.Date(),
+    },
+)
+
 
 def _setup_search_criteria(search_params):
     criteria = []

@@ -89,8 +89,8 @@ def paged_with_follow_ups(offset=0, limit=10, search_params=None):
     sql = """
     SELECT
         distinct(projects.id),
-        projects.id,
-        projects.title,
+        projects.id AS project_id,
+        projects.title AS project_title,
         projects.city AS city_id,
         contracts.number AS contract_number,
         departments.title AS department,
@@ -111,7 +111,6 @@ def paged_with_follow_ups(offset=0, limit=10, search_params=None):
     """
 
     search = _setup_search_criteria(search_params)
-    print(search)
     sql = sql.format(search, offset, limit)
 
     try:
@@ -143,7 +142,6 @@ def paged_with_follow_ups_count(search_params=None):
     """
 
     search = _setup_search_criteria(search_params)
-    print(search)
     sql = sql.format(search)
 
     try:
