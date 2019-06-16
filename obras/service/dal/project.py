@@ -1,6 +1,7 @@
 from flask_restplus import fields
 
 from genl.restplus import api
+from misc.helperpg import EmptySetError
 
 from .entity import count_entities, delete_entity, find_entity, page_entities
 from .helper import exec_steady, run_store_procedure
@@ -81,7 +82,16 @@ def paged_with_follow_ups(offset=0, limit=10):
         offset, limit
     )
 
-    return exec_steady(sql)
+    try:
+        rows = exec_steady(sql)
+    except EmptySetError:
+        return []
+
+    entities = []
+    for row in rows:
+        entities.append(dict(row))
+
+    return entities
 
 
 def paged_with_follow_ups_count():

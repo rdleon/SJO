@@ -32,7 +32,7 @@ class FollowUpCollection(Resource):
             request.args, ["project", "verified_progress", "check_stage"]
         )
 
-        follow_up = dal.follow_ups.page(offset, limit, order_by, order, search_params)
+        follow_up = dal.follow_ups.paged(offset, limit, order_by, order, search_params)
 
         return follow_up
 
