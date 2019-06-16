@@ -1,7 +1,7 @@
 from flask import json, request
 from flask_restplus import Resource
 
-import dal.follow_up
+import dal.follow_ups
 from genl.restplus import api
 from misc.helper import get_search_params
 from misc.helperpg import EmptySetError
@@ -11,7 +11,7 @@ ns = api.namespace("follow_ups", description="Operations related to follow_ups")
 
 @ns.route("/")
 class FollowUpCollection(Resource):
-    @api.marshal_list_with(dal.follow_up.model)
+    @api.marshal_list_with(dal.follow_ups.model)
     @api.param("offset", "From which record to start recording, used for pagination")
     @api.param("limit", "How many records to return")
     @api.param("order_by", "Which field use to order the providers")
@@ -32,19 +32,19 @@ class FollowUpCollection(Resource):
             request.args, ["project", "verified_progress", "check_stage"]
         )
 
-        follow_up = dal.follow_up.page(offset, limit, order_by, order, search_params)
+        follow_up = dal.follow_ups.page(offset, limit, order_by, order, search_params)
 
         return follow_up
 
     @api.response(201, "Follow up successfully created.")
-    @api.expect(dal.follow_up.model)
-    @api.marshal_with(dal.follow_up.model)
+    @api.expect(dal.follow_ups.model)
+    @api.marshal_with(dal.follow_ups.model)
     def post(self):
         """
         Creates a new follow_up.
         """
         follow_up = json.loads(request.data)
-        dal.follow_up.create(**follow_up)
+        dal.follow_ups.create(**follow_up)
 
         return follow_up, 201
 
@@ -59,7 +59,7 @@ class FollowUpCount(Resource):
             request.args, ["project", "verified_progress", "check_stage"]
         )
         try:
-            count = dal.follow_up.count(search_params)
+            count = dal.follow_ups.count(search_params)
         except EmptySetError:
             count = 0
 
@@ -69,28 +69,28 @@ class FollowUpCount(Resource):
 @ns.route("/<int:follow_up_id>")
 @api.response(404, "Follow up not found.")
 class FollowUpItem(Resource):
-    @api.marshal_with(dal.follow_up.model)
+    @api.marshal_with(dal.follow_ups.model)
     def get(self, follow_up_id):
         """
         Returns a follow_up.
         """
         try:
-            follow_up = dal.follow_up.find(follow_up_id)
+            follow_up = dal.follow_ups.find(follow_up_id)
         except EmptySetError:
             return {"message": "Follow up not found"}, 404
 
         return follow_up
 
     @api.response(200, "Follow up successfully updated.")
-    @api.expect(dal.follow_up.model)
-    @api.marshal_with(dal.follow_up.model)
+    @api.expect(dal.follow_ups.model)
+    @api.marshal_with(dal.follow_ups.model)
     def put(self, follow_up_id):
         """
         Updates a follow_up.
         """
         follow_up = json.loads(request.data)
         follow_up["id"] = follow_up_id
-        dal.follow_up.edit(**follow_up)
+        dal.follow_ups.edit(**follow_up)
 
         return follow_up, 200
 
@@ -99,6 +99,6 @@ class FollowUpItem(Resource):
         """
         Deletes a follow_up.
         """
-        dal.follow_up.block(follow_up_id)
+        dal.follow_ups.block(follow_up_id)
 
         return None, 204
