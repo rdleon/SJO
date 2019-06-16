@@ -3,7 +3,8 @@ from flask_restplus import fields
 from genl.restplus import api
 from misc.helperpg import EmptySetError
 
-from .entity import count_entities, delete_entity, find_entity
+from .entity import (MultipleResultsFound, NoResultFound, delete_entity,
+                     find_entity)
 from .helper import exec_steady, run_store_procedure
 
 model = api.model(
@@ -76,7 +77,23 @@ def find(follow_up_id):
 
 def count(search_params=None):
     """Returns the number of non-logically deleted follow-ups"""
-    return count_entities("follow_ups", search_params)
+    """Counts the entities non blocked"""
+    query = """SELECT count(id)::int as total
+           FROM follow_ups
+           WHERE blocked = false"""
+
+    if search_params is not None:
+        query += " AND " + _setup_search_criteria(search_params)
+
+    rows = exec_steady(query)
+
+    # For this case we are just expecting one row
+    if len(rows) == 0:
+        raise NoResultFound("Just expecting one total as a result")
+    elif len(rows) > 1:
+        raise MultipleResultsFound("Just expecting one row as a result")
+
+    return rows.pop()["total"]
 
 
 def paged(offset, limit, order_by, order, search_params=None):
