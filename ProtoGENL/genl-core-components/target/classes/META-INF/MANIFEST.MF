@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-Implementation-Title: genl-core-components
-Implementation-Version: 0.0.1-SNAPSHOT
-Built-By: PC1
-Implementation-Vendor-Id: MainGENL
-Build-Jdk: 1.8.0_171
-Implementation-URL: http://ProtoGENL/genl-core-components/
-Created-By: Maven Integration for Eclipse
-
