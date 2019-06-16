@@ -128,8 +128,7 @@ def paged_with_follow_ups(offset=0, limit=10, search_params=None):
 def paged_with_follow_ups_count(search_params=None):
     sql = """
     SELECT
-        distinct(projects.id),
-        count(projects.id)::int as total,
+        count(distinct(projects.id))::int as total,
         follow_ups.check_stage
     FROM projects
     JOIN contracts ON contracts.id = projects.contract
