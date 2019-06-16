@@ -3,7 +3,7 @@ from flask_restplus import fields
 from genl.restplus import api
 
 from .entity import count_entities, delete_entity, find_entity, page_entities
-from .helper import run_store_procedure
+from .helper import exec_steady, run_store_procedure
 
 model = api.model(
     "Project Model",
@@ -63,6 +63,39 @@ def _alter_project(**kwargs):
     return run_store_procedure(sql)
 
 
+def paged_with_follow_ups(offset=0, limit=10):
+    sql = """SELECT
+        projects.id,
+        departments.title AS department,
+        categories.title AS category,
+        follow_ups.verified_progress,
+        follow_ups.check_stage,
+        follow_ups.check_date
+    FROM projects
+    JOIN categories ON categories.id = projects.category
+    JOIN departments ON departments.id = projects.department
+    JOIN follow_ups ON follow_ups.project = projects.id
+    ORDER BY follow_ups.check_stage
+    OFFSET {} LIMIT {};
+    """.format(
+        offset, limit
+    )
+
+    return exec_steady(sql)
+
+
+def paged_with_follow_ups_count():
+    sql = """SELECT count(projects.id)
+    FROM projects
+    JOIN categories ON categories.id = projects.category
+    JOIN departments ON departments.id = projects.department
+    JOIN follow_ups ON follow_ups.project = projects.id
+    ORDER BY follow_ups.check_stage
+    """
+
+    return exec_steady(sql)
+
+
 def create(**kwargs):
     """Creates a project entity"""
     kwargs["id"] = 0
@@ -89,5 +122,5 @@ def count(search_params=None):
     return count_entities("projects", search_params)
 
 
-def paged(page, size, order_by, asc, search_params=None):
-    return page_entities("projects", page, size, order_by, asc, search_params)
+def paged(offset, limit=10, order_by="id", order="asc", search_params=None):
+    return page_entities("projects", offset, limit, order_by, order, search_params)
