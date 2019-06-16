@@ -32,7 +32,7 @@ project_follow_ups_model = api.model(
         "department": fields.String(),
         "category_id": fields.Integer(),
         "category": fields.String(),
-        "verified_progess": fields.Integer(),
+        "verified_progress": fields.Integer(),
         "check_stage": fields.Integer(),
         "check_date": fields.Date(),
     },
