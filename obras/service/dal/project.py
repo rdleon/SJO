@@ -86,6 +86,9 @@ def _setup_search_criteria(search_params):
 
 
 def paged_with_follow_ups(offset=0, limit=10, search_params=None):
+    """Paginated results that include the latest status
+    using the follow up to calculate them
+    """
     sql = """
     SELECT DISTINCT ON (projects.id)
         projects.id AS project_id,
@@ -128,15 +131,16 @@ def paged_with_follow_ups(offset=0, limit=10, search_params=None):
 
 
 def paged_with_follow_ups_count(search_params=None):
+    """Returns the number of records, for use with the pagination"""
     sql = """
-    SELECT
-        count(*)::int as total,
+    SELECT count(DISTINCT projects.id)::int AS total
     FROM projects
     JOIN contracts ON contracts.id = projects.contract
     JOIN categories ON categories.id = projects.category
     JOIN departments ON departments.id = projects.department
     LEFT JOIN follow_ups ON follow_ups.project = projects.id
     WHERE projects.blocked = false {}
+    GROUP BY projects.id
     """
 
     search = _setup_search_criteria(search_params)
