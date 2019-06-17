@@ -87,17 +87,19 @@ def _setup_search_criteria(search_params):
 
 def paged_with_follow_ups(offset=0, limit=10, search_params=None):
     sql = """
-    SELECT
-        distinct(projects.id),
+    SELECT DISTINCT ON (projects.id)
         projects.id AS project_id,
         projects.title AS project_title,
         projects.city AS city_id,
+        contracts.id AS contract_id,
         contracts.number AS contract_number,
-        departments.title AS department,
         departments.id AS department_id,
-        categories.title AS category,
+        departments.title AS department,
         categories.id AS category_id,
+        categories.title AS category,
+        follow_ups.id,
         follow_ups.verified_progress,
+        follow_ups.financial_advance,
         follow_ups.check_stage,
         follow_ups.check_date
     FROM projects
@@ -106,7 +108,7 @@ def paged_with_follow_ups(offset=0, limit=10, search_params=None):
     JOIN departments ON departments.id = projects.department
     LEFT JOIN follow_ups ON follow_ups.project = projects.id
     WHERE projects.blocked = false {}
-    ORDER BY follow_ups.check_stage
+    ORDER BY projects.id, follow_ups.check_stage DESC
     OFFSET {} LIMIT {};
     """
 
@@ -128,14 +130,13 @@ def paged_with_follow_ups(offset=0, limit=10, search_params=None):
 def paged_with_follow_ups_count(search_params=None):
     sql = """
     SELECT
-        count(distinct(projects.id))::int as total
+        count(*)::int as total,
     FROM projects
     JOIN contracts ON contracts.id = projects.contract
     JOIN categories ON categories.id = projects.category
     JOIN departments ON departments.id = projects.department
     LEFT JOIN follow_ups ON follow_ups.project = projects.id
     WHERE projects.blocked = false {}
-    GROUP BY projects.id
     """
 
     search = _setup_search_criteria(search_params)
