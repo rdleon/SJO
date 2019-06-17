@@ -139,8 +139,7 @@ def paged_with_follow_ups_count(search_params=None):
     JOIN categories ON categories.id = projects.category
     JOIN departments ON departments.id = projects.department
     LEFT JOIN follow_ups ON follow_ups.project = projects.id
-    WHERE projects.blocked = false {}
-    GROUP BY projects.id
+    WHERE projects.blocked = false {};
     """
 
     search = _setup_search_criteria(search_params)
