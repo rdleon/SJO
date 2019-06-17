@@ -91,7 +91,9 @@ class ProjectsWithFollowUpCount(Resource):
         search_params = get_search_params(
             request.args, ["project", "contract", "contract_number", "category"]
         )
-        return dal.project.paged_with_follow_ups_count(search_params)
+        count = dal.project.paged_with_follow_ups_count(search_params)
+
+        return {"count": count}
 
 
 @ns.route("/<int:project_id>")
