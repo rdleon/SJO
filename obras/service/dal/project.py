@@ -108,7 +108,7 @@ def paged_with_follow_ups(offset=0, limit=10, search_params=None):
     JOIN departments ON departments.id = projects.department
     LEFT JOIN follow_ups ON follow_ups.project = projects.id
     WHERE projects.blocked = false {}
-    ORDER BY projects.id, follow_ups.check_stage DESC
+    ORDER BY projects.id, follow_ups.check_date DESC
     OFFSET {} LIMIT {};
     """
 
