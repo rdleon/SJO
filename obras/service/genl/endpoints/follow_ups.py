@@ -17,7 +17,7 @@ def _save_files(files, follow_up=None):
     img_paths = []
     paths = None
 
-    if follow_up:
+    if follow_up and follow_up["img_paths"]:
         reader = csv.reader(follow_up["img_paths"], delimiter=",")
         for row in reader:
             for path in row:
@@ -33,7 +33,7 @@ def _save_files(files, follow_up=None):
         line = StringIO()
         writer = csv.writer(line)
         writer.writerow(img_paths)
-        paths = line.getvalue()
+        paths = line.getvalue().strip()
 
     return paths
 
@@ -74,7 +74,10 @@ class FollowUpCollection(Resource):
         """
         follow_up = json.loads(request.data)
 
-        dal.follow_ups.create(**follow_up)
+        (rc, err_msg) = dal.follow_ups.create(**follow_up)
+
+        if rc > 0:
+            follow_up["id"] = rc
 
         return follow_up, 201
 
