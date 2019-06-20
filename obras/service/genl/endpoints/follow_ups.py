@@ -1,3 +1,7 @@
+import csv
+import os
+from io import StringIO
+
 from flask import json, request
 from flask_restplus import Resource
 
@@ -7,6 +11,31 @@ from misc.helper import get_search_params
 from misc.helperpg import EmptySetError
 
 ns = api.namespace("follow_ups", description="Operations related to follow_ups")
+
+
+def _save_files(files, follow_up=None):
+    img_paths = []
+    paths = None
+
+    if follow_up and follow_up["img_paths"]:
+        reader = csv.reader(follow_up["img_paths"], delimiter=",")
+        for row in reader:
+            for path in row:
+                img_paths.append(path)
+
+    for key in files:
+        if files[key]:
+            filename = os.path.join("/tmp", files[key].filename)
+            files[key].save(filename)
+            img_paths.append(filename)
+
+    if len(img_paths) > 0:
+        line = StringIO()
+        writer = csv.writer(line)
+        writer.writerow(img_paths)
+        paths = line.getvalue().strip()
+
+    return paths
 
 
 @ns.route("/")
@@ -25,8 +54,8 @@ class FollowUpCollection(Resource):
         """
         offset = request.args.get("offset", 0)
         limit = request.args.get("limit", 10)
-        order_by = request.args.get("order_by", "id")
-        order = request.args.get("order", "ASC")
+        order_by = request.args.get("order_by", "check_date")
+        order = request.args.get("order", "DESC")
 
         search_params = get_search_params(
             request.args, ["project", "verified_progress", "check_stage"]
@@ -44,7 +73,11 @@ class FollowUpCollection(Resource):
         Creates a new follow_up.
         """
         follow_up = json.loads(request.data)
-        dal.follow_ups.create(**follow_up)
+
+        (rc, err_msg) = dal.follow_ups.create(**follow_up)
+
+        if rc > 0:
+            follow_up["id"] = rc
 
         return follow_up, 201
 
@@ -90,6 +123,7 @@ class FollowUpItem(Resource):
         """
         follow_up = json.loads(request.data)
         follow_up["id"] = follow_up_id
+
         dal.follow_ups.edit(**follow_up)
 
         return follow_up, 200
@@ -102,3 +136,23 @@ class FollowUpItem(Resource):
         dal.follow_ups.block(follow_up_id)
 
         return None, 204
+
+
+@ns.route("/<int:follow_up_id>/attachment")
+class FollowUpAttachment(Resource):
+    @api.marshal_with(dal.follow_ups.model)
+    def post(self, follow_up_id):
+        """
+        Creates a new attachment to a follow up
+        """
+        follow_up = dal.follow_ups.find(follow_up_id)
+
+        images = request.files.to_dict()
+        img_paths = _save_files(images, follow_up)
+
+        if img_paths:
+            follow_up["img_paths"] = img_paths
+
+        dal.follow_ups.edit(**follow_up)
+
+        return follow_up, 200
