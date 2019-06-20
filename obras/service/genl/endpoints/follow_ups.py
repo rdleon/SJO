@@ -1,4 +1,8 @@
-from flask import json, request
+import csv
+import os
+from io import StringIO
+
+from flask import app, json, request
 from flask_restplus import Resource
 
 import dal.follow_ups
@@ -7,6 +11,32 @@ from misc.helper import get_search_params
 from misc.helperpg import EmptySetError
 
 ns = api.namespace("follow_ups", description="Operations related to follow_ups")
+
+
+def _save_files(files, follow_up_id=None):
+    img_paths = []
+    paths = None
+
+    if follow_up_id:
+        follow_up = dal.follow_ups.find(follow_up_id)
+        reader = csv.reader(follow_up["img_paths"], delimeter=",")
+        for row in reader:
+            for path in row:
+                img_paths.append(path)
+
+    for key in files:
+        if files[key]:
+            filename = os.path.join(app.config["UPLOAD_FOLDER"], files[key].filename)
+            files[key].save(filename)
+            img_paths.append(filename)
+
+    if len(img_paths) > 0:
+        line = StringIO()
+        writer = csv.writer(line)
+        writer.writerow(img_paths)
+        paths = line.getvalue()
+
+    return paths
 
 
 @ns.route("/")
@@ -44,6 +74,13 @@ class FollowUpCollection(Resource):
         Creates a new follow_up.
         """
         follow_up = json.loads(request.data)
+
+        images = request.files.to_dict()
+        img_paths = _save_files(images)
+
+        if img_paths:
+            follow_up["img_paths"] = img_paths
+
         dal.follow_ups.create(**follow_up)
 
         return follow_up, 201
@@ -90,6 +127,13 @@ class FollowUpItem(Resource):
         """
         follow_up = json.loads(request.data)
         follow_up["id"] = follow_up_id
+
+        images = request.files.to_dict()
+        img_paths = _save_files(images, follow_up_id)
+
+        if img_paths:
+            follow_up["img_paths"] = img_paths
+
         dal.follow_ups.edit(**follow_up)
 
         return follow_up, 200
