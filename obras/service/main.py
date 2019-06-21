@@ -1,17 +1,20 @@
 import logging
+import os
 
 from flask import Blueprint, Flask
 
-from genl.endpoints import (catalogues, contracts, follow_ups, projects,
-                            providers)
+from genl.endpoints import (attachments, catalogues, contracts, follow_ups,
+                            projects, providers)
 from genl.restplus import api
 
 
 def setup_app(flask_app):
     """Setup flask app instance"""
+    flask_app.config["FILE_STORAGE"] = os.getenv("FILE_STORAGE", "/tmp")
     blueprint = Blueprint("api", __name__, url_prefix="/api/v1")
     api.init_app(blueprint)
 
+    api.add_namespace(attachments.ns)
     api.add_namespace(catalogues.ns)
     api.add_namespace(contracts.ns)
     api.add_namespace(follow_ups.ns)

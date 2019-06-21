@@ -2,7 +2,7 @@ import csv
 import os
 from io import StringIO
 
-from flask import json, request
+from flask import current_app, json, request
 from flask_restplus import Resource
 
 import dal.follow_ups
@@ -25,7 +25,9 @@ def _save_files(files, follow_up=None):
 
     for key in files:
         if files[key]:
-            filename = os.path.join("/tmp", files[key].filename)
+            filename = os.path.join(
+                current_app.config["FILE_STORAGE"], files[key].filename
+            )
             files[key].save(filename)
             img_paths.append(filename)
 
