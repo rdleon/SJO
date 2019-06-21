@@ -61,6 +61,14 @@ class ProjectCount(Resource):
         return {"count": count}
 
 
+@ns.route("/stages")
+class ProjectStages(Resource):
+    @api.param("department", "Department id for filter")
+    def get(self):
+        department_id = request.args.get("department")
+        return dal.project.count_by_status(department_id)
+
+
 @ns.route("/with_follow_up")
 class ProjectsWithFollowUpCollection(Resource):
     @api.param("offset", "From which record to start recording, used for pagination")

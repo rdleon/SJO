@@ -187,3 +187,37 @@ def count(search_params=None):
 
 def paged(offset, limit=10, order_by="id", order="asc", search_params=None):
     return page_entities("projects", offset, limit, order_by, order, search_params)
+
+
+def count_by_status(department_id=None):
+    sql = """
+    SELECT stage_id as id, stage, count(*) FROM (
+        SELECT DISTINCT ON (projects.id)
+          projects.id AS Project,
+          projects.department,
+          check_stages.id AS stage_id,
+          check_stages.title AS stage,
+          follow_ups.check_date from projects
+        JOIN follow_ups ON follow_ups.project = projects.id
+        JOIN check_stages on follow_ups.check_stage = check_stages.id
+        ORDER BY projects.id, follow_ups.check_date DESC
+    ) AS tmp
+    {}
+    GROUP BY stage_id, stage
+    """
+
+    if department_id:
+        sql = sql.format(f"WHERE department = {department_id}")
+    else:
+        sql = sql.format("")
+
+    try:
+        rows = exec_steady(sql)
+    except EmptySetError:
+        return []
+
+    entities = []
+    for row in rows:
+        entities.append(dict(row))
+
+    return entities
