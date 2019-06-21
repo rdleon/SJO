@@ -29,7 +29,7 @@ def _save_files(files, follow_up=None):
                 current_app.config["FILE_STORAGE"], files[key].filename
             )
             files[key].save(filename)
-            img_paths.append(filename)
+            img_paths.append(files[key].filename)
 
     if len(img_paths) > 0:
         line = StringIO()
