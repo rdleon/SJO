@@ -61,6 +61,14 @@ class ProjectCount(Resource):
         return {"count": count}
 
 
+@ns.route("/stages")
+class ProjectStages(Resource):
+    @api.param("department", "Department id for filter")
+    def get(self):
+        department_id = request.args.get("department")
+        return dal.project.count_by_status(department_id)
+
+
 @ns.route("/with_follow_up")
 class ProjectsWithFollowUpCollection(Resource):
     @api.param("offset", "From which record to start recording, used for pagination")
@@ -69,13 +77,23 @@ class ProjectsWithFollowUpCollection(Resource):
     @api.param("contract_number", "Contract number")
     @api.param("contract", "Contract DB id")
     @api.param("category", "Category id")
+    @api.param("department", "Department id")
+    @api.param("stage", "Stage id")
     @api.marshal_with(project_follow_ups_model)
     def get(self):
         offset = request.args.get("offset", 0)
         limit = request.args.get("limit", 10)
 
         search_params = get_search_params(
-            request.args, ["project", "contract", "contract_number", "category"]
+            request.args,
+            [
+                "project",
+                "contract",
+                "contract_number",
+                "category",
+                "department",
+                "stage",
+            ],
         )
 
         return dal.project.paged_with_follow_ups(offset, limit, search_params)
@@ -87,9 +105,19 @@ class ProjectsWithFollowUpCount(Resource):
     @api.param("contract_number", "Contract number")
     @api.param("contract", "Contract DB id")
     @api.param("category", "Category id")
+    @api.param("department", "Department id")
+    @api.param("stage", "Stage id")
     def get(self):
         search_params = get_search_params(
-            request.args, ["project", "contract", "contract_number", "category"]
+            request.args,
+            [
+                "project",
+                "contract",
+                "contract_number",
+                "category",
+                "department",
+                "stage",
+            ],
         )
         count = dal.project.paged_with_follow_ups_count(search_params)
 
