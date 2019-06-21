@@ -71,6 +71,8 @@ def _setup_search_criteria(search_params):
         "contract_number": "contracts.id",
         "contract": "contracts.id",
         "category": "categories.id",
+        "department": "departments.id",
+        "stage": "follow_ups.check_stage",
     }
 
     if search_params is not None:
