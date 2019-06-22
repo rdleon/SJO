@@ -102,7 +102,7 @@ def paged_with_follow_ups(offset=0, limit=10, search_params=None):
         departments.title AS department,
         categories.id AS category_id,
         categories.title AS category,
-        follow_ups.id,
+        follow_ups.id AS follow_up,
         follow_ups.verified_progress,
         follow_ups.financial_advance,
         follow_ups.check_stage,
