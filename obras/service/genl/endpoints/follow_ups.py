@@ -17,25 +17,18 @@ def _save_files(files, follow_up=None):
     img_paths = []
     paths = None
 
-    if follow_up and follow_up["img_paths"]:
-        reader = csv.reader(follow_up["img_paths"], delimiter=",")
-        for row in reader:
-            for path in row:
-                img_paths.append(path)
+    if follow_up and follow_up["img_paths"] and len(follow_up["img_paths"]) > 0:
+        img_paths = follow_up["img_paths"].split("|")
 
     for key in files:
         if files[key]:
-            filename = os.path.join(
-                current_app.config["FILE_STORAGE"], files[key].filename
-            )
+            stored_filename = files[key].filename.replace("|", "_")
+            filename = os.path.join(current_app.config["FILE_STORAGE"], stored_filename)
             files[key].save(filename)
-            img_paths.append(files[key].filename)
+            img_paths.append(stored_filename)
 
     if len(img_paths) > 0:
-        line = StringIO()
-        writer = csv.writer(line)
-        writer.writerow(img_paths)
-        paths = line.getvalue().strip()
+        paths = str.join("|", img_paths)
 
     return paths
 
