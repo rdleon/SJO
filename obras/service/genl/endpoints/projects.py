@@ -78,7 +78,7 @@ class ProjectsWithFollowUpCollection(Resource):
     @api.param("contract", "Contract DB id")
     @api.param("category", "Category id")
     @api.param("department", "Department id")
-    @api.param("stage", "Stage id")
+    @api.param("check_stage", "Stage id")
     @api.marshal_with(project_follow_ups_model)
     def get(self):
         offset = request.args.get("offset", 0)
@@ -92,7 +92,7 @@ class ProjectsWithFollowUpCollection(Resource):
                 "contract_number",
                 "category",
                 "department",
-                "stage",
+                "check_stage",
             ],
         )
 
