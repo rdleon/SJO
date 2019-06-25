@@ -67,12 +67,12 @@ def _alter_project(**kwargs):
 
 def _setup_search_criteria(search_params):
     filters = {
-        "project": "projects.id",
-        "contract_number": "contracts.id",
-        "contract": "contracts.id",
-        "category": "categories.id",
-        "department": "departments.id",
-        "stage": "follow_ups.check_stage",
+        "project": "project_id",
+        "contract_number": "contract_number",
+        "contract": "contract_id",
+        "category": "category_id",
+        "department": "department_id",
+        "check_stage": "check_stage",
     }
 
     if search_params is not None:
@@ -80,7 +80,7 @@ def _setup_search_criteria(search_params):
         for field, value in search_params.items():
             criteria.append(f"{filters[field]} = {value}")
 
-        search = " AND " + " AND ".join(criteria)
+        search = " WHERE " + " AND ".join(criteria)
     else:
         search = ""
 
@@ -92,28 +92,32 @@ def paged_with_follow_ups(offset=0, limit=10, search_params=None):
     using the follow up to calculate them
     """
     sql = """
-    SELECT DISTINCT ON (projects.id)
-        projects.id AS project_id,
-        projects.title AS project_title,
-        projects.city AS city_id,
-        contracts.id AS contract_id,
-        contracts.number AS contract_number,
-        departments.id AS department_id,
-        departments.title AS department,
-        categories.id AS category_id,
-        categories.title AS category,
-        follow_ups.id AS follow_up,
-        follow_ups.verified_progress,
-        follow_ups.financial_advance,
-        follow_ups.check_stage,
-        follow_ups.check_date
-    FROM projects
-    JOIN contracts ON contracts.id = projects.contract
-    JOIN categories ON categories.id = projects.category
-    JOIN departments ON departments.id = projects.department
-    LEFT JOIN follow_ups ON follow_ups.project = projects.id
-    WHERE projects.blocked = false {}
-    ORDER BY projects.id, follow_ups.check_date DESC
+    SELECT * FROM (
+        SELECT DISTINCT ON (projects.id)
+            projects.id AS project_id,
+            projects.title AS project_title,
+            projects.city AS city_id,
+            contracts.id AS contract_id,
+            contracts.number AS contract_number,
+            departments.id AS department_id,
+            departments.title AS department,
+            categories.id AS category_id,
+            categories.title AS category,
+            follow_ups.id AS follow_up,
+            follow_ups.verified_progress,
+            follow_ups.financial_advance,
+            follow_ups.check_stage,
+            follow_ups.check_date,
+            follow_ups.img_paths
+        FROM projects
+        JOIN contracts ON contracts.id = projects.contract
+        JOIN categories ON categories.id = projects.category
+        JOIN departments ON departments.id = projects.department
+        LEFT JOIN follow_ups ON follow_ups.project = projects.id
+        WHERE projects.blocked = false
+        ORDER BY projects.id, follow_ups.check_date DESC)
+    AS temp
+    {}
     OFFSET {} LIMIT {};
     """
 

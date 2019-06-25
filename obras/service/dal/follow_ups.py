@@ -38,6 +38,7 @@ project_follow_ups_model = api.model(
         "follow_up": fields.Integer(),
         "check_stage": fields.Integer(),
         "check_date": fields.Date(),
+        "img_paths": fields.String(),
     },
 )
 
