@@ -1,10 +1,9 @@
-import csv
 import os
-from io import StringIO
 
-from flask import current_app, json, request
+from flask import json, request
 from flask_restplus import Resource
 
+import custom
 import dal.follow_ups
 from genl.restplus import api
 from misc.helper import get_search_params
@@ -23,7 +22,7 @@ def _save_files(files, follow_up=None):
     for key in files:
         if files[key]:
             stored_filename = files[key].filename.replace("|", "_")
-            filename = os.path.join(current_app.config["FILE_STORAGE"], stored_filename)
+            filename = os.path.join(custom.FILE_STORAGE, stored_filename)
             files[key].save(filename)
             img_paths.append(stored_filename)
 
