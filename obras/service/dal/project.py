@@ -114,6 +114,7 @@ def paged_with_follow_ups(offset=0, limit=10, search_params=None):
         JOIN categories ON categories.id = projects.category
         JOIN departments ON departments.id = projects.department
         LEFT JOIN follow_ups ON follow_ups.project = projects.id
+             AND follow_ups.blocked = false
         WHERE projects.blocked = false
         ORDER BY projects.id, follow_ups.check_date DESC)
     AS temp
@@ -141,11 +142,9 @@ def paged_with_follow_ups_count(search_params=None):
     sql = """
     SELECT count(DISTINCT projects.id)::int AS total
     FROM projects
-    JOIN contracts ON contracts.id = projects.contract
-    JOIN categories ON categories.id = projects.category
-    JOIN departments ON departments.id = projects.department
     LEFT JOIN follow_ups ON follow_ups.project = projects.id
-    WHERE projects.blocked = false {};
+         AND follow_ups.blocked = false
+    WHERE projects.blocked = false {}
     """
 
     search = _setup_search_criteria(search_params)

@@ -1,5 +1,4 @@
 import logging
-import os
 
 from flask import Blueprint, Flask
 
@@ -10,7 +9,6 @@ from genl.restplus import api
 
 def setup_app(flask_app):
     """Setup flask app instance"""
-    flask_app.config["FILE_STORAGE"] = os.getenv("FILE_STORAGE", "/tmp")
     blueprint = Blueprint("api", __name__, url_prefix="/api/v1")
     api.init_app(blueprint)
 
