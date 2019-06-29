@@ -202,9 +202,12 @@ def count_by_status(department_id=None):
           projects.department,
           check_stages.id AS stage_id,
           check_stages.title AS stage,
-          follow_ups.check_date from projects
+          follow_ups.check_date
+        FROM projects
         JOIN follow_ups ON follow_ups.project = projects.id
+             AND follow_ups.blocked = false
         JOIN check_stages on follow_ups.check_stage = check_stages.id
+        WHERE projects.blocked = false
         ORDER BY projects.id, follow_ups.check_date DESC
     ) AS tmp
     {}
