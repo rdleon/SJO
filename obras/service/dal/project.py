@@ -65,7 +65,7 @@ def _alter_project(**kwargs):
     return run_store_procedure(sql)
 
 
-def _setup_search_criteria(search_params):
+def _setup_search_criteria(search_params, joint=True):
     filters = {
         "project": "project_id",
         "contract_number": "contract_number",
@@ -75,12 +75,19 @@ def _setup_search_criteria(search_params):
         "check_stage": "check_stage",
     }
 
+    if not joint:
+        filters["project"] = "projects.id"
+        filters["category"] = "projects.category"
+        filters["contract"] = "projects.contract"
+        filters["department"] = "projects.department"
+        filters["check_stage"] = "follow_ups.check_stage"
+
     if search_params is not None:
         criteria = []
         for field, value in search_params.items():
             criteria.append(f"{filters[field]} = {value}")
 
-        search = " WHERE " + " AND ".join(criteria)
+        search = " AND ".join(criteria)
     else:
         search = ""
 
@@ -123,6 +130,8 @@ def paged_with_follow_ups(offset=0, limit=10, search_params=None):
     """
 
     search = _setup_search_criteria(search_params)
+    if len(search) > 0:
+        search = " WHERE " + search
     sql = sql.format(search, offset, limit)
 
     try:
@@ -147,7 +156,9 @@ def paged_with_follow_ups_count(search_params=None):
     WHERE projects.blocked = false {}
     """
 
-    search = _setup_search_criteria(search_params)
+    search = _setup_search_criteria(search_params, joint=False)
+    if len(search) > 0:
+        search = " AND " + search
     sql = sql.format(search)
 
     try:
