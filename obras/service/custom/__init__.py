@@ -1,2 +1,2 @@
-from .profile import GLOBAL_RESOURCES_DIR, CACHE_DIR
-from .profile import MSERV_NAME, MSERV_RESOURCES_DIR
+from .profile import (CACHE_DIR, FILE_STORAGE, GLOBAL_RESOURCES_DIR,
+                      MSERV_NAME, MSERV_RESOURCES_DIR)
