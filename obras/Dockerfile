@@ -19,6 +19,8 @@ RUN rm -rf /var/lib/apt/lists/*
 RUN rm /etc/nginx/sites-enabled/default
 COPY ./nginx_site /etc/nginx/sites-enabled/default
 
+RUN mkdir -p /root/resources/files; chmod 777 /root/resources/files
+
 ENV APP_DIR=/app
 COPY service $APP_DIR
 WORKDIR $APP_DIR
