@@ -73,6 +73,9 @@ def _setup_search_criteria(search_params, joint=True):
         "category": "category_id",
         "department": "department_id",
         "check_stage": "check_stage",
+        "adjudication": "adjudication",
+        "funding": "funding",
+        "program": "program",
     }
 
     if not joint:
@@ -81,6 +84,9 @@ def _setup_search_criteria(search_params, joint=True):
         filters["contract"] = "projects.contract"
         filters["department"] = "projects.department"
         filters["check_stage"] = "follow_ups.check_stage"
+        filters["adjudication"] = "contracts.adjudication"
+        filters["funding"] = "contracts.funding"
+        filters["program"] = "contracts.funding"
 
     if search_params is not None:
         criteria = []
@@ -106,6 +112,9 @@ def paged_with_follow_ups(offset=0, limit=10, search_params=None):
             projects.city AS city_id,
             contracts.id AS contract_id,
             contracts.number AS contract_number,
+            contracts.adjudication AS adjudication,
+            contracts.funding AS funding,
+            contracts.program AS program,
             departments.id AS department_id,
             departments.title AS department,
             categories.id AS category_id,
@@ -151,6 +160,7 @@ def paged_with_follow_ups_count(search_params=None):
     sql = """
     SELECT count(DISTINCT projects.id)::int AS total
     FROM projects
+    JOIN contracts ON contracts.id = projects.contract
     LEFT JOIN follow_ups ON follow_ups.project = projects.id
          AND follow_ups.blocked = false
     WHERE projects.blocked = false {}
