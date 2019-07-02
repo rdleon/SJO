@@ -79,6 +79,9 @@ class ProjectsWithFollowUpCollection(Resource):
     @api.param("category", "Category id")
     @api.param("department", "Department id")
     @api.param("check_stage", "Stage id")
+    @api.param("adjudication", "Adjudication process catalog id")
+    @api.param("funding", "Type of funding catalog id")
+    @api.param("program", "Type of program catalog id")
     @api.marshal_with(project_follow_ups_model)
     def get(self):
         offset = request.args.get("offset", 0)
@@ -93,6 +96,9 @@ class ProjectsWithFollowUpCollection(Resource):
                 "category",
                 "department",
                 "check_stage",
+                "adjudication",
+                "funding",
+                "program",
             ],
         )
 
@@ -106,7 +112,10 @@ class ProjectsWithFollowUpCount(Resource):
     @api.param("contract", "Contract DB id")
     @api.param("category", "Category id")
     @api.param("department", "Department id")
-    @api.param("stage", "Stage id")
+    @api.param("check_stage", "Stage id")
+    @api.param("adjudication", "Adjudication process catalog id")
+    @api.param("funding", "Type of funding catalog id")
+    @api.param("program", "Type of program catalog id")
     def get(self):
         search_params = get_search_params(
             request.args,
@@ -116,7 +125,10 @@ class ProjectsWithFollowUpCount(Resource):
                 "contract_number",
                 "category",
                 "department",
-                "stage",
+                "check_stage",
+                "adjudication",
+                "funding",
+                "program",
             ],
         )
         count = dal.project.paged_with_follow_ups_count(search_params)
